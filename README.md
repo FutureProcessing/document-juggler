@@ -2,8 +2,8 @@ mongo-juggler
 =============
 Fluent Lambda base Java Mongo API
 
-Usage
----------------------------------
+Defining Model
+--------------
 
 ### Document
 ```json
@@ -110,7 +110,7 @@ public interface CarUpdater {
 ```java
 public interface EngineUpdater {
 
-    @DbField("fuel)
+    @DbField("fuel")
     EngineUpdater withFuel(String fuel);
 
     @DbField("cylinder_number")
@@ -118,3 +118,28 @@ public interface EngineUpdater {
 }
 ```
 
+### Repository
+```java
+public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
+
+    public CarsRepository(MongoDBProvider dbProvider) {
+        super(Car.class, CarUpdater.class, CarQuery.class, dbProvider);
+    }
+}
+```
+
+Usage examples
+--------------
+
+### Read field from document
+```java
+public class Example {
+
+    private CarRepository repo;
+
+    public String read() {
+        Car car = repo.find(car -> car.withId("12")).one();
+        return car.getBrand();
+    }
+}
+```

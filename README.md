@@ -171,7 +171,7 @@ public interface Engine {
 ```
 
 #### Create repository
-[see Inserting > How to > 3. Create repository](#create-repository-1)
+[see Inserting > How to > 3. Create repository](#create-repository)
 
 Updating
 --------
@@ -198,13 +198,13 @@ public class Example {
 ### How to
 
 #### Define query interface
-[see Reading > How to > 1. Define query interface](#define-query-interface-1)
+[see Reading > How to > 1. Define query interface](#define-query-interface)
 
 #### Define update interface
-[see Inserting > How to > 1. Define update interface](#define-update-interface-1)
+[see Inserting > How to > 1. Define update interface](#define-update-interface)
 
 #### Define embedded document update interface
-[see Inserting > 2. Define embedded document update interface](#define-embedded-document-update-interface-1)
+[see Inserting > 2. Define embedded document update interface](#define-embedded-document-update-interface)
 
 #### Create repository
-[see Insert > 3. Create repository](#create-repository-1)
+[see Insert > 3. Create repository](#create-repository)

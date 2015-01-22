@@ -76,7 +76,6 @@ public interface CarUpdater {
 
 }
 ```
-
 2. Define embedded document interface
 ```java
 public interface EngineUpdater {
@@ -88,7 +87,6 @@ public interface EngineUpdater {
     EngineUpdater withCylindersNumber(int cylindersNumber);
 }
 ```
-
 3. Create repository
 ```java
 public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
@@ -128,7 +126,6 @@ public interface CarQuery extends AbstractQuery<CarQuery> {
     CarQuery withBrand(String brand);
 }
 ```
-
 2. Define read interface
 ```java
 @DbDocument("cars")
@@ -157,7 +154,6 @@ public interface Car {
     Engine getEngine();
 }
 ```
-
 3. Define embedded document read interface
 ```java
 public interface Engine {
@@ -169,7 +165,6 @@ public interface Engine {
     int getCylindersNumber();
 }
 ```
-
 4. Create repository - see Insert > How to > 3. Create repository
 
 Update

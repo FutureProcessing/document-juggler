@@ -46,7 +46,7 @@ public class Example {
 
 ### How to
 
-####Define update interface
+#### Define update interface
 ```java
 @DbDocument("cars")
 public interface CarUpdater {
@@ -77,7 +77,7 @@ public interface CarUpdater {
 }
 ```
 
-####Define embedded document interface
+#### Define embedded document update interface
 ```java
 public interface EngineUpdater {
 
@@ -89,7 +89,7 @@ public interface EngineUpdater {
 }
 ```
 
-####Create repository
+#### Create repository
 ```java
 public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 
@@ -119,7 +119,7 @@ public class Example {
 
 ### How to
 
-####Define query interface
+#### Define query interface
 ```java
 @DbDocument("cars")
 public interface CarQuery extends AbstractQuery<CarQuery> {
@@ -129,7 +129,7 @@ public interface CarQuery extends AbstractQuery<CarQuery> {
 }
 ```
 
-####Define read interface
+#### Define read interface
 ```java
 @DbDocument("cars")
 public interface Car {
@@ -158,7 +158,7 @@ public interface Car {
 }
 ```
 
-####Define embedded document read interface
+#### Define embedded document read interface
 ```java
 public interface Engine {
 
@@ -170,7 +170,8 @@ public interface Engine {
 }
 ```
 
-####Create repository - see Inserting > How to > 3. Create repository
+#### Create repository
+[see Inserting > How to > 3. Create repository](#create-repository-1)
 
 Updating
 --------
@@ -196,7 +197,14 @@ public class Example {
 
 ### How to
 
-1. Define query interface - [see Reading > How to > 1. Define query interface]()
-2. Define update interface - see Inserting > How to > 1. Define update interface
-3. Define embedded document interface - see Inserting > 2. Define embedded document interface
-4. Create repository - see Insert > 3. Create repository
+#### Define query interface
+[see Reading > How to > 1. Define query interface](#define-query-interface-1)
+
+#### Define update interface
+[see Inserting > How to > 1. Define update interface](#define-update-interface-1)
+
+#### Define embedded document update interface
+[see Inserting > 2. Define embedded document update interface](#define-embedded-document-update-interface-1)
+
+#### Create repository
+[see Insert > 3. Create repository](#create-repository-1)

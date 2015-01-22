@@ -20,8 +20,8 @@ import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
 import static java.util.Arrays.asList;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;

@@ -135,11 +135,46 @@ Usage examples
 ```java
 public class Example {
 
+    @Inject
     private CarRepository repo;
 
     public String read() {
         Car car = repo.find(car -> car.withId("12")).one();
         return car.getBrand();
+    }
+}
+```
+
+### Read field from embedded document
+```java
+public class Example {
+
+    @Inject
+    private CarRepository repo;
+
+    public int read() {
+        Car car = repo.find(car -> car.withId("12")).one();
+        return car.getEngine().getCylindersNumber();
+    }
+}
+```
+
+### Insert document
+```java
+public class Example {
+
+    @Inject
+    private CarRepository repo;
+
+    public void insert() {
+        repo.insert(car -> car
+                            .withBrand("Ford")
+                            .engine(engine -> engine
+                                                .withFuel("gas")
+                                                .withCylindersNumber(4)
+                            )
+                            .withReleaseDate(new Date())
+        );
     }
 }
 ```

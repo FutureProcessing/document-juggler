@@ -2,10 +2,8 @@ mongo-juggler
 =============
 Fluent Lambda base Java Mongo API
 
-Defining Model
+Model example
 --------------
-
-### Document
 ```json
 {
     "_id": "1",
@@ -24,58 +22,31 @@ Defining Model
 }
 ```
 
-### Query interface
-```java
-@DbDocument("cars")
-public interface CarQuery extends AbstractQuery<CarQuery> {
+Inserting
+---------
 
-    @DbField("brand")
-    CarQuery withBrand(String brand);
+```java
+public class Example {
+
+    @Inject
+    private CarRepository repo;
+
+    public void insert() {
+        repo.insert(car -> car
+                            .withBrand("Ford")
+                            .engine(engine -> engine
+                                                .withFuel("gas")
+                                                .withCylindersNumber(4)
+                            )
+                            .withReleaseDate(new Date())
+        );
+    }
 }
 ```
 
-### Read interface
-```java
-@DbDocument("cars")
-public interface Car {
+### How to
 
-    @DbField("_id")
-    String getId();
-
-    @DbField("brand")
-    String getBrand();
-
-    @DbField("model")
-    String getModel();
-
-    @DbField("release_date")
-    Date getReleaseDate();
-
-    @DbField("automatic_gearbox")
-    boolean isAutomaticGearbox();
-
-    @DbField("passengers_names")
-    List<String> getPassengersNames();
-
-    @DbField("engine")
-    @DbEmbeddedDocument
-    Engine getEngine();
-}
-```
-
-### Embedded read interface
-```java
-public interface Engine {
-
-    @DbField("fuel")
-    String getFuel();
-
-    @DbField("cylinder_number")
-    int getCylindersNumber();
-}
-```
-
-### Update interface
+1. Define update interface
 ```java
 @DbDocument("cars")
 public interface CarUpdater {
@@ -106,7 +77,7 @@ public interface CarUpdater {
 }
 ```
 
-### Embedded update interface
+2. Define embedded document interface
 ```java
 public interface EngineUpdater {
 
@@ -118,7 +89,7 @@ public interface EngineUpdater {
 }
 ```
 
-### Repository
+3. Create repository
 ```java
 public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 
@@ -128,58 +99,82 @@ public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 }
 ```
 
-Usage examples
---------------
+Read
+----
 
-### Read field from document
 ```java
 public class Example {
 
     @Inject
     private CarRepository repo;
 
-    public String read() {
+    public void read() {
         Car car = repo.find(car -> car.withId("12")).one();
-        return car.getBrand();
+
+        String brand  = car.getBrand();
+        int cylindersNumber = car.getEngine().getCylindersNumber();
     }
 }
 ```
 
-### Read field from embedded document
+### How to
+
+1. Define query interface
 ```java
-public class Example {
+@DbDocument("cars")
+public interface CarQuery extends AbstractQuery<CarQuery> {
 
-    @Inject
-    private CarRepository repo;
-
-    public int read() {
-        Car car = repo.find(car -> car.withId("12")).one();
-        return car.getEngine().getCylindersNumber();
-    }
+    @DbField("brand")
+    CarQuery withBrand(String brand);
 }
 ```
 
-### Insert document
+2. Define read interface
 ```java
-public class Example {
+@DbDocument("cars")
+public interface Car {
 
-    @Inject
-    private CarRepository repo;
+    @DbField("_id")
+    String getId();
 
-    public void insert() {
-        repo.insert(car -> car
-                            .withBrand("Ford")
-                            .engine(engine -> engine
-                                                .withFuel("gas")
-                                                .withCylindersNumber(4)
-                            )
-                            .withReleaseDate(new Date())
-        );
-    }
+    @DbField("brand")
+    String getBrand();
+
+    @DbField("model")
+    String getModel();
+
+    @DbField("release_date")
+    Date getReleaseDate();
+
+    @DbField("automatic_gearbox")
+    boolean isAutomaticGearbox();
+
+    @DbField("passengers_names")
+    List<String> getPassengersNames();
+
+    @DbField("engine")
+    @DbEmbeddedDocument
+    Engine getEngine();
 }
 ```
 
-### Update document
+3. Define embedded document read interface
+```java
+public interface Engine {
+
+    @DbField("fuel")
+    String getFuel();
+
+    @DbField("cylinder_number")
+    int getCylindersNumber();
+}
+```
+
+4. Create repository - see Insert > How to > 3. Create repository
+
+Update
+--------
+
 ```java
 public class Example {
 
@@ -198,3 +193,10 @@ public class Example {
     }
 }
 ```
+
+### How to
+
+1. Define query interface - see Read > How to > 1. Define query interface
+2. Define update interface - see Insert > How to > 1. Define update interface
+3. Define embedded document interface - see Insert > 2. Define embedded document interface
+4. Create repository - see Insert > 3. Create repository

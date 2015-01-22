@@ -6,7 +6,7 @@ Collaboration
 -------------
 1. DO NOT COMMIT TO master or develop
 2. CREATE FEATURE BRANCH
-3. ONLY Szymon Sobocik OR Bartosz Niziołek ARE ALLOWED TO MERGE PULL REQUESTS
+3. ONLY Szymon Sobocik AND Bartosz Niziołek ARE ALLOWED TO MERGE PULL REQUESTS
 
 Model example
 --------------
@@ -210,7 +210,7 @@ public class Example {
 [see Inserting > How to > 1. Define update interface](#define-update-interface)
 
 #### Define embedded document update interface
-[see Inserting > 2. Define embedded document update interface](#define-embedded-document-update-interface)
+[see Inserting > How to > 2. Define embedded document update interface](#define-embedded-document-update-interface)
 
 #### Create repository
-[see Insert > 3. Create repository](#create-repository)
+[see Insert > How to > 3. Create repository](#create-repository)

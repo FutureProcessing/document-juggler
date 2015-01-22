@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.PASSENGERS_NAMES;
 import static java.util.Arrays.asList;
-import static org.fest.assertions.api.Fail.fail;
+import static org.assertj.core.api.Fail.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;

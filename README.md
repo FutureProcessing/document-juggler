@@ -2,6 +2,12 @@ mongo-juggler
 =============
 Fluent Lambda base Java Mongo API
 
+Collaboration
+-------------
+1. DO NOT COMMIT TO master or develop
+2. CREATE FEATURE BRANCH
+3. ONLY Szymon Sobocik OR Bartosz Niziołek ARE ALLOWED TO MERGE PULL REQUESTS
+
 Model example
 --------------
 ```json

@@ -46,7 +46,7 @@ public class Example {
 
 ### How to
 
-1. Define update interface
+####Define update interface
 ```java
 @DbDocument("cars")
 public interface CarUpdater {
@@ -76,7 +76,8 @@ public interface CarUpdater {
 
 }
 ```
-2. Define embedded document interface
+
+####Define embedded document interface
 ```java
 public interface EngineUpdater {
 
@@ -87,7 +88,8 @@ public interface EngineUpdater {
     EngineUpdater withCylindersNumber(int cylindersNumber);
 }
 ```
-3. Create repository
+
+####Create repository
 ```java
 public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 
@@ -97,8 +99,8 @@ public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 }
 ```
 
-Read
-----
+Reading
+-------
 
 ```java
 public class Example {
@@ -117,7 +119,7 @@ public class Example {
 
 ### How to
 
-1. Define query interface
+####Define query interface
 ```java
 @DbDocument("cars")
 public interface CarQuery extends AbstractQuery<CarQuery> {
@@ -126,7 +128,8 @@ public interface CarQuery extends AbstractQuery<CarQuery> {
     CarQuery withBrand(String brand);
 }
 ```
-2. Define read interface
+
+####Define read interface
 ```java
 @DbDocument("cars")
 public interface Car {
@@ -154,7 +157,8 @@ public interface Car {
     Engine getEngine();
 }
 ```
-3. Define embedded document read interface
+
+####Define embedded document read interface
 ```java
 public interface Engine {
 
@@ -165,9 +169,10 @@ public interface Engine {
     int getCylindersNumber();
 }
 ```
-4. Create repository - see Insert > How to > 3. Create repository
 
-Update
+####Create repository - see Inserting > How to > 3. Create repository
+
+Updating
 --------
 
 ```java
@@ -191,7 +196,7 @@ public class Example {
 
 ### How to
 
-1. Define query interface - see Read > How to > 1. Define query interface
-2. Define update interface - see Insert > How to > 1. Define update interface
-3. Define embedded document interface - see Insert > 2. Define embedded document interface
+1. Define query interface - [see Reading > How to > 1. Define query interface]()
+2. Define update interface - see Inserting > How to > 1. Define update interface
+3. Define embedded document interface - see Inserting > 2. Define embedded document interface
 4. Create repository - see Insert > 3. Create repository

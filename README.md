@@ -178,3 +178,23 @@ public class Example {
     }
 }
 ```
+
+### Update document
+```java
+public class Example {
+
+    @Inject
+    private CarRepository repo;
+
+    public void update() {
+        repo.update(car -> car.withId("12"))
+            .with(car -> car
+                        .withModel("F60")
+                        .engine(engine -> engine
+                                            .withFuel(newFuel)
+                                            .withCylindersNumber(10)
+                        )
+            );
+    }
+}
+```

@@ -32,5 +32,4 @@ public interface Car {
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument
     Engine getEngine();
-
 }

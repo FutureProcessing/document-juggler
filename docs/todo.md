@@ -30,7 +30,7 @@ Query should have method to return all results matching query.
 ObjectId instead of Strings
 ---------------------------
 - [ ] In database Id should be stored as ObjectId.
-- [ ] repo.insert(...) should return String representation of ObjectId.
+- [X] repo.insert(...) should return String representation of ObjectId.
 - [ ] repo.insert(...) should throw exception with information what went wrong
 ```java
 String retursString = repo.insert();

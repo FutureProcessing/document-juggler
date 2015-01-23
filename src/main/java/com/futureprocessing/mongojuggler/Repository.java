@@ -35,11 +35,11 @@ public abstract class Repository<READER, UPDATER, QUERY extends AbstractQuery> {
 
     }
 
-    public void insert(Consumer<UPDATER> consumer) {
+    public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
         UPDATER updater = ProxyCreator.newInsertProxy(updaterClass, collection);
         consumer.accept(updater);
-        ProxyExtractor.extractInsertProxy(updater).execute();
+        return ProxyExtractor.extractInsertProxy(updater).execute();
     }
 
     private DBCollection getDBCollection() {

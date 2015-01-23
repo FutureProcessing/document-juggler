@@ -3,7 +3,6 @@ package com.futureprocessing.mongojuggler;
 
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -12,9 +11,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.MODEL;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InsertIntegrationTest {
@@ -53,5 +50,16 @@ public class InsertIntegrationTest {
 
         assertThat(document.get(BRAND)).isEqualTo(brand);
         assertThat(document.get(MODEL)).isEqualTo(model);
+    }
+
+    @Test
+    public void shouldReturnInsertedDocumentId() {
+        // given
+
+        // when
+        String id = repo.insert(car -> car.withBrand("Ford"));
+
+        // then
+        assertThat(id).isNotEmpty();
     }
 }

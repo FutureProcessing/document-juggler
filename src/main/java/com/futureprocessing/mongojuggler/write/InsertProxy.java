@@ -46,8 +46,9 @@ public class InsertProxy implements InvocationHandler {
         return proxy;
     }
 
-    public void execute() {
+    public String execute() {
         collection.insert(dbObject);
+        return dbObject.get("_id").toString();
     }
 
 }

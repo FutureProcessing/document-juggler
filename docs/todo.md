@@ -1,6 +1,10 @@
 ToDo in Mongo Juggler
 =======================
 
+Integration tests on real mongo
+-------------------------------
+Use Embedded Mongo
+
 Reader Set support
 ------------------
 Reader should return Set object, converting underlying list to it.

@@ -1,10 +1,8 @@
 package com.futureprocessing.mongojuggler;
 
 
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -19,13 +17,11 @@ public class ReadIntegrationTest {
 
     private static MongoClient client;
     private static CarsRepository repo;
-    private static DBCollection collection;
 
     @BeforeClass
     public static void init() throws Exception {
         client = new MongoClient("localhost", 37017);
         repo = new CarsRepository(new SimpleDBProvider(client, "test"));
-        collection = client.getDB("test").getCollection(CarsDBModel.Car.COLLECTION);
     }
 
     @After
@@ -36,12 +32,10 @@ public class ReadIntegrationTest {
     @Test
     public void shouldReadDocument() {
         // given
-        String id = "h1";
         String brand = "Honda";
         String model = "HR-V";
 
-        repo.insert(car -> car
-                .withId(id)
+        String id = repo.insert(car -> car
                 .withBrand(brand)
                 .withModel(model));
 

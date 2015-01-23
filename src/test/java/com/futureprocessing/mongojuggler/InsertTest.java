@@ -5,6 +5,7 @@ import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
 import com.mongodb.*;
 import org.assertj.core.api.Assertions;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import org.mockito.stubbing.Answer;
 import java.util.Date;
 import java.util.List;
 
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +41,8 @@ public class InsertTest {
     @Mock
     private MongoDBProvider dbProvider;
 
-    private String insertedId = "newID";
+    private ObjectId insertedId = new ObjectId();
+    private BasicDBObject insertedDocument;
 
 
     @Before
@@ -48,7 +51,9 @@ public class InsertTest {
         given(db.getCollection(any())).willReturn(collection);
 
         given(collection.insert(Mockito.<DBObject[]>any())).will(invocationOnMock -> {
-            ((BasicDBObject) invocationOnMock.getArguments()[0]).append("_id", insertedId);
+            BasicDBObject doc = (BasicDBObject) invocationOnMock.getArguments()[0];
+            insertedDocument = (BasicDBObject) doc.copy();
+            doc.append("_id", insertedId);
             return null;
         });
 
@@ -76,8 +81,8 @@ public class InsertTest {
         carsRepository.insert(car -> car.withBrand(brand));
 
         //then
-        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, brand).append(ID, insertedId);
-        verify(collection).insert(eq(expectedInsert));
+        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, brand);
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -94,9 +99,8 @@ public class InsertTest {
 
         //then
         DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, newBrand)
-                .append(CarsDBModel.Car.RELEASE_DATE, newReleaseDate)
-                .append(ID, insertedId);
-        verify(collection).insert(eq(expectedInsert));
+                .append(CarsDBModel.Car.RELEASE_DATE, newReleaseDate);
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -119,11 +123,10 @@ public class InsertTest {
 
         //then
         DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, value)
-                .append(ID, insertedId)
                 .append(CarsDBModel.Car.RELEASE_DATE, date)
                 .append(CarsDBModel.Car.ENGINE, new BasicDBObject(CarsDBModel.Car.Engine.FUEL, fuel)
                         .append(CarsDBModel.Car.Engine.CYLINDERS_NUMBER, cylinders));
-        verify(collection).insert(eq(expectedInsert));
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -135,8 +138,8 @@ public class InsertTest {
         carsRepository.insert(car -> car.withPassengerNames(passengers));
 
         //then
-        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.PASSENGERS_NAMES, passengers).append(ID, insertedId);
-        verify(collection).insert(eq(expectedInsert));
+        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.PASSENGERS_NAMES, passengers);
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -163,7 +166,21 @@ public class InsertTest {
         String id = carsRepository.insert(car -> car.withBrand("Honda"));
 
         // then
-        assertThat(id).isEqualTo(insertedId);
+        assertThat(id).isEqualTo(insertedId.toHexString());
+    }
+
+    @Test
+    public void shouldPackStringIdIntoObjectId() {
+        // given
+        String id = "abcdABCDabcdABCDabcdABCD";
+        String brand = "Fiat";
+
+        // when
+        carsRepository.insert(car -> car.withId(id).withBrand(brand));
+
+        // then
+        BasicDBObject expected  = new BasicDBObject(BRAND, brand).append(ID, new ObjectId(id));
+        assertThat(insertedDocument).isEqualTo(expected);
     }
 
 }

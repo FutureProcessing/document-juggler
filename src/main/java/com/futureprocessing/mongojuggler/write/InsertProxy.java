@@ -7,6 +7,7 @@ import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -42,13 +43,17 @@ public class InsertProxy implements InvocationHandler {
             throw new UnsupportedActionException();
         }
 
-        dbObject.append(field, args[0]);
+        if (field.equals("_id")) {
+            dbObject.append(field, new ObjectId((String) args[0]));
+        } else {
+            dbObject.append(field, args[0]);
+        }
         return proxy;
     }
 
     public String execute() {
         collection.insert(dbObject);
-        return dbObject.get("_id").toString();
+        return ((ObjectId) dbObject.get("_id")).toHexString();
     }
 
 }

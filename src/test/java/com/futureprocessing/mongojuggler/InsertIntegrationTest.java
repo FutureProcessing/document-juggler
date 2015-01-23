@@ -7,6 +7,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,18 +36,16 @@ public class InsertIntegrationTest {
     @Test
     public void shouldInsertDocument() {
         // given
-        String id = "h1";
         String brand = "Honda";
         String model = "HR-V";
 
         // when
-        repo.insert(car -> car
-                .withId(id)
+        String id = repo.insert(car -> car
                 .withBrand(brand)
                 .withModel(model));
 
         // then
-        DBObject document = collection.findOne(new BasicDBObject(ID, id));
+        DBObject document = collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
 
         assertThat(document.get(BRAND)).isEqualTo(brand);
         assertThat(document.get(MODEL)).isEqualTo(model);

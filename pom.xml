@@ -16,7 +16,22 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <s3.maven.repository.bucket>fp-maven-repository</s3.maven.repository.bucket>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>s3.maven.repository.release</id>
+            <name>AWS Release Repository</name>
+            <url>s3://${s3.maven.repository.bucket}/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>s3.maven.repository.snapshot</id>
+            <name>AWS Snapshot Repository</name>
+            <url>s3://${s3.maven.repository.bucket}/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -50,4 +65,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
+    </build>
+
 </project>

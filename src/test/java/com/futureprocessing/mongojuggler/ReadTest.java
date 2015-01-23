@@ -6,21 +6,21 @@ import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.example.model.Engine;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.extractProperty;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -36,6 +36,8 @@ public class ReadTest {
     private DB db;
     @Mock
     private DBCollection collection;
+    @Mock
+    private DBCursor cursor;
     @Mock
     private MongoDBProvider dbProvider;
 

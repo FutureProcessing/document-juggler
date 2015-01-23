@@ -37,8 +37,6 @@ public class ReadTest {
     @Mock
     private DBCollection collection;
     @Mock
-    private DBCursor cursor;
-    @Mock
     private MongoDBProvider dbProvider;
 
 

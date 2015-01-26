@@ -1,14 +1,11 @@
-mongo-juggler
+Mongo Juggler
 =============
-Fluent Lambda base Java Mongo API
+Fluent MongoDB Java API based on Java 8 lambdas
 
-Collaboration
--------------
-1. DO NOT COMMIT TO master or develop
-2. CREATE FEATURE BRANCH
-3. ONLY Szymon Sobocik AND Bartosz Niziołek ARE ALLOWED TO MERGE PULL REQUESTS
+Using Mongo Juggler
+=============
 
-Model example
+Define MongoDB document schema
 --------------
 ```json
 {
@@ -28,31 +25,10 @@ Model example
 }
 ```
 
-Inserting
+How to insert documents
 ---------
 
-```java
-public class Example {
-
-    @Inject
-    private CarRepository repo;
-
-    public void insert() {
-        repo.insert(car -> car
-                            .withBrand("Ford")
-                            .engine(engine -> engine
-                                                .withFuel("gas")
-                                                .withCylindersNumber(4)
-                            )
-                            .withReleaseDate(new Date())
-        );
-    }
-}
-```
-
-### How to
-
-#### Define update interface
+#### 1. Define update interface
 ```java
 @DbDocument("cars")
 public interface CarUpdater {
@@ -83,7 +59,7 @@ public interface CarUpdater {
 }
 ```
 
-#### Define embedded document update interface
+#### 2. Define embedded document update interface
 ```java
 public interface EngineUpdater {
 
@@ -95,7 +71,7 @@ public interface EngineUpdater {
 }
 ```
 
-#### Create repository
+#### 3. Create repository
 ```java
 public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 
@@ -105,27 +81,32 @@ public class CarsRepository extends Repository<Car, CarUpdater, CarQuery> {
 }
 ```
 
-Reading
--------
-
+#### 4. Enjoy!
 ```java
 public class Example {
 
     @Inject
     private CarRepository repo;
 
-    public void read() {
-        Car car = repo.find(car -> car.withId("12")).one();
-
-        String brand  = car.getBrand();
-        int cylindersNumber = car.getEngine().getCylindersNumber();
+    public void insert() {
+        repo.insert(car -> car
+                            .withBrand("Ford")
+                            .engine(engine -> engine
+                                                .withFuel("gas")
+                                                .withCylindersNumber(4)
+                            )
+                            .withReleaseDate(new Date())
+        );
     }
 }
 ```
 
-### How to
 
-#### Define query interface
+How to read documents
+-------
+
+
+#### 1. Define query interface
 ```java
 @DbDocument("cars")
 public interface CarQuery extends AbstractQuery<CarQuery> {
@@ -135,7 +116,7 @@ public interface CarQuery extends AbstractQuery<CarQuery> {
 }
 ```
 
-#### Define read interface
+#### 2. Define read interface
 ```java
 @DbDocument("cars")
 public interface Car {
@@ -164,7 +145,7 @@ public interface Car {
 }
 ```
 
-#### Define embedded document read interface
+#### 3. Define embedded document read interface
 ```java
 public interface Engine {
 
@@ -176,11 +157,41 @@ public interface Engine {
 }
 ```
 
-#### Create repository
-[see Inserting > How to > 3. Create repository](#create-repository)
+#### 4. Create repository
+[see How to insert documents > 3. Create repository](#3-create-repository)
 
-Updating
+#### 5. Enjoy!
+```java
+public class Example {
+
+    @Inject
+    private CarRepository repo;
+
+    public void read() {
+        Car car = repo.find(car -> car.withId("12")).one();
+
+        String brand  = car.getBrand();
+        int cylindersNumber = car.getEngine().getCylindersNumber();
+    }
+}
+```
+
+How to update documents
 --------
+
+#### 1. Define query interface
+[see How to read documents > 1. Define query interface](#1-define-query-interface)
+
+#### 2. Define update interface
+[see How to insert documents > 1. Define update interface](#1-define-update-interface)
+
+#### 3. Define embedded document update interface
+[see How to insert documents > 2. Define embedded document update interface](#2-define-embedded-document-update-interface)
+
+#### 4. Create repository
+[see How to insert documents > 3. Create repository](#3-create-repository)
+
+#### 5. Enjoy!
 
 ```java
 public class Example {
@@ -200,17 +211,3 @@ public class Example {
     }
 }
 ```
-
-### How to
-
-#### Define query interface
-[see Reading > How to > 1. Define query interface](#define-query-interface)
-
-#### Define update interface
-[see Inserting > How to > 1. Define update interface](#define-update-interface)
-
-#### Define embedded document update interface
-[see Inserting > How to > 2. Define embedded document update interface](#define-embedded-document-update-interface)
-
-#### Create repository
-[see Insert > How to > 3. Create repository](#create-repository)

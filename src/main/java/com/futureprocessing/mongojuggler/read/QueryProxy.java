@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Id;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
 import org.bson.types.ObjectId;
@@ -14,11 +15,11 @@ public class QueryProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        String field = method.getAnnotation(DbField.class).value();
 
-        if(field.equals("_id")) {
-            builder.and(field).is(new ObjectId((String) args[0]));
+        if(method.isAnnotationPresent(Id.class)) {
+            builder.and("_id").is(new ObjectId((String) args[0]));
         } else {
+            String field = method.getAnnotation(DbField.class).value();
             builder.and(field).is(args[0]);
         }
 

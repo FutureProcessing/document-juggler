@@ -5,12 +5,13 @@ import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
+import com.futureprocessing.mongojuggler.read.QueryValidator;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.mongodb.DBCollection;
 
 import java.util.function.Consumer;
 
-public abstract class Repository<READER, UPDATER, QUERY> {
+public class Repository<READER, UPDATER, QUERY> {
 
     private final Class<READER> readerClass;
     private final Class<UPDATER> updaterClass;
@@ -22,6 +23,8 @@ public abstract class Repository<READER, UPDATER, QUERY> {
         this.updaterClass = updaterClass;
         this.dbProvider = dbProvider;
         this.queryClass = queryClass;
+
+        QueryValidator.validate(queryClass);
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {

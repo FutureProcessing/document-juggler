@@ -47,5 +47,27 @@ result.ensureOneUpdated();
 result.ensureUpdated(20);
 ```
 
+Bulk insert
+-----------
+Repo method for inserting multiple documents in one mongo command, for example:
+```java
+carsRepository.bulkInsert(car -> car.addPassengerName(newPassenger), car -> car.addPassengerName(newPassenger2));
+```
 
+Update modifiers
+----------------
+Add support for other update modifiers. For instance:
+- $inc
+- $currentDate
 
+Update with {upsert: true}
+----------------
+Add createOrUpdate method (with {upsert: true} behind the scenes).
+
+findAndModify() support
+----------------
+Add a possibility to return documents during an update (before or after update - this is configurable in mongo).
+
+Possibility to choose between save() and update()
+----------------
+update() can crete or update document, while save() can create or replace whole existing document.

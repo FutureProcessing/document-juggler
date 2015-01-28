@@ -7,6 +7,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateTest {
 
+    public static final String ID = new ObjectId().toHexString();
     private CarsRepository carsRepository;
 
     @Mock
@@ -52,7 +54,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.update(car -> car.withId("abc")).with(car -> car.addPassengerName("Kowalski"));
+        carsRepository.update(car -> car.withId(ID)).with(car -> car.addPassengerName("Kowalski"));
 
         //then
         verify(db).getCollection(eq(CarsDBModel.Car.COLLECTION));
@@ -61,14 +63,13 @@ public class UpdateTest {
     @Test
     public void shouldUpdateCorrectDocumentById() {
         //given
-        final String id = "abc";
 
         //when
-        carsRepository.update(car -> car.withId(id))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.withModel("Corsa"));
 
         //then
-        BasicDBObject expectedQuery = new BasicDBObject(CarsDBModel.Car.ID, id);
+        BasicDBObject expectedQuery = new BasicDBObject(CarsDBModel.Car.ID, new ObjectId(ID));
         verify(collection).update(eq(expectedQuery), any());
     }
 
@@ -80,7 +81,7 @@ public class UpdateTest {
 
         //when
         try {
-            carsRepository.update(car -> car.withId("abc"))
+            carsRepository.update(car -> car.withId(ID))
                     .with(car -> car.withBrand(newBrand));
         } catch (DocumentNotFoundException e) {
             //then
@@ -96,7 +97,7 @@ public class UpdateTest {
         final String newBrand = "BMW";
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.withBrand(newBrand));
 
         //then
@@ -112,7 +113,7 @@ public class UpdateTest {
         final String newModel = "corsa";
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car
                                 .withBrand(newBrand)
                                 .withModel(newModel)
@@ -130,7 +131,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.withBrand(null));
 
         //then
@@ -145,7 +146,7 @@ public class UpdateTest {
         final String newModel = "Corsa";
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car
                                 .withBrand(null)
                                 .withModel(newModel)
@@ -162,7 +163,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.withAutomaticGearbox(false));
 
         //then
@@ -178,7 +179,7 @@ public class UpdateTest {
         final String newFuel = "diesel";
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.engine(
                         engine -> engine.withFuel(newFuel)
                 ));
@@ -196,7 +197,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.engine(
                         engine -> engine.withFuel(null)
                 ));
@@ -214,7 +215,7 @@ public class UpdateTest {
         final List<String> passengers = asList("Adam", "Mark", "John");
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.withPassengerNames(passengers));
 
         //then
@@ -229,7 +230,7 @@ public class UpdateTest {
         final String newPassenger = "Adam";
 
         //when
-        carsRepository.update(car -> car.withId("abc"))
+        carsRepository.update(car -> car.withId(ID))
                 .with(car -> car.addPassengerName(newPassenger));
 
         //then

@@ -6,21 +6,22 @@ import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.example.model.Engine;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.extractProperty;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ReadTest {
 
+    public static final String PROPER_ID = new ObjectId().toHexString();
     private CarsRepository carsRepository;
 
     @Mock
@@ -54,7 +56,7 @@ public class ReadTest {
         BasicDBObject dbObject = new BasicDBObject();
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
-        Car entity = carsRepository.find(car -> car.withId(ID)).one(MODEL);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(MODEL);
 
         // when
         try {
@@ -75,7 +77,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId(ID)).one(BRAND);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(BRAND);
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -92,7 +94,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(BRAND);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(BRAND);
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -108,7 +110,7 @@ public class ReadTest {
         given(collection.findOne(any(), eq(projection))).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(BRAND);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(BRAND);
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -122,7 +124,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId(ID)).one();
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one();
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -138,7 +140,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId(ID)).one();
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one();
 
         // then
         assertThat(entity.getEngine()).isInstanceOf(Engine.class);
@@ -155,7 +157,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId(ID)).one();
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one();
 
         // then
         assertThat(entity.getEngine().getFuel()).isEqualTo(fuel);
@@ -165,10 +167,10 @@ public class ReadTest {
     public void shouldQueryForObjectWithId() {
         // given
         given(collection.findOne(any(), any())).willReturn(new BasicDBObject());
-        DBObject expectedQuery = new BasicDBObject(ID, "12");
+        DBObject expectedQuery = new BasicDBObject(ID, new ObjectId(PROPER_ID));
 
         // when
-        carsRepository.find(car -> car.withId("12")).one();
+        carsRepository.find(car -> car.withId(PROPER_ID)).one();
 
         // then
         verify(collection).findOne(eq(expectedQuery), any());
@@ -196,7 +198,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(AUTOMATIC_GEARBOX);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(AUTOMATIC_GEARBOX);
 
         // then
         assertThat(entity.isAutomaticGearbox()).isTrue();
@@ -209,7 +211,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(AUTOMATIC_GEARBOX);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(AUTOMATIC_GEARBOX);
 
         // then
         assertThat(entity.isAutomaticGearbox()).isFalse();
@@ -222,7 +224,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(AUTOMATIC_GEARBOX);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(AUTOMATIC_GEARBOX);
 
         // then
         assertThat(entity.isAutomaticGearbox()).isFalse();
@@ -236,7 +238,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car entity = carsRepository.find(car -> car.withId("abc")).one(PASSENGERS_NAMES);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).one(PASSENGERS_NAMES);
 
         // then
         assertThat(entity.getPassengersNames()).isEqualTo(passengers);
@@ -250,7 +252,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car car = carsRepository.find(carQuery -> carQuery.withId("abc"))
+        Car car = carsRepository.find(carQuery -> carQuery.withId(PROPER_ID))
                 .one(ID, BRAND);
 
         // then
@@ -260,31 +262,29 @@ public class ReadTest {
     @Test
     public void shouldQueryForIdLambda() {
         // given
-        final String id = "abc";
         final String brand = "BMW";
         BasicDBObject dbObject = new BasicDBObject(BRAND, brand);
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car car = carsRepository.find(carQuery -> carQuery.withId("abc"))
+        Car car = carsRepository.find(carQuery -> carQuery.withId(PROPER_ID))
                 .one(ID, BRAND);
 
 
         // then
-        BasicDBObject expectedQuery = new BasicDBObject(ID, id);
+        BasicDBObject expectedQuery = new BasicDBObject(ID, new ObjectId(PROPER_ID));
         verify(collection).findOne(eq(expectedQuery), any());
     }
 
     @Test
     public void shouldQueryWithCorrectProjectionLambda() {
         // given
-        final String id = "abc";
         final String brand = "BMW";
         BasicDBObject dbObject = new BasicDBObject(BRAND, brand);
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car car = carsRepository.find(carQuery -> carQuery.withId("abc"))
+        Car car = carsRepository.find(carQuery -> carQuery.withId(PROPER_ID))
                 .one(ID, BRAND);
 
         // then

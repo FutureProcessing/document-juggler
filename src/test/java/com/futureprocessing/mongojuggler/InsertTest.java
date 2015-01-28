@@ -3,21 +3,26 @@ package com.futureprocessing.mongojuggler;
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.*;
+import org.assertj.core.api.Assertions;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import java.util.Date;
 import java.util.List;
 
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -36,11 +41,21 @@ public class InsertTest {
     @Mock
     private MongoDBProvider dbProvider;
 
+    private ObjectId insertedId = new ObjectId();
+    private BasicDBObject insertedDocument;
+
 
     @Before
     public void before() {
         given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
+
+        given(collection.insert(Mockito.<DBObject[]>any())).will(invocationOnMock -> {
+            BasicDBObject doc = (BasicDBObject) invocationOnMock.getArguments()[0];
+            insertedDocument = (BasicDBObject) doc.copy();
+            doc.append("_id", insertedId);
+            return null;
+        });
 
         carsRepository = new CarsRepository(dbProvider);
     }
@@ -67,7 +82,7 @@ public class InsertTest {
 
         //then
         DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, brand);
-        verify(collection).insert(eq(expectedInsert));
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -83,8 +98,9 @@ public class InsertTest {
         );
 
         //then
-        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, newBrand).append(CarsDBModel.Car.RELEASE_DATE, newReleaseDate);
-        verify(collection).insert(eq(expectedInsert));
+        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, newBrand)
+                .append(CarsDBModel.Car.RELEASE_DATE, newReleaseDate);
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -110,7 +126,7 @@ public class InsertTest {
                 .append(CarsDBModel.Car.RELEASE_DATE, date)
                 .append(CarsDBModel.Car.ENGINE, new BasicDBObject(CarsDBModel.Car.Engine.FUEL, fuel)
                         .append(CarsDBModel.Car.Engine.CYLINDERS_NUMBER, cylinders));
-        verify(collection).insert(eq(expectedInsert));
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -123,7 +139,7 @@ public class InsertTest {
 
         //then
         DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.PASSENGERS_NAMES, passengers);
-        verify(collection).insert(eq(expectedInsert));
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
     @Test
@@ -140,6 +156,31 @@ public class InsertTest {
 
         //then
         fail("Should throw exception");
+    }
+
+    @Test
+    public void shouldReturnInsertedDocumentId() {
+        // given
+
+        // when
+        String id = carsRepository.insert(car -> car.withBrand("Honda"));
+
+        // then
+        assertThat(id).isEqualTo(insertedId.toHexString());
+    }
+
+    @Test
+    public void shouldPackStringIdIntoObjectId() {
+        // given
+        String id = "abcdABCDabcdABCDabcdABCD";
+        String brand = "Fiat";
+
+        // when
+        carsRepository.insert(car -> car.withId(id).withBrand(brand));
+
+        // then
+        BasicDBObject expected  = new BasicDBObject(BRAND, brand).append(ID, new ObjectId(id));
+        assertThat(insertedDocument).isEqualTo(expected);
     }
 
 }

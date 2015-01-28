@@ -5,6 +5,7 @@ import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.mongodb.BasicDBObject;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -39,6 +40,9 @@ public class ReadProxy implements InvocationHandler {
                 return dbObject.getBoolean(field);
             }
 
+            if(field.equals("_id")) {
+                return ((ObjectId)dbObject.get(field)).toHexString();
+            }
             return dbObject.get(field);
         }
 

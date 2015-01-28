@@ -26,25 +26,25 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, NoInterface.class, dbProvider);
+            new Repository<>(Empty.class, Empty.class, NotInterface.class, dbProvider);
         } catch (ModelIsNotInterfaceException ex) {
             //then
-            assertThat(ex.getClazz()).isEqualTo(NoInterface.class);
+            assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
             return;
         }
 
         fail();
     }
 
-    private class NoInterface {
+    private class NotInterface {
 
-        NoInterface withId(String id) {
+        NotInterface withId(String id) {
             return null;
         }
     }
 
     @Test
-    public void shouldThrowUnknownFieldExceptionIfOneOfMethodIsNotAnnotatedWithDbField() throws Exception {
+    public void shouldThrowUnknownFieldExceptionIfOneOfMethodsIsNotAnnotatedWithDbField() throws Exception {
         // given
 
         try {

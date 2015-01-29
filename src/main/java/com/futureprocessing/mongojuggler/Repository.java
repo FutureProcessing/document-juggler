@@ -37,6 +37,10 @@ public class Repository<READER, UPDATER, QUERY> {
 
     }
 
+    public LambdaReader<READER> find() {
+        return new LambdaReader<>(readerClass, getDBCollection(), null);
+    }
+
     public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
         UPDATER updater = ProxyCreator.newInsertProxy(updaterClass, collection);

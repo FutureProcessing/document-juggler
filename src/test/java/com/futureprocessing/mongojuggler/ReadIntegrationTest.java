@@ -40,7 +40,7 @@ public class ReadIntegrationTest {
                 .withModel(model));
 
         // when
-        Car document = repo.find(car -> car.withId(id)).one();
+        Car document = repo.find(car -> car.withId(id)).first();
 
         assertThat(document.getBrand()).isEqualTo(brand);
         assertThat(document.getModel()).isEqualTo(model);
@@ -61,5 +61,43 @@ public class ReadIntegrationTest {
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2);
+    }
+
+    @Test
+    public void shouldReadOnePageOfResults() {
+        // given
+        String brand = "Honda";
+        String model1 = "HR-V";
+        String model2 = "CR-V";
+        String model3 = "Accord";
+
+        repo.insert(car -> car.withBrand(brand).withModel(model1));
+        repo.insert(car -> car.withBrand(brand).withModel(model2));
+        repo.insert(car -> car.withBrand(brand).withModel(model3));
+
+        // when
+        List<Car> list = repo.find(car -> car.withBrand(brand)).skip(1).limit(1).all();
+
+        // then
+        assertThat(extractProperty("model").from(list)).containsExactly(model2);
+    }
+
+    @Test
+    public void shouldReadAllCars() {
+        // given
+        String brand = "Honda";
+        String model1 = "HR-V";
+        String model2 = "CR-V";
+        String model3 = "Accord";
+
+        repo.insert(car -> car.withBrand(brand).withModel(model1));
+        repo.insert(car -> car.withBrand(brand).withModel(model2));
+        repo.insert(car -> car.withBrand(brand).withModel(model3));
+
+        // when
+        List<Car> list = repo.find().all();
+
+        // then
+        assertThat(extractProperty("model").from(list)).containsExactly(model1, model2, model3);
     }
 }

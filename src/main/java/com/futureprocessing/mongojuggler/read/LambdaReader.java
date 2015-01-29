@@ -26,7 +26,7 @@ public class LambdaReader<READER> {
         this.query = query;
     }
 
-    public READER one(String... fieldsToFetch) {
+    public READER first(String... fieldsToFetch) {
         Set<String> fields = toSet(fieldsToFetch);
         DBObject projection = getProjection(fields);
 

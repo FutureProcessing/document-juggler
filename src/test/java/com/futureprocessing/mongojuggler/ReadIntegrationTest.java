@@ -40,7 +40,7 @@ public class ReadIntegrationTest {
                 .withModel(model));
 
         // when
-        Car document = repo.find(car -> car.withId(id)).one();
+        Car document = repo.find(car -> car.withId(id)).first();
 
         assertThat(document.getBrand()).isEqualTo(brand);
         assertThat(document.getModel()).isEqualTo(model);

@@ -4,6 +4,8 @@ package com.futureprocessing.mongojuggler;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
+import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
+import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
 import com.mongodb.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,6 +101,38 @@ public class ReadListTest {
         // then
         verify(cursor).limit(eq(10));
         verify(cursor).skip(eq(1));
+    }
+
+    @Test
+    public void shouldThrowSkipAlreadyPresentExceptionWhenSkipIsPassedTwice() {
+        // given
+
+        // when
+        try {
+            carsRepository.find().skip(1).skip(10).all();
+        } catch (SkipAlreadyPresentException e) {
+            //then
+            return;
+        }
+
+        // then
+        fail("Should throw SkipAlreadyPresentException exception");
+    }
+
+    @Test
+    public void shouldThrowLimitAlreadyPresentExceptionWhenLimitIsPassedTwice() {
+        // given
+
+        // when
+        try {
+            carsRepository.find().limit(1).limit(10).all();
+        } catch (LimitAlreadyPresentException e) {
+            //then
+            return;
+        }
+
+        // then
+        fail("Should throw LimitAlreadyPresentException exception");
     }
 
     @Test

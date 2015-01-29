@@ -1,5 +1,7 @@
 package com.futureprocessing.mongojuggler.read;
 
+import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
+import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
 import com.mongodb.*;
 
 import java.util.*;
@@ -71,11 +73,17 @@ public class LambdaReader<READER> {
     }
 
     public LambdaReader<READER> skip(int skip) {
+        if (this.skip.isPresent()) {
+            throw new SkipAlreadyPresentException();
+        }
         this.skip = of(skip);
         return this;
     }
 
     public LambdaReader<READER> limit(int limit) {
+        if (this.limit.isPresent()) {
+            throw new LimitAlreadyPresentException();
+        }
         this.limit = of(limit);
         return this;
     }

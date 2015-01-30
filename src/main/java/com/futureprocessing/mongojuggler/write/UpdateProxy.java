@@ -6,6 +6,7 @@ import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -66,7 +67,7 @@ public class UpdateProxy implements InvocationHandler {
                 || method.getParameterTypes()[0].equals(Boolean.class);
     }
 
-    public void execute() {
-        dbUpdater.execute();
+    public WriteResult execute() {
+        return dbUpdater.execute();
     }
 }

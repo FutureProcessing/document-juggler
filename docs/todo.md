@@ -38,9 +38,9 @@ String retursString = repo.insert();
 
 Update should return update result object
 -----------------------------------------
-- [ ] UpdateResult object should have methods to validate if update was succesfull.
-- [ ] It should throw exceptions.
-- [ ] It should also allow user to specify his own validation logic.
+- [X] UpdateResult object should have methods to validate if update was succesfull.
+- [X] It should throw exceptions.
+- [X] It should also allow user to specify his own validation logic.
 ```java
 UpdateResult result = repo.update();
 result.ensureOneUpdated();

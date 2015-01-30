@@ -3,6 +3,7 @@ package com.futureprocessing.mongojuggler.write;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
 import java.util.function.Consumer;
 
@@ -20,12 +21,13 @@ public class LambdaUpdater<UPDATER> {
         this.query = query;
     }
 
-    public void with(Consumer<UPDATER> consumer) {
+    public UpdateResult with(Consumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
         UPDATER updater = ProxyCreator.newUpdateProxy(updaterClass, collection, query);
         consumer.accept(updater);
 
-        extractUpdateProxy(updater).execute();
+        WriteResult result = extractUpdateProxy(updater).execute();
+        return new UpdateResult(result);
     }
 }

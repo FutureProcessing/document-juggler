@@ -2,7 +2,8 @@ package com.futureprocessing.mongojuggler;
 
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.exception.DocumentNotFoundException;
+import com.futureprocessing.mongojuggler.exception.InvalidNumberOfDocumentsAffected;
+import com.futureprocessing.mongojuggler.write.UpdateResult;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.PASSENGERS_NAMES;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -74,7 +76,19 @@ public class UpdateTest {
     }
 
     @Test
-    public void shouldThrowDocumentNotFoundException() {
+    public void shouldReturnUpdateResult() {
+        //given
+
+        //when
+        UpdateResult result = carsRepository.update(car -> car.withId(ID))
+                .with(car -> car.withModel("Corsa"));
+
+        //then
+        assertThat(result.getAffectedCount()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldThrowInvalidNumberOfDocumentsAffectedException() {
         //given
         given(writeResult.getN()).willReturn(0);
         final String newBrand = "BMW";
@@ -82,9 +96,12 @@ public class UpdateTest {
         //when
         try {
             carsRepository.update(car -> car.withId(ID))
-                    .with(car -> car.withBrand(newBrand));
-        } catch (DocumentNotFoundException e) {
+                    .with(car -> car.withBrand(newBrand))
+                    .ensureOneUpdated();
+        } catch (InvalidNumberOfDocumentsAffected e) {
             //then
+            assertThat(e.getAffected()).isEqualTo(0);
+            assertThat(e.getExpected()).isEqualTo(1);
             return;
         }
 

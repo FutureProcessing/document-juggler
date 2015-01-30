@@ -3,7 +3,6 @@ package com.futureprocessing.mongojuggler.write;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import com.futureprocessing.mongojuggler.exception.DocumentNotFoundException;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -22,16 +21,8 @@ public class DBUpdater {
         this.query = query;
     }
 
-    public void execute() {
-        WriteResult writeResult = executeUpdate();
-        processWriteResult(writeResult);
-    }
-
-    protected void processWriteResult(WriteResult writeResult) {
-        if (writeResult.getN() == 0) {
-            LOG.warn("Document not found in collection {} for query {}", dbCollection, getQuery());
-            throw new DocumentNotFoundException();
-        }
+    public WriteResult execute() {
+        return executeUpdate();
     }
 
     private WriteResult executeUpdate() {
@@ -39,7 +30,7 @@ public class DBUpdater {
         return dbCollection.update(getQuery(), queryBuilder.getValue());
     }
 
-    protected DBObject getQuery(){
+    protected DBObject getQuery() {
         return this.query;
     }
 

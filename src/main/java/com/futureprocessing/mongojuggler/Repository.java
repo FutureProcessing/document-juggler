@@ -6,6 +6,7 @@ import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryValidator;
+import com.futureprocessing.mongojuggler.read.ReadValidator;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.mongodb.DBCollection;
 
@@ -25,6 +26,7 @@ public class Repository<READER, UPDATER, QUERY> {
         this.queryClass = queryClass;
 
         QueryValidator.validate(queryClass);
+        ReadValidator.validate(readerClass);
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {

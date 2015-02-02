@@ -14,10 +14,15 @@ import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 public class UpdateProxy implements InvocationHandler {
-    private final DBUpdater dbUpdater;
 
-    public UpdateProxy(DBCollection collection, DBObject dbQuery) {
-        this.dbUpdater = new DBUpdater(collection, dbQuery);
+    private final DBUpdateQueryBuilder updateQueryBuilder;
+    private final DBCollection collection;
+    private final DBObject query;
+
+    public UpdateProxy(DBCollection collection, DBObject query) {
+        this.collection = collection;
+        this.query = query;
+        this.updateQueryBuilder = new DBUpdateQueryBuilder();
     }
 
     @Override
@@ -51,12 +56,12 @@ public class UpdateProxy implements InvocationHandler {
 
     private void pushToList(String field, Object[] args) {
         final Object value = args[0];
-        dbUpdater.push(field, value);
+        updateQueryBuilder.push(field, value);
     }
 
     private void addToSet(String field, Object[] args) {
         final Object value = args[0];
-        dbUpdater.addToSet(field, value);
+        updateQueryBuilder.addToSet(field, value);
     }
 
     public void setFieldValue(Method method, String field, Object[] args) {
@@ -64,12 +69,12 @@ public class UpdateProxy implements InvocationHandler {
 
         if (value != null) {
             if (parameterIsBoolean(method)) {
-                dbUpdater.setBooleanField(field, (Boolean) value);
+                updateQueryBuilder.setBooleanField(field, (Boolean) value);
             } else {
-                dbUpdater.setField(field, value);
+                updateQueryBuilder.setField(field, value);
             }
         } else {
-            dbUpdater.unsetField(field);
+            updateQueryBuilder.unsetField(field);
         }
     }
 
@@ -79,6 +84,7 @@ public class UpdateProxy implements InvocationHandler {
     }
 
     public WriteResult execute() {
-        return dbUpdater.execute();
+        updateQueryBuilder.validate();
+        return collection.update(query, updateQueryBuilder.getValue());
     }
 }

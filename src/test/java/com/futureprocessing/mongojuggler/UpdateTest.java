@@ -15,8 +15,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.OWNERS;
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.PASSENGERS_NAMES;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -227,9 +231,9 @@ public class UpdateTest {
     }
 
     @Test
-    public void shouldUpdateDocumentWithListOfStrings() {
+    public void shouldUpdateDocumentWithSetOfStrings() {
         //given
-        final List<String> passengers = asList("Adam", "Mark", "John");
+        final Set<String> passengers = new HashSet<>(asList("Adam", "Mark", "John"));
 
         //when
         carsRepository.update(car -> car.withId(ID))
@@ -242,7 +246,7 @@ public class UpdateTest {
     }
 
     @Test
-    public void shouldAddStringToList() {
+    public void shouldAddStringToSet() {
         //given
         final String newPassenger = "Adam";
 
@@ -256,4 +260,33 @@ public class UpdateTest {
         verify(collection).update(any(), eq(expectedUpdate));
     }
 
+    @Test
+    public void shouldUpdateDocumentWithListOfStrings() {
+        //given
+        final List<String> owners = asList("Adam", "Mark", "John");
+
+        //when
+        carsRepository.update(car -> car.withId(ID))
+                .with(car -> car.withOwners(owners));
+
+        //then
+        BasicDBObject expectedSet = new BasicDBObject(OWNERS, owners);
+        BasicDBObject expectedUpdate = new BasicDBObject("$set", expectedSet);
+        verify(collection).update(any(), eq(expectedUpdate));
+    }
+
+    @Test
+    public void shouldAddStringToList() {
+        //given
+        final String newOwner = "Adam";
+
+        //when
+        carsRepository.update(car -> car.withId(ID))
+                .with(car -> car.addOwner(newOwner));
+
+        //then
+        BasicDBObject expectedUpdate = new BasicDBObject("$push",
+                new BasicDBObject(OWNERS, newOwner));
+        verify(collection).update(any(), eq(expectedUpdate));
+    }
 }

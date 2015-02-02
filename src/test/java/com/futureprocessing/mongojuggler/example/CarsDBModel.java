@@ -13,6 +13,7 @@ public interface CarsDBModel {
         String AUTOMATIC_GEARBOX = "automaticGearbox";
         String ENGINE = "engine";
         String PASSENGERS_NAMES = "passengersNames";
+        String OWNERS = "owners";
 
         static interface Engine {
             String FUEL = "fuel";

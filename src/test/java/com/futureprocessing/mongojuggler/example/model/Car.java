@@ -7,6 +7,7 @@ import com.futureprocessing.mongojuggler.example.CarsDBModel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @DbDocument(CarsDBModel.Car.COLLECTION)
 public interface Car {
@@ -27,7 +28,10 @@ public interface Car {
     boolean isAutomaticGearbox();
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
-    List<String> getPassengersNames();
+    Set<String> getPassengersNames();
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    List<String> getOwners();
 
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument

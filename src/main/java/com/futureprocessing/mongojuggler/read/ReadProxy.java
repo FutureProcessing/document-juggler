@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
@@ -40,6 +42,10 @@ public class ReadProxy implements InvocationHandler {
                 return dbObject.getBoolean(field);
             }
 
+            if (isSetReturnType(method)) {
+                return new HashSet((Collection) dbObject.get(field));
+            }
+
             if(field.equals("_id")) {
                 return ((ObjectId)dbObject.get(field)).toHexString();
             }
@@ -49,9 +55,15 @@ public class ReadProxy implements InvocationHandler {
         throw new FieldNotLoadedException(field);
     }
 
+    private boolean isSetReturnType(Method method) {
+        return Set.class.isAssignableFrom(method.getReturnType());
+    }
+
     private boolean isBooleanReturnType(Method method) {
         return method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class);
     }
+
+
 
 
     private String getFieldName(Method method) {

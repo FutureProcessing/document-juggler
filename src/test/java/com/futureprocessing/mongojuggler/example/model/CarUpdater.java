@@ -5,6 +5,7 @@ import com.futureprocessing.mongojuggler.example.CarsDBModel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @DbDocument(CarsDBModel.Car.COLLECTION)
@@ -26,7 +27,7 @@ public interface CarUpdater {
     CarUpdater withAutomaticGearbox(boolean automaticGearbox);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
-    CarUpdater withPassengerNames(List<String> passengerNames);
+    CarUpdater withPassengerNames(Set<String> passengerNames);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     @AddToSet

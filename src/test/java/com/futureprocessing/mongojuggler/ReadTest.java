@@ -241,7 +241,7 @@ public class ReadTest {
         Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(PASSENGERS_NAMES);
 
         // then
-        assertThat(entity.getPassengersNames()).isEqualTo(passengers);
+        assertThat(entity.getPassengersNames()).containsOnlyElementsOf(passengers);
     }
 
     @Test

@@ -15,7 +15,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.PASSENGERS_NAMES;
 import static java.util.Arrays.asList;
@@ -229,7 +232,7 @@ public class UpdateTest {
     @Test
     public void shouldUpdateDocumentWithListOfStrings() {
         //given
-        final List<String> passengers = asList("Adam", "Mark", "John");
+        final Set<String> passengers = new HashSet<>(asList("Adam", "Mark", "John"));
 
         //when
         carsRepository.update(car -> car.withId(ID))

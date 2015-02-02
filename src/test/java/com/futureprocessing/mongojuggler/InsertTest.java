@@ -17,7 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
@@ -132,7 +134,7 @@ public class InsertTest {
     @Test
     public void shouldInsertNewDocumentWithListOfStrings() {
         //given
-        final List<String> passengers = asList("Adam", "Mark", "John");
+        final Set<String> passengers = new HashSet<>(asList("Adam", "Mark", "John"));
 
         //when
         carsRepository.insert(car -> car.withPassengerNames(passengers));

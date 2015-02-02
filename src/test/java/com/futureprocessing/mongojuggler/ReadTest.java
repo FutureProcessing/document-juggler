@@ -231,7 +231,7 @@ public class ReadTest {
     }
 
     @Test
-    public void shouldReadListOfStrings() {
+    public void shouldReadSetOfStrings() {
         // given
         List<String> passengers = asList("Adam", "Max", "Kolonko");
         BasicDBObject dbObject = new BasicDBObject(PASSENGERS_NAMES, passengers);
@@ -242,6 +242,20 @@ public class ReadTest {
 
         // then
         assertThat(entity.getPassengersNames()).containsOnlyElementsOf(passengers);
+    }
+
+    @Test
+    public void shouldReadListOfStrings() {
+        // given
+        List<String> owners = asList("Adam", "Max", "Kolonko");
+        BasicDBObject dbObject = new BasicDBObject(OWNERS, owners);
+        given(collection.findOne(any(), any())).willReturn(dbObject);
+
+        // when
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(OWNERS);
+
+        // then
+        assertThat(entity.getOwners()).isEqualTo(owners);
     }
 
     @Test

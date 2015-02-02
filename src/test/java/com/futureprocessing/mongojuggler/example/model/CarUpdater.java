@@ -29,9 +29,16 @@ public interface CarUpdater {
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     CarUpdater withPassengerNames(Set<String> passengerNames);
 
+    @DbField(CarsDBModel.Car.OWNERS)
+    CarUpdater withOwners(List<String> owners);
+
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     @AddToSet
     CarUpdater addPassengerName(String passengerName);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @Push
+    CarUpdater addOwner(String owner);
 
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument(EngineUpdater.class)

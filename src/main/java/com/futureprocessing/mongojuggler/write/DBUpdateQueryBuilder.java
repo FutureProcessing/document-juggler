@@ -14,6 +14,7 @@ public class DBUpdateQueryBuilder {
     protected final Map<String, Object> setObjects = new LinkedHashMap<>();
     protected final List<String> unsetObjects = new ArrayList<>();
     protected final Map<String, Object> addToSetObjects = new LinkedHashMap<>();
+    protected final Map<String, Object> pushObjects = new LinkedHashMap<>();
 
     public DBObject getValue() {
         BasicDBObject value = new BasicDBObject();
@@ -30,7 +31,16 @@ public class DBUpdateQueryBuilder {
             appendAddToSetAbjects(value);
         }
 
+        if (!pushObjects.isEmpty()) {
+            appendPushObjects(value);
+        }
+
         return value;
+    }
+
+    private void appendPushObjects(BasicDBObject value) {
+        pushObjects.entrySet().stream().forEach(
+                entry -> value.append("$push", new BasicDBObject(entry.getKey(), entry.getValue())));
     }
 
     private void appendAddToSetAbjects(BasicDBObject value) {
@@ -70,7 +80,7 @@ public class DBUpdateQueryBuilder {
     }
 
     public void validate() {
-        if (setObjects.isEmpty() && unsetObjects.isEmpty() && addToSetObjects.isEmpty()) {
+        if (setObjects.isEmpty() && unsetObjects.isEmpty() && addToSetObjects.isEmpty() && pushObjects.isEmpty()) {
             throw new MissingPropertyException("No property to update specified");
         }
     }
@@ -90,5 +100,9 @@ public class DBUpdateQueryBuilder {
 
     public void addToSet(String field, Object value) {
         this.addToSetObjects.put(field, value);
+    }
+
+    public void push(String field, Object value) {
+        pushObjects.put(field, value);
     }
 }

@@ -30,6 +30,9 @@ public interface Car {
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     Set<String> getPassengersNames();
 
+    @DbField(CarsDBModel.Car.OWNERS)
+    List<String> getOwners();
+
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument
     Engine getEngine();

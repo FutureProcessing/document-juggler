@@ -52,4 +52,8 @@ public class DBUpdater {
     public void addToSet(String field, Object value) {
         queryBuilder.addToSet(field, value);
     }
+
+    public void push(String field, Object value) {
+        queryBuilder.push(field, value);
+    }
 }

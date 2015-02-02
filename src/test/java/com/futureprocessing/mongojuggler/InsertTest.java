@@ -132,7 +132,7 @@ public class InsertTest {
     }
 
     @Test
-    public void shouldInsertNewDocumentWithListOfStrings() {
+    public void shouldInsertNewDocumentWithSetOfStrings() {
         //given
         final Set<String> passengers = new HashSet<>(asList("Adam", "Mark", "John"));
 
@@ -141,6 +141,19 @@ public class InsertTest {
 
         //then
         DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.PASSENGERS_NAMES, passengers);
+        assertThat(insertedDocument).isEqualTo(expectedInsert);
+    }
+
+    @Test
+    public void shouldInsertNewDocumentWithListOfStrings() {
+        //given
+        final List<String> owners = asList("Adam", "Mark", "John");
+
+        //when
+        carsRepository.insert(car -> car.withOwners(owners));
+
+        //then
+        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.OWNERS, owners);
         assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 

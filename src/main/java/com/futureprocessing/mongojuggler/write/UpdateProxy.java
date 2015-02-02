@@ -2,6 +2,7 @@ package com.futureprocessing.mongojuggler.write;
 
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.mongodb.DBCollection;
@@ -38,9 +39,19 @@ public class UpdateProxy implements InvocationHandler {
             return proxy;
         }
 
+        if (method.isAnnotationPresent(Push.class)) {
+            pushToList(field, args);
+            return proxy;
+        }
+
         setFieldValue(method, field, args);
 
         return proxy;
+    }
+
+    private void pushToList(String field, Object[] args) {
+        final Object value = args[0];
+        dbUpdater.push(field, value);
     }
 
     private void addToSet(String field, Object[] args) {

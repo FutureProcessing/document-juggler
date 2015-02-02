@@ -3,8 +3,6 @@ package com.futureprocessing.mongojuggler;
 
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
-import com.mongodb.MongoClient;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,20 +11,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.extractProperty;
 
-public class ReadIntegrationTest {
+public class ReadIntegrationTest extends BaseIntegrationTest {
 
-    private static MongoClient client;
     private static CarsRepository repo;
 
     @BeforeClass
     public static void init() throws Exception {
-        client = new MongoClient("localhost", 37017);
-        repo = new CarsRepository(new SimpleDBProvider(client, "test"));
-    }
-
-    @After
-    public void cleanDB() {
-        client.dropDatabase("test");
+        repo = new CarsRepository(new SimpleDBProvider(client(), DB_NAME));
     }
 
     @Test

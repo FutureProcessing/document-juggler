@@ -6,31 +6,22 @@ import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
 import org.bson.types.ObjectId;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InsertIntegrationTest {
+public class InsertIntegrationTest extends BaseIntegrationTest {
 
-    private static MongoClient client;
     private static CarsRepository repo;
     private static DBCollection collection;
 
     @BeforeClass
     public static void init() throws Exception {
-        client = new MongoClient("localhost", 37017);
-        repo = new CarsRepository(new SimpleDBProvider(client, "test"));
-        collection = client.getDB("test").getCollection(CarsDBModel.Car.COLLECTION);
-    }
-
-    @After
-    public void cleanDB() {
-        client.dropDatabase("test");
+        repo = new CarsRepository(new SimpleDBProvider(client(), DB_NAME));
+        collection = client().getDB(DB_NAME).getCollection(CarsDBModel.Car.COLLECTION);
     }
 
     @Test

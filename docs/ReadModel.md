@@ -48,14 +48,14 @@ Not implemented yet:
 ```java
 public interface Read {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument
     Set<Address> getAddresses();
 }
 ```
 ```java
 public interface Read {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument
     List<Address> getAddresses();
 }
 ```

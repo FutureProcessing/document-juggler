@@ -48,21 +48,21 @@ Not implemented yet:
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     Write withAddresses(Consumer<Address>... addresses);
 }
 ```
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     Write withAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }
 ```
 ```java
 public interface Write {
     @DbField("address")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     Write withAddress(int index, Consumer<Address>... address);
 }
 ```
@@ -102,7 +102,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @AddToSet
     Write addAddress(Consumer<Address> address);
 }
@@ -110,7 +110,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @AddToSet
     Write addAddresses(Consumer<Address>... addresses);
 }
@@ -118,7 +118,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @AddToSet
     Write addAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }
@@ -159,7 +159,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @Push
     Write addAddress(Consumer<Address> address);
 }
@@ -167,7 +167,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @Push
     Write addAddresses(Consumer<Address>... addresses);
 }
@@ -175,7 +175,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument()
+    @DbEmbeddedDocument
     @Push
     Write addAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }

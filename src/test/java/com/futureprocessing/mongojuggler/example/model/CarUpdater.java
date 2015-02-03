@@ -41,7 +41,7 @@ public interface CarUpdater {
     CarUpdater addOwner(String owner);
 
     @DbField(CarsDBModel.Car.ENGINE)
-    @DbEmbeddedDocument(EngineUpdater.class)
+    @DbEmbeddedDocument()
     CarUpdater engine(Consumer<EngineUpdater> consumer);
 
 }

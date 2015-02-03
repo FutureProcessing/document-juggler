@@ -9,7 +9,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface DbEmbeddedDocument {
 
-    Class<?> value() default Void.class;
-
-
 }

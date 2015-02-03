@@ -11,6 +11,8 @@ import com.mongodb.WriteResult;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Consumer;
 
 public class UpdateProxy implements InvocationHandler {
@@ -31,7 +33,7 @@ public class UpdateProxy implements InvocationHandler {
         final String field = Metadata.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            Class<?> embeddedDocumentType = method.getAnnotation(DbEmbeddedDocument.class).value();
+            Class<?> embeddedDocumentType = getEmbeddedDocumentType(method);
 
             Object embeddedProxy = ProxyCreator.newUpdateEmbeddedProxy(embeddedDocumentType, this, field);
             Consumer embeddedDocumentModifier = (Consumer) args[0];
@@ -52,6 +54,11 @@ public class UpdateProxy implements InvocationHandler {
         setFieldValue(method, field, args);
 
         return proxy;
+    }
+
+    private Class<?> getEmbeddedDocumentType(Method method) {
+        ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
+        return (Class<?>) type.getActualTypeArguments()[0];
     }
 
     private void pushToList(String field, Object[] args) {

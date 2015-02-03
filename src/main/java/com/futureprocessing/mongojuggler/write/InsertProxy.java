@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.function.Consumer;
 
 import static com.futureprocessing.mongojuggler.commons.ProxyExtractor.extractInsertEmbeddedProxy;
@@ -31,7 +32,7 @@ public class InsertProxy implements InvocationHandler {
         final String field = Metadata.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            Class<?> type = method.getAnnotation(DbEmbeddedDocument.class).value();
+            Class<?> type = getEmbeddedDocumentType(method);
             Object embedded = ProxyCreator.newInsertEmbeddedProxy(type, field, dbObject);
             Consumer consumer = (Consumer) args[0];
             consumer.accept(embedded);
@@ -49,6 +50,11 @@ public class InsertProxy implements InvocationHandler {
             dbObject.append(field, args[0]);
         }
         return proxy;
+    }
+
+    private Class<?> getEmbeddedDocumentType(Method method) {
+        ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
+        return (Class<?>) type.getActualTypeArguments()[0];
     }
 
     public String execute() {

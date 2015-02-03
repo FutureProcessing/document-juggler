@@ -44,6 +44,7 @@ public interface Read {
     Address getAddress();
 }
 ```
+Not implemented yet:
 ```java
 public interface Read {
     @DbField("addresses")

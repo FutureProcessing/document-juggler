@@ -3,7 +3,7 @@ Read Model
 
 @Id
 ---
-Shortcut for *@DbField("_id")*. Only possible way of use:
+Shortcut for [@DbField("_id")](#dbfield). Only possible way of use:
 ```java
 public interface Read {
     @Id

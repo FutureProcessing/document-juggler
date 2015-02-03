@@ -11,12 +11,6 @@ public interface Write {
     Write withId(String id);
 }
 ```
-```java
-public interface Write {
-    @Id
-    void setId(String id);
-}
-```
 
 @DbField
 --------
@@ -29,12 +23,6 @@ public interface Write {
 ```
 ```java
 public interface Write {
-    @DbField("name")
-    void setName(String name);
-}
-```
-```java
-public interface Write {
     @DbField("count")
     Write withCount(int count);
 }
@@ -42,19 +30,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("count")
-    void setCount(int count);
-}
-```
-```java
-public interface Write {
-    @DbField("count")
     Write withCount(Integer count);
-}
-```
-```java
-public interface Write {
-    @DbField("count")
-    void setCount(Integer count);
 }
 ```
 
@@ -68,54 +44,26 @@ public interface Write {
     Write withAddress(Consumer<Address> address);
 }
 ```
-```java
-public interface Write {
-    @DbField("address")
-    @DbEmbeddedDocument(Address.class)
-    void setAddress(Consumer<Address> address);
-}
-```
 Not implemented yet:
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     Write withAddresses(Consumer<Address>... addresses);
 }
 ```
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
-    void setAddresses(Consumer<Address>... addresses);
-}
-```
-```java
-public interface Write {
-    @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     Write withAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }
 ```
 ```java
 public interface Write {
-    @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
-    void setAddresses(Consumer<Address> address1, Consumer<Address> address2);
-}
-```
-```java
-public interface Write {
     @DbField("address")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     Write withAddress(int index, Consumer<Address>... address);
-}
-```
-```java
-public interface Write {
-    @DbField("address")
-    @DbEmbeddedDocument(Address.class)
-    void setAddress(int index, Consumer<Address>... address);
 }
 ```
 
@@ -127,13 +75,6 @@ public interface Write {
     @DbField("names")
     @AddToSet
     Write addName(String name);
-}
-```
-```java
-public interface Write {
-    @DbField("names")
-    @AddToSet
-    void addName(String name);
 }
 ```
 Not implemented yet
@@ -161,7 +102,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @AddToSet
     Write addAddress(Consumer<Address> address);
 }
@@ -169,7 +110,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @AddToSet
     Write addAddresses(Consumer<Address>... addresses);
 }
@@ -177,7 +118,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @AddToSet
     Write addAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }
@@ -193,13 +134,6 @@ public interface Write {
     Write addName(String name);
 }
 ```
-```java
-public interface Write {
-    @DbField("names")
-    @Push
-    void addName(String name);
-}
-```
 Not implemented yet
 ```java
 public interface Write {
@@ -225,7 +159,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @Push
     Write addAddress(Consumer<Address> address);
 }
@@ -233,7 +167,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @Push
     Write addAddresses(Consumer<Address>... addresses);
 }
@@ -241,7 +175,7 @@ public interface Write {
 ```java
 public interface Write {
     @DbField("addresses")
-    @DbEmbeddedDocument(Address.class)
+    @DbEmbeddedDocument()
     @Push
     Write addAddresses(Consumer<Address> address1, Consumer<Address> address2);
 }

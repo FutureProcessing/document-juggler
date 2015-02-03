@@ -3,24 +3,58 @@ Read Model
 
 @Id
 ---
-Shortcut for @DbField("_id"). Only possible way of use:
+Shortcut for *@DbField("_id")*. Only possible way of use:
 ```java
-@Id
-String getId();
+public interface Read {
+    @Id
+    String getId();
+}
 ```
 
 @DbField
 --------
-All methods in read interface need to be annotated, field name is required.
+All methods in read interface need to be annotated with **@DbField**, field name is required.
 ```java
-@DbField("name")
-String getName();
+public interface Read {
+    @DbField("name")
+    String getName();
+}
 ```
 ```java
-@DbField("count")
-int getCount();
+public interface Read {
+    @DbField("count")
+    int getCount();
+}
 ```
 ```java
-@DbField("count")
-Integer getCount();
+public interface Read {
+    @DbField("count")
+    Integer getCount();
+}
+```
+
+@DbEmbeddedDocument
+-------------------
+Methods returning embedded documents needs to be annotated **@DbEmbeddedDocument**.
+Embedded document class is required only when methods return Set or List of embedded documents.
+```java
+public interface Read {
+    @DbField("address")
+    @DbEmbeddedDocument
+    Address getAddress();
+}
+```
+```java
+public interface Read {
+    @DbField("addresses")
+    @DbEmbeddedDocument(Address.class)
+    Set<Address> getAddresses();
+}
+```
+```java
+public interface Read {
+    @DbField("addresses")
+    @DbEmbeddedDocument(Address.class)
+    List<Address> getAddresses();
+}
 ```

@@ -3,10 +3,15 @@ package com.futureprocessing.mongojuggler.read.command;
 
 import com.mongodb.BasicDBObject;
 
-public class IdReadCommand implements ReadCommand {
+public class IdReadCommand extends AbstractReadCommand {
+
+
+    public IdReadCommand() {
+        super("_id");
+    }
 
     @Override
-    public Object read(BasicDBObject document) {
-        return document.getObjectId("_id").toHexString();
+    protected Object readValue(BasicDBObject document) {
+        return document.getObjectId(field).toHexString();
     }
 }

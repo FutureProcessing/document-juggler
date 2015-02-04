@@ -8,18 +8,17 @@ import com.mongodb.DBObject;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableSet;
 
-public class EmbeddedReadCommand implements ReadCommand {
+public class EmbeddedReadCommand extends AbstractReadCommand {
 
-    private final String field;
     private final Class clazz;
 
     public EmbeddedReadCommand(String field, Class clazz) {
-        this.field = field;
+        super(field);
         this.clazz = clazz;
     }
 
     @Override
-    public Object read(BasicDBObject document) {
+    protected Object readValue(BasicDBObject document) {
         return ProxyCreator.newReadProxy(clazz, (DBObject) document.get(field), unmodifiableSet(emptySet()));
     }
 }

@@ -6,16 +6,17 @@ import com.mongodb.BasicDBObject;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class SetReadCommand implements ReadCommand {
-
-    private final String field;
+public class SetReadCommand extends AbstractReadCommand {
 
     public SetReadCommand(String field) {
-        this.field = field;
+        super(field);
     }
 
     @Override
-    public Object read(BasicDBObject document) {
+    @SuppressWarnings("unchecked")
+    protected Object readValue(BasicDBObject document) {
         return new HashSet((Collection) document.get(field));
     }
+
+
 }

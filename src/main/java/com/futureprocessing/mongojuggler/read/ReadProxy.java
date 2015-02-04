@@ -1,70 +1,40 @@
 package com.futureprocessing.mongojuggler.read;
 
-import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
+import com.futureprocessing.mongojuggler.read.command.ReadCommand;
 import com.mongodb.BasicDBObject;
-import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import static java.util.Collections.emptySet;
-import static java.util.Collections.unmodifiableSet;
 
 
 public class ReadProxy implements InvocationHandler {
 
     private final BasicDBObject dbObject;
     private final Set<String> queriedFields;
+    private final Map<Method, ReadCommand> readCommands;
 
-    public ReadProxy(BasicDBObject dbObject, Set<String> queriedFields) {
+    public ReadProxy(Class<?> clazz, BasicDBObject dbObject, Set<String> queriedFields) {
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
         }
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
+        readCommands = ReadMapper.get(clazz);
     }
 
     @Override
     public Object invoke(Object object, Method method, Object[] params) throws Throwable {
         String field = getFieldName(method);
         if (queriedFields.isEmpty() || queriedFields.contains(field)) {
-            if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-                return ProxyCreator.newReadProxy(method.getReturnType(), (BasicDBObject) dbObject.get(field), unmodifiableSet(emptySet()));
-            }
-
-            if (isBooleanReturnType(method)) {
-                return dbObject.getBoolean(field);
-            }
-
-            if (isSetReturnType(method)) {
-                return new HashSet((Collection) dbObject.get(field));
-            }
-
-            if(field.equals("_id")) {
-                return ((ObjectId)dbObject.get(field)).toHexString();
-            }
-            return dbObject.get(field);
+            return readCommands.get(method).read(dbObject);
         }
 
         throw new FieldNotLoadedException(field);
     }
-
-    private boolean isSetReturnType(Method method) {
-        return Set.class.isAssignableFrom(method.getReturnType());
-    }
-
-    private boolean isBooleanReturnType(Method method) {
-        return method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class);
-    }
-
-
-
 
     private String getFieldName(Method method) {
         DbField field = method.getAnnotation(DbField.class);

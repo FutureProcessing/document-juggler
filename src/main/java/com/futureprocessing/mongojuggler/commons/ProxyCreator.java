@@ -19,7 +19,7 @@ public class ProxyCreator {
 
     public static <READER> READER newReadProxy(Class<READER> readerType, DBObject dbObject, Set<String> fields) {
         return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
-                new ReadProxy((BasicDBObject) dbObject, fields));
+                new ReadProxy(readerType, (BasicDBObject) dbObject, fields));
     }
 
     public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass, DBCollection collection) {

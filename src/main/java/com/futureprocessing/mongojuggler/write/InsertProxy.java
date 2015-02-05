@@ -19,7 +19,7 @@ public class InsertProxy implements InvocationHandler {
     public InsertProxy(Class<?> clazz, DBCollection collection) {
         this.collection = collection;
         this.dbObject = new BasicDBObject();
-        insertCommands = InsertMapper.get(clazz);
+        insertCommands = InsertMapper.INSTANCE.get(clazz);
     }
 
     @Override

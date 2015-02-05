@@ -21,7 +21,7 @@ public class ReadProxy implements InvocationHandler {
         }
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
-        readCommands = ReadMapper.get(clazz);
+        readCommands = ReadMapper.INSTANCE.get(clazz);
     }
 
     @Override

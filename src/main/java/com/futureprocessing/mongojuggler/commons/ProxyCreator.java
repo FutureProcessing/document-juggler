@@ -23,7 +23,7 @@ public class ProxyCreator {
     }
 
     public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass, DBCollection collection) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(collection));
+        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass, collection));
     }
 
     public static <UPDATER> UPDATER newInsertEmbeddedProxy(Class<UPDATER> returnType, String field, BasicDBObject parentDBObject) {

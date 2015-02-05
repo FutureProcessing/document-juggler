@@ -1,10 +1,6 @@
 package com.futureprocessing.mongojuggler.write;
 
-import com.futureprocessing.mongojuggler.annotation.AddToSet;
-import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.mongojuggler.commons.Metadata;
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
-import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
+import com.futureprocessing.mongojuggler.write.command.InsertCommand;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import org.bson.types.ObjectId;
@@ -12,49 +8,24 @@ import org.bson.types.ObjectId;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.function.Consumer;
-
-import static com.futureprocessing.mongojuggler.commons.ProxyExtractor.extractInsertEmbeddedProxy;
+import java.util.Map;
 
 public class InsertProxy implements InvocationHandler {
 
     private final DBCollection collection;
     private final BasicDBObject dbObject;
+    private final Map<Method, InsertCommand> insertCommands;
 
-    public InsertProxy(DBCollection collection) {
+    public InsertProxy(Class<?> clazz, DBCollection collection) {
         this.collection = collection;
         this.dbObject = new BasicDBObject();
+        insertCommands = InsertMapper.get(clazz);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        final String field = Metadata.getFieldName(method);
-
-        if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            Class<?> type = getEmbeddedDocumentType(method);
-            Object embedded = ProxyCreator.newInsertEmbeddedProxy(type, field, dbObject);
-            Consumer consumer = (Consumer) args[0];
-            consumer.accept(embedded);
-            extractInsertEmbeddedProxy(embedded).done();
-            return proxy;
-        }
-
-        if (method.isAnnotationPresent(AddToSet.class)) {
-            throw new UnsupportedActionException();
-        }
-
-        if (field.equals("_id")) {
-            dbObject.append(field, new ObjectId((String) args[0]));
-        } else {
-            dbObject.append(field, args[0]);
-        }
+        insertCommands.get(method).insert(dbObject, args);
         return proxy;
-    }
-
-    private Class<?> getEmbeddedDocumentType(Method method) {
-        ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
-        return (Class<?>) type.getActualTypeArguments()[0];
     }
 
     public String execute() {

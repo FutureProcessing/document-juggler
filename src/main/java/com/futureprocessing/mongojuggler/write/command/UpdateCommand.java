@@ -1,5 +1,9 @@
 package com.futureprocessing.mongojuggler.write.command;
 
 
-public class UpdateCommand {
+import com.futureprocessing.mongojuggler.write.UpdateBuilder;
+
+public interface UpdateCommand {
+
+    void update(UpdateBuilder updateBuilder, Object[] args);
 }

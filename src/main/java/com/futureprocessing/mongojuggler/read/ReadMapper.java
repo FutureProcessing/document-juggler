@@ -13,6 +13,9 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
     public static final ReadMapper INSTANCE = new ReadMapper();
 
+    private ReadMapper() {
+    }
+
     @Override
     protected ReadCommand getCommand(Method method) {
         String field = getFieldName(method);
@@ -36,19 +39,17 @@ public final class ReadMapper extends Mapper<ReadCommand> {
         return new BasicReadCommand(field);
     }
 
-    private static String getFieldName(Method method) {
+    private String getFieldName(Method method) {
         DbField field = method.getAnnotation(DbField.class);
         return field.value();
     }
 
-    private static boolean isSetReturnType(Method method) {
+    private boolean isSetReturnType(Method method) {
         return Set.class.isAssignableFrom(method.getReturnType());
     }
 
-    private static boolean isBooleanReturnType(Method method) {
+    private boolean isBooleanReturnType(Method method) {
         return method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class);
     }
 
-    private ReadMapper() {
-    }
 }

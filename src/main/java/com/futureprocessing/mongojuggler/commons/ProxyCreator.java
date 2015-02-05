@@ -3,10 +3,9 @@ package com.futureprocessing.mongojuggler.commons;
 import com.futureprocessing.mongojuggler.read.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.futureprocessing.mongojuggler.write.InsertProxy;
-import com.futureprocessing.mongojuggler.write.UpdateEmbeddedProxy;
+import com.futureprocessing.mongojuggler.write.UpdateBuilder;
 import com.futureprocessing.mongojuggler.write.UpdateProxy;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 import java.util.Set;
@@ -25,14 +24,9 @@ public class ProxyCreator {
         return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass));
     }
 
-    public static <UPDATER> UPDATER newUpdateProxy(Class<UPDATER> updaterClass, DBCollection collection, DBObject updateQuery) {
+    public static <UPDATER> UPDATER newUpdateProxy(Class<UPDATER> updaterClass, UpdateBuilder updateBuilder) {
         return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass},
-                new UpdateProxy(collection, updateQuery));
-    }
-
-    public static <UPDATER> UPDATER newUpdateEmbeddedProxy(Class<UPDATER> updaterClass, UpdateProxy parentProxyHandler, String field) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass},
-                new UpdateEmbeddedProxy(parentProxyHandler, field));
+                new UpdateProxy(updaterClass, updateBuilder));
     }
 
     public static <QUERY> QUERY newQueryProxy(Class<QUERY> queryClass) {

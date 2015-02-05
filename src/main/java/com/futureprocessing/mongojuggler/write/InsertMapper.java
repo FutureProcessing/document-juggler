@@ -17,6 +17,9 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
     public static final InsertMapper INSTANCE = new InsertMapper();
 
+    private InsertMapper() {
+    }
+
     @Override
     protected InsertCommand getCommand(Method method) {
         String field = getFieldName(method);
@@ -33,16 +36,14 @@ public final class InsertMapper extends Mapper<InsertCommand> {
         return new BasicInsertCommand(field);
     }
 
-    private static String getFieldName(Method method) {
+    private String getFieldName(Method method) {
         DbField field = method.getAnnotation(DbField.class);
         return field.value();
     }
 
-    private static Class<?> getEmbeddedDocumentType(Method method) {
+    private Class<?> getEmbeddedDocumentType(Method method) {
         ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
         return (Class<?>) type.getActualTypeArguments()[0];
     }
 
-    private InsertMapper() {
-    }
 }

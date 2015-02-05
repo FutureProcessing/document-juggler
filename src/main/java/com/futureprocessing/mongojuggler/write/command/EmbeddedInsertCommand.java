@@ -1,12 +1,12 @@
 package com.futureprocessing.mongojuggler.write.command;
 
 
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.mongodb.BasicDBObject;
 
 import java.util.function.Consumer;
 
-import static com.futureprocessing.mongojuggler.commons.ProxyExtractor.extractInsertEmbeddedProxy;
+import static com.futureprocessing.mongojuggler.commons.ProxyCreator.newInsertProxy;
+import static com.futureprocessing.mongojuggler.commons.ProxyExtractor.extractInsertProxy;
 
 public class EmbeddedInsertCommand extends AbstractInsertCommand {
 
@@ -19,10 +19,11 @@ public class EmbeddedInsertCommand extends AbstractInsertCommand {
 
     @Override
     public void insert(BasicDBObject document, Object[] args) {
-        Object embedded = ProxyCreator.newInsertEmbeddedProxy(embeddedType, field, document);
+        Object embedded = newInsertProxy(embeddedType);
         Consumer consumer = (Consumer) args[0];
         consumer.accept(embedded);
-        extractInsertEmbeddedProxy(embedded).done();
+
+        document.put(field, extractInsertProxy(embedded).getDocument());
     }
 
 }

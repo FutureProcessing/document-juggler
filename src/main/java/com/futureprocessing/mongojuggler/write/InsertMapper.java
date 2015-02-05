@@ -5,9 +5,6 @@ import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.commons.Mapper;
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
-import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
-import com.futureprocessing.mongojuggler.read.command.*;
 import com.futureprocessing.mongojuggler.write.command.BasicInsertCommand;
 import com.futureprocessing.mongojuggler.write.command.EmbeddedInsertCommand;
 import com.futureprocessing.mongojuggler.write.command.InsertCommand;
@@ -15,12 +12,6 @@ import com.futureprocessing.mongojuggler.write.command.UnsupportedInsertCommand;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import static com.futureprocessing.mongojuggler.commons.ProxyExtractor.extractInsertEmbeddedProxy;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
 

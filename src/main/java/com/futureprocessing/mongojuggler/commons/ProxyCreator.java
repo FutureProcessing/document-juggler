@@ -1,14 +1,13 @@
 package com.futureprocessing.mongojuggler.commons;
 
-import com.futureprocessing.mongojuggler.write.InsertEmbeddedProxy;
-import com.futureprocessing.mongojuggler.write.UpdateEmbeddedProxy;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.futureprocessing.mongojuggler.read.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.futureprocessing.mongojuggler.write.InsertProxy;
+import com.futureprocessing.mongojuggler.write.UpdateEmbeddedProxy;
 import com.futureprocessing.mongojuggler.write.UpdateProxy;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 import java.util.Set;
 
@@ -22,13 +21,8 @@ public class ProxyCreator {
                 new ReadProxy(readerType, (BasicDBObject) dbObject, fields));
     }
 
-    public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass, DBCollection collection) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass, collection));
-    }
-
-    public static <UPDATER> UPDATER newInsertEmbeddedProxy(Class<UPDATER> returnType, String field, BasicDBObject parentDBObject) {
-        return (UPDATER) newProxyInstance(returnType.getClassLoader(), new Class[]{returnType},
-                new InsertEmbeddedProxy(parentDBObject, field));
+    public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass) {
+        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass));
     }
 
     public static <UPDATER> UPDATER newUpdateProxy(Class<UPDATER> updaterClass, DBCollection collection, DBObject updateQuery) {

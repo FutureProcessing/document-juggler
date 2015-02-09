@@ -13,7 +13,7 @@ public class BooleanUpdateCommand extends AbstractUpdateCommand{
     public void update(UpdateBuilder updateBuilder, Object[] args) {
         Boolean value = (Boolean) args[0];
 
-        if (value) {
+        if (value != null && value) {
             updateBuilder.set(field, value);
         } else {
             updateBuilder.unset(field);

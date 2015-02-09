@@ -1,6 +1,7 @@
-package com.futureprocessing.mongojuggler;
+package com.futureprocessing.mongojuggler.integration;
 
 
+import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import org.junit.BeforeClass;

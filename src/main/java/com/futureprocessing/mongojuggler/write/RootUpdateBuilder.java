@@ -3,7 +3,10 @@ package com.futureprocessing.mongojuggler.write;
 
 import com.mongodb.BasicDBObject;
 
-public class RootUpdateBuilder implements UpdateBuilder{
+import java.util.ArrayList;
+import java.util.List;
+
+public class RootUpdateBuilder implements UpdateBuilder {
 
     private final BasicDBObject document = new BasicDBObject();
 
@@ -19,12 +22,12 @@ public class RootUpdateBuilder implements UpdateBuilder{
 
     @Override
     public void push(String field, Object value) {
-        get("$push").append(field, value);
+        getEach("$push", field).add(value);
     }
 
     @Override
     public void addToSet(String field, Object value) {
-        get("$addToSet").append(field, value);
+        getEach("$addToSet", field).add(value);
     }
 
     @Override
@@ -39,10 +42,22 @@ public class RootUpdateBuilder implements UpdateBuilder{
 
     private BasicDBObject get(String field) {
         BasicDBObject value = (BasicDBObject) document.get(field);
-        if(value == null) {
+        if (value == null) {
             value = new BasicDBObject();
             document.put(field, value);
         }
         return value;
+    }
+
+    private List getEach(String action, String field) {
+        BasicDBObject push = get(action);
+
+        BasicDBObject object = (BasicDBObject) push.get(field);
+        if (object == null) {
+            object = new BasicDBObject("$each", new ArrayList<>());
+            push.put(field, object);
+        }
+
+       return (List) object.get("$each");
     }
 }

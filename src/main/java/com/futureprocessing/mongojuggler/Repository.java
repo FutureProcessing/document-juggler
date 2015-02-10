@@ -6,6 +6,7 @@ import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryValidator;
+import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadValidator;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.mongodb.BasicDBObject;
@@ -20,11 +21,15 @@ public class Repository<READER, UPDATER, QUERY> {
     private final MongoDBProvider dbProvider;
     private final Class<QUERY> queryClass;
 
+    private final ReadMapper readMapper;
+
     public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERY> queryClass, MongoDBProvider dbProvider) {
         this.readerClass = readerClass;
         this.updaterClass = updaterClass;
         this.dbProvider = dbProvider;
         this.queryClass = queryClass;
+
+        readMapper = new ReadMapper();
 
         QueryValidator.validate(queryClass);
         ReadValidator.validate(readerClass);
@@ -34,14 +39,14 @@ public class Repository<READER, UPDATER, QUERY> {
         QUERY query = ProxyCreator.newQueryProxy(queryClass);
         queryConsumer.accept(query);
 
-        LambdaReader<READER> lambdaReader = new LambdaReader<>(readerClass, getDBCollection(),
+        LambdaReader<READER> lambdaReader = new LambdaReader<>(readerClass, readMapper, getDBCollection(),
                 ProxyExtractor.extractQueryProxy(query).toDBObject());
         return lambdaReader;
 
     }
 
     public LambdaReader<READER> find() {
-        return new LambdaReader<>(readerClass, getDBCollection(), null);
+        return new LambdaReader<>(readerClass, readMapper, getDBCollection(), null);
     }
 
     public String insert(Consumer<UPDATER> consumer) {

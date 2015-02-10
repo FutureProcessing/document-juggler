@@ -15,13 +15,15 @@ public class ReadProxy implements InvocationHandler {
     private final Set<String> queriedFields;
     private final Map<Method, ReadCommand> readCommands;
 
-    public ReadProxy(Class<?> clazz, BasicDBObject dbObject, Set<String> queriedFields) {
+    public ReadProxy(Class<?> clazz, ReadMapper mapper, BasicDBObject dbObject, Set<String> queriedFields) {
+        this.dbObject = dbObject;
+        this.queriedFields = queriedFields;
+
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
         }
-        this.dbObject = dbObject;
-        this.queriedFields = queriedFields;
-        readCommands = ReadMapper.INSTANCE.get(clazz);
+
+        readCommands = mapper.get(clazz);
     }
 
     @Override

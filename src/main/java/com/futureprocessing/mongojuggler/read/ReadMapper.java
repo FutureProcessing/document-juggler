@@ -11,17 +11,12 @@ import java.util.Set;
 
 public final class ReadMapper extends Mapper<ReadCommand> {
 
-    public static final ReadMapper INSTANCE = new ReadMapper();
-
-    private ReadMapper() {
-    }
-
     @Override
     protected ReadCommand getCommand(Method method) {
         String field = getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            return new EmbeddedReadCommand(field, method.getReturnType());
+            return new EmbeddedReadCommand(field, method.getReturnType(), this);
         }
 
         if (isBooleanReturnType(method)) {

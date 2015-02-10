@@ -15,13 +15,15 @@ import static java.util.OptionalInt.of;
 public class LambdaReader<READER> {
 
     private final Class<READER> readerClass;
+    private final ReadMapper mapper;
     private final DBCollection dbCollection;
     private final DBObject query;
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
-    public LambdaReader(Class<READER> readerClass, DBCollection dbCollection, DBObject query) {
+    public LambdaReader(Class<READER> readerClass, ReadMapper mapper, DBCollection dbCollection, DBObject query) {
         this.readerClass = readerClass;
+        this.mapper = mapper;
         this.dbCollection = dbCollection;
         this.query = query;
     }
@@ -32,7 +34,7 @@ public class LambdaReader<READER> {
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        return newReadProxy(readerClass, dbObject, fields);
+        return newReadProxy(readerClass, mapper, dbObject, fields);
     }
 
     public List<READER> all(String... fieldsToFetch) {
@@ -50,7 +52,7 @@ public class LambdaReader<READER> {
             }
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
-                list.add(newReadProxy(readerClass, document, fields));
+                list.add(newReadProxy(readerClass, mapper, document, fields));
             }
         }
 

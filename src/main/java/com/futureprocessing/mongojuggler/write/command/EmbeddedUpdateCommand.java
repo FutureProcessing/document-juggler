@@ -1,8 +1,8 @@
 package com.futureprocessing.mongojuggler.write.command;
 
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.write.UpdateBuilder;
 import com.futureprocessing.mongojuggler.write.UpdateMapper;
+import com.futureprocessing.mongojuggler.write.UpdateProxy;
 
 import java.util.function.Consumer;
 
@@ -19,7 +19,7 @@ public class EmbeddedUpdateCommand extends AbstractUpdateCommand {
 
     @Override
     public void update(UpdateBuilder updateBuilder, Object[] args) {
-        Object embeddedProxy = ProxyCreator.newUpdateProxy(clazz, mapper, updateBuilder.embedded(field));
+        Object embeddedProxy = UpdateProxy.create(clazz, mapper, updateBuilder.embedded(field));
         Consumer embeddedDocumentModifier = (Consumer) args[0];
         embeddedDocumentModifier.accept(embeddedProxy);
     }

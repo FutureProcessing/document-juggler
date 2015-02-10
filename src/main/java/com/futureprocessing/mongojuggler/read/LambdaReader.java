@@ -6,7 +6,6 @@ import com.mongodb.*;
 
 import java.util.*;
 
-import static com.futureprocessing.mongojuggler.commons.ProxyCreator.newReadProxy;
 import static java.util.Collections.addAll;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.OptionalInt.empty;
@@ -34,7 +33,7 @@ public class LambdaReader<READER> {
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        return newReadProxy(readerClass, mapper, dbObject, fields);
+        return ReadProxy.create(readerClass, mapper, dbObject, fields);
     }
 
     public List<READER> all(String... fieldsToFetch) {
@@ -52,7 +51,7 @@ public class LambdaReader<READER> {
             }
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
-                list.add(newReadProxy(readerClass, mapper, document, fields));
+                list.add(ReadProxy.create(readerClass, mapper, document, fields));
             }
         }
 

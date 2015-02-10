@@ -2,12 +2,12 @@ package com.futureprocessing.mongojuggler;
 
 
 import com.futureprocessing.mongojuggler.commons.Metadata;
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
-import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryMapper;
+import com.futureprocessing.mongojuggler.read.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.write.InsertMapper;
+import com.futureprocessing.mongojuggler.write.InsertProxy;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.futureprocessing.mongojuggler.write.UpdateMapper;
 import com.mongodb.BasicDBObject;
@@ -40,11 +40,11 @@ public class Repository<READER, UPDATER, QUERY> {
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {
-        QUERY query = ProxyCreator.newQueryProxy(queryClass, queryMapper);
+        QUERY query = QueryProxy.create(queryClass, queryMapper);
         queryConsumer.accept(query);
 
         LambdaReader<READER> lambdaReader = new LambdaReader<>(readerClass, readMapper, getDBCollection(),
-                ProxyExtractor.extractQueryProxy(query).toDBObject());
+                QueryProxy.extract(query).toDBObject());
         return lambdaReader;
 
     }
@@ -55,10 +55,10 @@ public class Repository<READER, UPDATER, QUERY> {
 
     public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
-        UPDATER updater = ProxyCreator.newInsertProxy(updaterClass, insertMapper);
+        UPDATER updater = InsertProxy.create(updaterClass, insertMapper);
         consumer.accept(updater);
 
-        BasicDBObject document = ProxyExtractor.extractInsertProxy(updater).getDocument();
+        BasicDBObject document = InsertProxy.extract(updater).getDocument();
         collection.insert(document);
         return document.getObjectId("_id").toHexString();
     }
@@ -69,11 +69,11 @@ public class Repository<READER, UPDATER, QUERY> {
     }
 
     public LambdaUpdater<UPDATER> update(Consumer<QUERY> consumer) {
-        QUERY query = ProxyCreator.newQueryProxy(queryClass, queryMapper);
+        QUERY query = QueryProxy.create(queryClass, queryMapper);
         consumer.accept(query);
 
         LambdaUpdater<UPDATER> lambdaUpdater = new LambdaUpdater<>(updaterClass, updateMapper, getDBCollection(),
-                ProxyExtractor.extractQueryProxy(query).toDBObject());
+                QueryProxy.extract(query).toDBObject());
         return lambdaUpdater;
     }
 

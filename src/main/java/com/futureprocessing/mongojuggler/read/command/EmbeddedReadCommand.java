@@ -1,8 +1,8 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
-import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
+import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -23,6 +23,6 @@ public class EmbeddedReadCommand extends AbstractReadCommand {
     @Override
     protected Object readValue(BasicDBObject document) {
         DBObject embedded = (DBObject) document.get(field);
-        return embedded != null ? ProxyCreator.newReadProxy(clazz, mapper, embedded, unmodifiableSet(emptySet())) : null;
+        return embedded != null ? ReadProxy.create(clazz, mapper, embedded, unmodifiableSet(emptySet())) : null;
     }
 }

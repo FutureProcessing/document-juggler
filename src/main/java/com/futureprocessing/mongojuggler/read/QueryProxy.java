@@ -8,12 +8,24 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static java.lang.reflect.Proxy.getInvocationHandler;
+import static java.lang.reflect.Proxy.newProxyInstance;
+
 public class QueryProxy implements InvocationHandler {
 
     private final QueryBuilder builder = new QueryBuilder();
     private final Map<Method, QueryCommand> queryCommands;
 
-    public QueryProxy(Class<?> clazz, QueryMapper mapper) {
+    @SuppressWarnings("unchecked")
+    public static <QUERY> QUERY create(Class<QUERY> queryClass, QueryMapper mapper) {
+        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy(queryClass, mapper));
+    }
+
+    public static QueryProxy extract(Object query) {
+        return (QueryProxy) getInvocationHandler(query);
+    }
+
+    private QueryProxy(Class<?> clazz, QueryMapper mapper) {
         queryCommands = mapper.get(clazz);
     }
 

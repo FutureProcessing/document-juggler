@@ -8,6 +8,7 @@ import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryValidator;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadValidator;
+import com.futureprocessing.mongojuggler.write.InsertMapper;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -22,6 +23,7 @@ public class Repository<READER, UPDATER, QUERY> {
     private final Class<QUERY> queryClass;
 
     private final ReadMapper readMapper;
+    private final InsertMapper insertMapper;
 
     public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERY> queryClass, MongoDBProvider dbProvider) {
         this.readerClass = readerClass;
@@ -30,6 +32,7 @@ public class Repository<READER, UPDATER, QUERY> {
         this.queryClass = queryClass;
 
         readMapper = new ReadMapper();
+        insertMapper = new InsertMapper();
 
         QueryValidator.validate(queryClass);
         ReadValidator.validate(readerClass);
@@ -51,7 +54,7 @@ public class Repository<READER, UPDATER, QUERY> {
 
     public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
-        UPDATER updater = ProxyCreator.newInsertProxy(updaterClass);
+        UPDATER updater = ProxyCreator.newInsertProxy(updaterClass, insertMapper);
         consumer.accept(updater);
 
         BasicDBObject document = ProxyExtractor.extractInsertProxy(updater).getDocument();

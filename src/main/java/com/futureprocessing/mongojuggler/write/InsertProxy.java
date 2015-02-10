@@ -13,9 +13,9 @@ public class InsertProxy implements InvocationHandler {
     private final BasicDBObject document;
     private final Map<Method, InsertCommand> insertCommands;
 
-    public InsertProxy(Class<?> clazz) {
+    public InsertProxy(Class<?> clazz, InsertMapper mapper) {
         this.document = new BasicDBObject();
-        insertCommands = InsertMapper.INSTANCE.get(clazz);
+        insertCommands = mapper.get(clazz);
     }
 
     @Override

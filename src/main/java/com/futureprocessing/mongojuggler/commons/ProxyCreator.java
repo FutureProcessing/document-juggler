@@ -3,6 +3,7 @@ package com.futureprocessing.mongojuggler.commons;
 import com.futureprocessing.mongojuggler.read.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
+import com.futureprocessing.mongojuggler.write.InsertMapper;
 import com.futureprocessing.mongojuggler.write.InsertProxy;
 import com.futureprocessing.mongojuggler.write.UpdateBuilder;
 import com.futureprocessing.mongojuggler.write.UpdateProxy;
@@ -21,8 +22,8 @@ public class ProxyCreator {
                 new ReadProxy(readerType, mapper, (BasicDBObject) dbObject, fields));
     }
 
-    public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass));
+    public static <UPDATER> UPDATER newInsertProxy(Class<UPDATER> updaterClass, InsertMapper mapper) {
+        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass, mapper));
     }
 
     public static <UPDATER> UPDATER newUpdateProxy(Class<UPDATER> updaterClass, UpdateBuilder updateBuilder) {

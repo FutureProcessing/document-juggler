@@ -1,4 +1,4 @@
-package com.futureprocessing.mongojuggler;
+package com.futureprocessing.mongojuggler.integration;
 
 import com.mongodb.MongoClient;
 import org.junit.After;

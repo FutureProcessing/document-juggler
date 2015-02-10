@@ -2,7 +2,6 @@ package com.futureprocessing.mongojuggler.commons;
 
 
 import com.futureprocessing.mongojuggler.read.QueryProxy;
-import com.futureprocessing.mongojuggler.write.InsertEmbeddedProxy;
 import com.futureprocessing.mongojuggler.write.InsertProxy;
 import com.futureprocessing.mongojuggler.write.UpdateProxy;
 
@@ -22,12 +21,7 @@ public final class ProxyExtractor {
         return (InsertProxy) getInvocationHandler(updater);
     }
 
-    public static InsertEmbeddedProxy extractInsertEmbeddedProxy(Object updater) {
-        return (InsertEmbeddedProxy) getInvocationHandler(updater);
-    }
-
     private ProxyExtractor() {
     }
 
-    ;
 }

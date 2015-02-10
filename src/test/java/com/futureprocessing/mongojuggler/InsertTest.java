@@ -184,18 +184,4 @@ public class InsertTest {
         assertThat(id).isEqualTo(insertedId.toHexString());
     }
 
-    @Test
-    public void shouldPackStringIdIntoObjectId() {
-        // given
-        String id = "abcdABCDabcdABCDabcdABCD";
-        String brand = "Fiat";
-
-        // when
-        carsRepository.insert(car -> car.withId(id).withBrand(brand));
-
-        // then
-        BasicDBObject expected  = new BasicDBObject(BRAND, brand).append(ID, new ObjectId(id));
-        assertThat(insertedDocument).isEqualTo(expected);
-    }
-
 }

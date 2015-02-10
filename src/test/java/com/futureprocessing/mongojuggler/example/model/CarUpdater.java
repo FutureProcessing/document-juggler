@@ -11,9 +11,6 @@ import java.util.function.Consumer;
 @DbDocument(CarsDBModel.Car.COLLECTION)
 public interface CarUpdater {
 
-    @Id
-    CarUpdater withId(String id);
-
     @DbField(CarsDBModel.Car.BRAND)
     CarUpdater withBrand(String brand);
 

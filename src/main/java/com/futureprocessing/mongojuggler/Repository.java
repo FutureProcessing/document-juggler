@@ -8,6 +8,7 @@ import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryValidator;
 import com.futureprocessing.mongojuggler.read.ReadValidator;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
 import java.util.function.Consumer;
@@ -45,9 +46,12 @@ public class Repository<READER, UPDATER, QUERY> {
 
     public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
-        UPDATER updater = ProxyCreator.newInsertProxy(updaterClass, collection);
+        UPDATER updater = ProxyCreator.newInsertProxy(updaterClass);
         consumer.accept(updater);
-        return ProxyExtractor.extractInsertProxy(updater).execute();
+
+        BasicDBObject document = ProxyExtractor.extractInsertProxy(updater).getDocument();
+        collection.insert(document);
+        return document.getObjectId("_id").toHexString();
     }
 
     private DBCollection getDBCollection() {

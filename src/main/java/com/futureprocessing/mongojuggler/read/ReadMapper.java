@@ -3,37 +3,21 @@ package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.read.command.*;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-public final class ReadMapper {
+public final class ReadMapper extends Mapper<ReadCommand> {
 
-    private static final Map<Class, Map<Method, ReadCommand>> mappings = new HashMap<>();
+    public static final ReadMapper INSTANCE = new ReadMapper();
 
-    public static Map<Method, ReadCommand> get(Class<?> clazz) {
-        Map<Method, ReadCommand> map = mappings.get(clazz);
-        if (map == null) {
-            map = create(clazz);
-            mappings.put(clazz, map);
-        }
-        return map;
+    private ReadMapper() {
     }
 
-    private static Map<Method, ReadCommand> create(Class<?> clazz) {
-        Map<Method, ReadCommand> map = new HashMap<>();
-
-        for (Method method : clazz.getMethods()) {
-            map.put(method, getCommand(method));
-        }
-
-        return map;
-    }
-
-    private static ReadCommand getCommand(Method method) {
+    @Override
+    protected ReadCommand getCommand(Method method) {
         String field = getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
@@ -55,19 +39,17 @@ public final class ReadMapper {
         return new BasicReadCommand(field);
     }
 
-    private static String getFieldName(Method method) {
+    private String getFieldName(Method method) {
         DbField field = method.getAnnotation(DbField.class);
         return field.value();
     }
 
-    private static boolean isSetReturnType(Method method) {
+    private boolean isSetReturnType(Method method) {
         return Set.class.isAssignableFrom(method.getReturnType());
     }
 
-    private static boolean isBooleanReturnType(Method method) {
+    private boolean isBooleanReturnType(Method method) {
         return method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class);
     }
 
-    private ReadMapper() {
-    }
 }

@@ -1,6 +1,8 @@
 package com.futureprocessing.mongojuggler.write;
 
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
+import com.futureprocessing.mongojuggler.exception.MissingPropertyException;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
@@ -24,10 +26,14 @@ public class LambdaUpdater<UPDATER> {
     public UpdateResult with(Consumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
-        UPDATER updater = ProxyCreator.newUpdateProxy(updaterClass, collection, query);
+        UPDATER updater = ProxyCreator.newUpdateProxy(updaterClass, new RootUpdateBuilder());
         consumer.accept(updater);
 
-        WriteResult result = extractUpdateProxy(updater).execute();
+        BasicDBObject document = extractUpdateProxy(updater).getUpdateDocument();
+        if(document.isEmpty()) {
+            throw new MissingPropertyException("No property to update specified");
+        }
+        WriteResult result = collection.update(query, document);
         return new UpdateResult(result);
     }
 }

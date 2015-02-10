@@ -5,21 +5,13 @@ import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsException;
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
-import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ReadValidationTest {
-
-    @Mock
-    private MongoDBProvider dbProvider;
 
     @Test
     public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface() {

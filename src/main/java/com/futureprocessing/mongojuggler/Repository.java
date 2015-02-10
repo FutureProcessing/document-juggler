@@ -5,7 +5,7 @@ import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.commons.ProxyCreator;
 import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
-import com.futureprocessing.mongojuggler.read.QueryValidator;
+import com.futureprocessing.mongojuggler.read.QueryMapper;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.write.InsertMapper;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
@@ -22,6 +22,7 @@ public class Repository<READER, UPDATER, QUERY> {
     private final MongoDBProvider dbProvider;
     private final Class<QUERY> queryClass;
 
+    private final QueryMapper queryMapper;
     private final ReadMapper readMapper;
     private final InsertMapper insertMapper;
     private final UpdateMapper updateMapper;
@@ -32,15 +33,14 @@ public class Repository<READER, UPDATER, QUERY> {
         this.dbProvider = dbProvider;
         this.queryClass = queryClass;
 
-        QueryValidator.validate(queryClass);
-
+        queryMapper = new QueryMapper(queryClass);
         readMapper = new ReadMapper(readerClass);
         insertMapper = new InsertMapper(updaterClass);
         updateMapper = new UpdateMapper(updaterClass);
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {
-        QUERY query = ProxyCreator.newQueryProxy(queryClass);
+        QUERY query = ProxyCreator.newQueryProxy(queryClass, queryMapper);
         queryConsumer.accept(query);
 
         LambdaReader<READER> lambdaReader = new LambdaReader<>(readerClass, readMapper, getDBCollection(),
@@ -69,7 +69,7 @@ public class Repository<READER, UPDATER, QUERY> {
     }
 
     public LambdaUpdater<UPDATER> update(Consumer<QUERY> consumer) {
-        QUERY query = ProxyCreator.newQueryProxy(queryClass);
+        QUERY query = ProxyCreator.newQueryProxy(queryClass, queryMapper);
         consumer.accept(query);
 
         LambdaUpdater<UPDATER> lambdaUpdater = new LambdaUpdater<>(updaterClass, updateMapper, getDBCollection(),

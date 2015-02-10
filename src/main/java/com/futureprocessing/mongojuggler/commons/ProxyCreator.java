@@ -1,5 +1,6 @@
 package com.futureprocessing.mongojuggler.commons;
 
+import com.futureprocessing.mongojuggler.read.QueryMapper;
 import com.futureprocessing.mongojuggler.read.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
@@ -28,7 +29,7 @@ public class ProxyCreator {
                 new UpdateProxy(updaterClass, updateBuilder, mapper));
     }
 
-    public static <QUERY> QUERY newQueryProxy(Class<QUERY> queryClass) {
-        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy());
+    public static <QUERY> QUERY newQueryProxy(Class<QUERY> queryClass, QueryMapper mapper) {
+        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy(queryClass, mapper));
     }
 }

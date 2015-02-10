@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.futureprocessing.mongojuggler.commons.Validator.validateInterface;
+
 public abstract class Mapper<C> {
 
     private final Map<Class, Map<Method, C>> mappings = new HashMap<>();
@@ -19,6 +21,8 @@ public abstract class Mapper<C> {
 
     protected void createMapping(Class<?> clazz) {
         if (!mappings.containsKey(clazz)) {
+            validateInterface(clazz);
+
             Map<Method, C> map = new HashMap<>();
             mappings.put(clazz, map);
 

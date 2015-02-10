@@ -4,10 +4,14 @@ package com.futureprocessing.mongojuggler.read;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.commons.Mapper;
+import com.futureprocessing.mongojuggler.commons.Validator;
+import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsException;
 import com.futureprocessing.mongojuggler.read.command.*;
 
 import java.lang.reflect.Method;
 import java.util.Set;
+
+import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
 public final class ReadMapper extends Mapper<ReadCommand> {
 
@@ -17,6 +21,9 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
     @Override
     protected ReadCommand getCommand(Method method) {
+        validateField(method);
+        validateArguments(method);
+
         String field = getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
@@ -37,6 +44,12 @@ public final class ReadMapper extends Mapper<ReadCommand> {
         }
 
         return new BasicReadCommand(field);
+    }
+
+    private void validateArguments(Method method) {
+        if (method.getParameterCount() != 0) {
+            throw new InvalidArgumentsException(method);
+        }
     }
 
     private String getFieldName(Method method) {

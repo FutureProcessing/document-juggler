@@ -7,7 +7,6 @@ import com.futureprocessing.mongojuggler.commons.ProxyExtractor;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.read.QueryValidator;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
-import com.futureprocessing.mongojuggler.read.ReadValidator;
 import com.futureprocessing.mongojuggler.write.InsertMapper;
 import com.futureprocessing.mongojuggler.write.LambdaUpdater;
 import com.futureprocessing.mongojuggler.write.UpdateMapper;
@@ -34,7 +33,6 @@ public class Repository<READER, UPDATER, QUERY> {
         this.queryClass = queryClass;
 
         QueryValidator.validate(queryClass);
-        ReadValidator.validate(readerClass);
 
         readMapper = new ReadMapper(readerClass);
         insertMapper = new InsertMapper(updaterClass);

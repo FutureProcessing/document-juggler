@@ -6,6 +6,7 @@ import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsEx
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.mongojuggler.helper.Empty;
+import com.futureprocessing.mongojuggler.read.ReadMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -26,7 +27,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new Repository<>(NotInterface.class, Empty.class, Empty.class, dbProvider);
+            new ReadMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -50,7 +51,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new Repository<>(UnknownFieldQuery.class, Empty.class, Empty.class, dbProvider);
+            new ReadMapper(UnknownFieldQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
@@ -71,7 +72,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new Repository<>(ReaderWithArguments.class, Empty.class, Empty.class, dbProvider);
+            new ReadMapper(ReaderWithArguments.class);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(ReaderWithArguments.class.getMethod("getTest", String.class));

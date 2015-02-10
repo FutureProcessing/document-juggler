@@ -40,7 +40,7 @@ public class Repository<READER, UPDATER, QUERY> {
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {
-        QUERY query = QueryProxy.create(queryClass, queryMapper);
+        QUERY query = QueryProxy.create(queryClass, queryMapper.get(queryClass));
         queryConsumer.accept(query);
 
         LambdaReader<READER> lambdaReader = new LambdaReader<>(readerClass, readMapper, getDBCollection(),
@@ -55,7 +55,7 @@ public class Repository<READER, UPDATER, QUERY> {
 
     public String insert(Consumer<UPDATER> consumer) {
         DBCollection collection = getDBCollection();
-        UPDATER updater = InsertProxy.create(updaterClass, insertMapper);
+        UPDATER updater = InsertProxy.create(updaterClass, insertMapper.get(updaterClass));
         consumer.accept(updater);
 
         BasicDBObject document = InsertProxy.extract(updater).getDocument();
@@ -69,7 +69,7 @@ public class Repository<READER, UPDATER, QUERY> {
     }
 
     public LambdaUpdater<UPDATER> update(Consumer<QUERY> consumer) {
-        QUERY query = QueryProxy.create(queryClass, queryMapper);
+        QUERY query = QueryProxy.create(queryClass, queryMapper.get(queryClass));
         consumer.accept(query);
 
         LambdaUpdater<UPDATER> lambdaUpdater = new LambdaUpdater<>(updaterClass, updateMapper, getDBCollection(),

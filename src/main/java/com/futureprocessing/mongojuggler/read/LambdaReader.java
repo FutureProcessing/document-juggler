@@ -33,7 +33,7 @@ public class LambdaReader<READER> {
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        return ReadProxy.create(readerClass, mapper, dbObject, fields);
+        return ReadProxy.create(readerClass, mapper.get(readerClass), dbObject, fields);
     }
 
     public List<READER> all(String... fieldsToFetch) {
@@ -51,7 +51,7 @@ public class LambdaReader<READER> {
             }
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
-                list.add(ReadProxy.create(readerClass, mapper, document, fields));
+                list.add(ReadProxy.create(readerClass, mapper.get(readerClass), document, fields));
             }
         }
 

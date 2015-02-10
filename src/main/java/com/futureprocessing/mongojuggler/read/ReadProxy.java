@@ -19,20 +19,20 @@ public class ReadProxy implements InvocationHandler {
     private final Map<Method, ReadCommand> readCommands;
 
     @SuppressWarnings("unchecked")
-    public static <READER> READER create(Class<READER> readerType, ReadMapper mapper, DBObject dbObject, Set<String> fields) {
+    public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands, DBObject dbObject, Set<String> fields) {
         return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
-                new ReadProxy(readerType, mapper, (BasicDBObject) dbObject, fields));
+                new ReadProxy(readCommands, (BasicDBObject) dbObject, fields));
     }
 
-    private ReadProxy(Class<?> clazz, ReadMapper mapper, BasicDBObject dbObject, Set<String> queriedFields) {
+    private ReadProxy(Map<Method, ReadCommand> readCommands, BasicDBObject dbObject, Set<String> queriedFields) {
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
+        this.readCommands = readCommands;
 
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
         }
 
-        readCommands = mapper.get(clazz);
     }
 
     @Override

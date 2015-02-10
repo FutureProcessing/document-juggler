@@ -25,7 +25,7 @@ public class LambdaUpdater<UPDATER> {
     public UpdateResult with(Consumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
-        UPDATER updater = UpdateProxy.create(updaterClass, mapper, new RootUpdateBuilder());
+        UPDATER updater = UpdateProxy.create(updaterClass, mapper.get(updaterClass), new RootUpdateBuilder());
         consumer.accept(updater);
 
         BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();

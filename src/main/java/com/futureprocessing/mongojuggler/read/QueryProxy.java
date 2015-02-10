@@ -17,16 +17,16 @@ public class QueryProxy implements InvocationHandler {
     private final Map<Method, QueryCommand> queryCommands;
 
     @SuppressWarnings("unchecked")
-    public static <QUERY> QUERY create(Class<QUERY> queryClass, QueryMapper mapper) {
-        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy(queryClass, mapper));
+    public static <QUERY> QUERY create(Class<QUERY> queryClass, Map<Method, QueryCommand> queryCommands) {
+        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy(queryCommands));
     }
 
     public static QueryProxy extract(Object query) {
         return (QueryProxy) getInvocationHandler(query);
     }
 
-    private QueryProxy(Class<?> clazz, QueryMapper mapper) {
-        queryCommands = mapper.get(clazz);
+    private QueryProxy(Map<Method, QueryCommand> queryCommands) {
+        this.queryCommands = queryCommands;
     }
 
     @Override

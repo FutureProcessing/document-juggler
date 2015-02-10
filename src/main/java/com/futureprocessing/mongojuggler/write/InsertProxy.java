@@ -2,7 +2,6 @@ package com.futureprocessing.mongojuggler.write;
 
 import com.futureprocessing.mongojuggler.write.command.InsertCommand;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,8 +16,8 @@ public class InsertProxy implements InvocationHandler {
     private final Map<Method, InsertCommand> insertCommands;
 
     @SuppressWarnings("unchecked")
-    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, InsertMapper mapper) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(updaterClass, mapper));
+    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Map<Method, InsertCommand> insertCommands) {
+        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(insertCommands));
     }
 
     public static InsertProxy extract(Object updater) {
@@ -26,9 +25,9 @@ public class InsertProxy implements InvocationHandler {
     }
 
 
-    private InsertProxy(Class<?> clazz, InsertMapper mapper) {
+    private InsertProxy(Map<Method, InsertCommand> insertCommands) {
         this.document = new BasicDBObject();
-        insertCommands = mapper.get(clazz);
+        this.insertCommands = insertCommands;
     }
 
     @Override

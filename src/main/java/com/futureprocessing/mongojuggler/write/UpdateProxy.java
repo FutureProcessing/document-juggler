@@ -16,9 +16,9 @@ public class UpdateProxy implements InvocationHandler {
     private final Map<Method, UpdateCommand> updateCommands;
 
     @SuppressWarnings("unchecked")
-    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, UpdateMapper mapper, UpdateBuilder updateBuilder) {
+    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Map<Method, UpdateCommand> updateCommands, UpdateBuilder updateBuilder) {
         return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass},
-                new UpdateProxy(updaterClass, updateBuilder, mapper));
+                new UpdateProxy(updateCommands, updateBuilder));
     }
 
     public static UpdateProxy extract(Object updater) {
@@ -26,9 +26,9 @@ public class UpdateProxy implements InvocationHandler {
     }
 
 
-    private UpdateProxy(Class<?> clazz, UpdateBuilder updateBuilder, UpdateMapper mapper) {
+    private UpdateProxy(Map<Method, UpdateCommand> updateCommands, UpdateBuilder updateBuilder) {
         this.updateBuilder = updateBuilder;
-        updateCommands = mapper.get(clazz);
+        this.updateCommands = updateCommands;
     }
 
     @Override

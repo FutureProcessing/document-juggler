@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmbeddedInsertCommandTest {
 
     private static final String FIELD = "testField";
-    private static final String EMBEDDED_FIELD = "value";
+    private static final String EMBEDDED_FIELD = "embeddedField";
     private static final String VALUE = "SomeValue";
 
     private InsertCommand command = new EmbeddedInsertCommand(FIELD, Insert.class);

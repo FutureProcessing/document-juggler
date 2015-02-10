@@ -15,10 +15,12 @@ public class LambdaUpdater<UPDATER> {
 
     private final DBObject query;
     private final Class<UPDATER> updaterClass;
+    private final UpdateMapper mapper;
     private final DBCollection dbCollection;
 
-    public LambdaUpdater(Class<UPDATER> updaterClass, DBCollection dbCollection, DBObject query) {
+    public LambdaUpdater(Class<UPDATER> updaterClass, UpdateMapper mapper, DBCollection dbCollection, DBObject query) {
         this.updaterClass = updaterClass;
+        this.mapper = mapper;
         this.dbCollection = dbCollection;
         this.query = query;
     }
@@ -26,7 +28,7 @@ public class LambdaUpdater<UPDATER> {
     public UpdateResult with(Consumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
-        UPDATER updater = ProxyCreator.newUpdateProxy(updaterClass, new RootUpdateBuilder());
+        UPDATER updater = ProxyCreator.newUpdateProxy(updaterClass, mapper, new RootUpdateBuilder());
         consumer.accept(updater);
 
         BasicDBObject document = extractUpdateProxy(updater).getUpdateDocument();

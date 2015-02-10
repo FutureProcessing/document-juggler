@@ -13,17 +13,12 @@ import java.lang.reflect.ParameterizedType;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
-    public static final UpdateMapper INSTANCE = new UpdateMapper();
-
-    private UpdateMapper() {
-    }
-
     @Override
     protected UpdateCommand getCommand(Method method) {
         String field = Metadata.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            return new EmbeddedUpdateCommand(field, getEmbeddedDocumentType(method));
+            return new EmbeddedUpdateCommand(field, getEmbeddedDocumentType(method), this);
         }
 
         if (method.isAnnotationPresent(AddToSet.class)) {

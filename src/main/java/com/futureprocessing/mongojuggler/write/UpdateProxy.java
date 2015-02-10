@@ -14,9 +14,9 @@ public class UpdateProxy implements InvocationHandler {
     private final UpdateBuilder updateBuilder;
     private final Map<Method, UpdateCommand> updateCommands;
 
-    public UpdateProxy(Class<?> clazz, UpdateBuilder updateBuilder) {
+    public UpdateProxy(Class<?> clazz, UpdateBuilder updateBuilder, UpdateMapper mapper) {
         this.updateBuilder = updateBuilder;
-        updateCommands = UpdateMapper.INSTANCE.get(clazz);
+        updateCommands = mapper.get(clazz);
     }
 
     @Override

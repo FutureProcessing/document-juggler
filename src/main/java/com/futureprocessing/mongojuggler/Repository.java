@@ -33,12 +33,12 @@ public class Repository<READER, UPDATER, QUERY> {
         this.dbProvider = dbProvider;
         this.queryClass = queryClass;
 
-        readMapper = new ReadMapper();
-        insertMapper = new InsertMapper();
-        updateMapper = new UpdateMapper();
-
         QueryValidator.validate(queryClass);
         ReadValidator.validate(readerClass);
+
+        readMapper = new ReadMapper(readerClass);
+        insertMapper = new InsertMapper(updaterClass);
+        updateMapper = new UpdateMapper(updaterClass);
     }
 
     public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {

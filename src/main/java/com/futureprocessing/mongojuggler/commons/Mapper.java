@@ -9,23 +9,23 @@ public abstract class Mapper<C> {
 
     private final Map<Class, Map<Method, C>> mappings = new HashMap<>();
 
-    public final Map<Method, C> get(Class<?> clazz) {
-        Map<Method, C> map = mappings.get(clazz);
-        if (map == null) {
-            map = create(clazz);
-            mappings.put(clazz, map);
-        }
-        return map;
+    protected Mapper(Class clazz) {
+        createMapping(clazz);
     }
 
-    private Map<Method, C> create(Class<?> clazz) {
-        Map<Method, C> map = new HashMap<>();
+    public final Map<Method, C> get(Class<?> clazz) {
+        return  mappings.get(clazz);
+    }
 
-        for (Method method : clazz.getMethods()) {
-            map.put(method, getCommand(method));
+    protected void createMapping(Class<?> clazz) {
+        if (!mappings.containsKey(clazz)) {
+            Map<Method, C> map = new HashMap<>();
+            mappings.put(clazz, map);
+
+            for (Method method : clazz.getMethods()) {
+                map.put(method, getCommand(method));
+            }
         }
-
-        return map;
     }
 
     protected abstract C getCommand(Method method);

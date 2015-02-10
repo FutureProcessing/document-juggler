@@ -6,6 +6,7 @@ import com.futureprocessing.mongojuggler.exception.validation.InvalidReturnValue
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.mongojuggler.helper.Empty;
+import com.futureprocessing.mongojuggler.read.QueryMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,11 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@RunWith(MockitoJUnitRunner.class)
 public class QueryValidationTest {
-
-    @Mock
-    private MongoDBProvider dbProvider;
 
     @Test
     public void shouldThrowModelIsNotInterfaceExceptionIfQueryIsNotInterface() {
@@ -26,7 +23,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, NotInterface.class, dbProvider);
+            new QueryMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -49,7 +46,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, UnknownFieldQuery.class, dbProvider);
+            new QueryMapper(UnknownFieldQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("withId", String.class));
@@ -70,7 +67,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, InvalidReturnTypeQuery.class, dbProvider);
+            new QueryMapper(InvalidReturnTypeQuery.class);
         } catch (InvalidReturnValueException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(InvalidReturnTypeQuery.class.getMethod("withId", String.class));
@@ -92,7 +89,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, NoArgumentQuery.class, dbProvider);
+            new QueryMapper(NoArgumentQuery.class);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(NoArgumentQuery.class.getMethod("withId"));
@@ -114,7 +111,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new Repository<>(Empty.class, Empty.class, TwoArgumentQuery.class, dbProvider);
+            new QueryMapper(TwoArgumentQuery.class);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(TwoArgumentQuery.class.getMethod("withId", String.class, String.class));

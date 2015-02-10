@@ -2,11 +2,14 @@ package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.read.command.ReadCommand;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
+
+import static java.lang.reflect.Proxy.newProxyInstance;
 
 
 public class ReadProxy implements InvocationHandler {
@@ -15,13 +18,21 @@ public class ReadProxy implements InvocationHandler {
     private final Set<String> queriedFields;
     private final Map<Method, ReadCommand> readCommands;
 
-    public ReadProxy(Class<?> clazz, BasicDBObject dbObject, Set<String> queriedFields) {
+    @SuppressWarnings("unchecked")
+    public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands, DBObject dbObject, Set<String> fields) {
+        return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
+                new ReadProxy(readCommands, (BasicDBObject) dbObject, fields));
+    }
+
+    private ReadProxy(Map<Method, ReadCommand> readCommands, BasicDBObject dbObject, Set<String> queriedFields) {
+        this.dbObject = dbObject;
+        this.queriedFields = queriedFields;
+        this.readCommands = readCommands;
+
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
         }
-        this.dbObject = dbObject;
-        this.queriedFields = queriedFields;
-        readCommands = ReadMapper.INSTANCE.get(clazz);
+
     }
 
     @Override

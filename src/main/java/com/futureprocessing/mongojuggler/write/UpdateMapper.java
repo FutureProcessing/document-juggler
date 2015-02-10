@@ -13,9 +13,8 @@ import java.lang.reflect.ParameterizedType;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
-    public static final UpdateMapper INSTANCE = new UpdateMapper();
-
-    private UpdateMapper() {
+    public UpdateMapper(Class clazz) {
+        super(clazz);
     }
 
     @Override
@@ -23,7 +22,9 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         String field = Metadata.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            return new EmbeddedUpdateCommand(field, getEmbeddedDocumentType(method));
+            Class<?> type = getEmbeddedDocumentType(method);
+            createMapping(type);
+            return new EmbeddedUpdateCommand(field, type, this);
         }
 
         if (method.isAnnotationPresent(AddToSet.class)) {

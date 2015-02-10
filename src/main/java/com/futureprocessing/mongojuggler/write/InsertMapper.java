@@ -15,9 +15,8 @@ import java.lang.reflect.ParameterizedType;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
 
-    public static final InsertMapper INSTANCE = new InsertMapper();
-
-    private InsertMapper() {
+    public InsertMapper(Class clazz) {
+        super(clazz);
     }
 
     @Override
@@ -30,7 +29,8 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
             Class<?> type = getEmbeddedDocumentType(method);
-            return new EmbeddedInsertCommand(field, type);
+            createMapping(type);
+            return new EmbeddedInsertCommand(field, type, this);
         }
 
         return new BasicInsertCommand(field);

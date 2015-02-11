@@ -10,6 +10,7 @@ import com.futureprocessing.mongojuggler.update.command.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
@@ -28,7 +29,16 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         }
 
         if (method.isAnnotationPresent(AddToSet.class)) {
-            return new AddToSetUpdateCommand(field);
+            if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
+                return new AddToSetCollectionUpdateCommand(field);
+            }
+            if (method.getParameterCount() > 1) {
+                return new AddToSetManyUpdateCommand(field);
+            }
+            if (method.isVarArgs() || method.getParameterTypes()[0].isArray()) {
+                return new AddToSetArrayUpdateCommand(field);
+            }
+            return new AddToSetSingleUpdateCommand(field);
         }
 
         if (method.isAnnotationPresent(Push.class)) {

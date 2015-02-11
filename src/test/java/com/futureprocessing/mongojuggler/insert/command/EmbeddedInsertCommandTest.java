@@ -1,4 +1,4 @@
-package com.futureprocessing.mongojuggler.update.command;
+package com.futureprocessing.mongojuggler.insert.command;
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.insert.InsertMapper;

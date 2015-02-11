@@ -3,9 +3,9 @@ package com.futureprocessing.mongojuggler.update.command;
 
 import com.futureprocessing.mongojuggler.update.UpdateBuilder;
 
-public class AddToSetUpdateCommand extends AbstractUpdateCommand {
+public class AddToSetSingleUpdateCommand extends AbstractUpdateCommand {
 
-    public AddToSetUpdateCommand(String field) {
+    public AddToSetSingleUpdateCommand(String field) {
         super(field);
     }
 

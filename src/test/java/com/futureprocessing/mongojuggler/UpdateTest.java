@@ -3,8 +3,7 @@ package com.futureprocessing.mongojuggler;
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.exception.InvalidNumberOfDocumentsAffected;
-import com.futureprocessing.mongojuggler.write.UpdateResult;
-import com.mongodb.BasicDBObject;
+import com.futureprocessing.mongojuggler.update.UpdateResult;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
@@ -15,14 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.OWNERS;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.PASSENGERS_NAMES;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.BDDMockito.given;

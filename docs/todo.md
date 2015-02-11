@@ -16,10 +16,10 @@ Updating Collections
 - [X] @Push - primitive types
 
 ## Multiple arguments types for updating collections:
-- [ ] addElements(String[] elements)
-- [ ] addElements(String...elements)
-- [ ] addElements(Collection<String> elements)
-- [ ] addElements(String first, String second)
+- [X] addElements(String[] elements)
+- [X] addElements(String...elements)
+- [X] addElements(Collection<String> elements)
+- [X] addElements(String first, String second)
 
 - [ ] Updating sub-document in collection
 

@@ -3,13 +3,13 @@ package com.futureprocessing.mongojuggler;
 
 import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
-import com.futureprocessing.mongojuggler.read.QueryMapper;
-import com.futureprocessing.mongojuggler.read.QueryProxy;
+import com.futureprocessing.mongojuggler.query.QueryMapper;
+import com.futureprocessing.mongojuggler.query.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
-import com.futureprocessing.mongojuggler.write.InsertMapper;
-import com.futureprocessing.mongojuggler.write.InsertProxy;
-import com.futureprocessing.mongojuggler.write.LambdaUpdater;
-import com.futureprocessing.mongojuggler.write.UpdateMapper;
+import com.futureprocessing.mongojuggler.insert.InsertMapper;
+import com.futureprocessing.mongojuggler.insert.InsertProxy;
+import com.futureprocessing.mongojuggler.update.LambdaUpdater;
+import com.futureprocessing.mongojuggler.update.UpdateMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 

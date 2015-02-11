@@ -5,12 +5,8 @@ import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsEx
 import com.futureprocessing.mongojuggler.exception.validation.InvalidReturnValueException;
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
-import com.futureprocessing.mongojuggler.helper.Empty;
-import com.futureprocessing.mongojuggler.read.QueryMapper;
+import com.futureprocessing.mongojuggler.query.QueryMapper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;

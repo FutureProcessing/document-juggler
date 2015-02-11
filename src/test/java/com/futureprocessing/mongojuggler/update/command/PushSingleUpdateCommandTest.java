@@ -8,12 +8,12 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PushUpdateCommandTest {
+public class PushSingleUpdateCommandTest {
 
     private static final String FIELD = "testField";
     private static final String VALUE = "SomeValue";
 
-    private UpdateCommand command = new PushUpdateCommand(FIELD);
+    private UpdateCommand command = new PushSingleUpdateCommand(FIELD);
 
     @Test
     public void shouldPush() {

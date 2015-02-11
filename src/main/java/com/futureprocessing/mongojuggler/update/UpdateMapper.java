@@ -42,7 +42,16 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         }
 
         if (method.isAnnotationPresent(Push.class)) {
-            return new PushUpdateCommand(field);
+            if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
+                return new PushCollectionUpdateCommand(field);
+            }
+            if (method.getParameterCount() > 1) {
+                return new PushManyUpdateCommand(field);
+            }
+            if (method.isVarArgs() || method.getParameterTypes()[0].isArray()) {
+                return new PushArrayUpdateCommand(field);
+            }
+            return new PushSingleUpdateCommand(field);
         }
 
         Class parameterClass = method.getParameterTypes()[0];

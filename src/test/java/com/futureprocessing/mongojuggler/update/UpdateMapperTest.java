@@ -4,6 +4,7 @@ package com.futureprocessing.mongojuggler.update;
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.update.command.*;
 import org.junit.Test;
@@ -134,6 +135,84 @@ public class UpdateMapperTest {
         assertThat(command).isInstanceOf(AddToSetArrayUpdateCommand.class);
     }
 
+    @Test
+    public void shouldReturnPushSingleUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushSingle", String.class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushSingleUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnPushManyUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushMany", String.class, String.class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushManyUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnPushCollectionUpdateCommandForCollectionParam() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushCollection", Collection.class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnPushCollectionUpdateCommandForListParam() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushList", List.class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnPushArrayUpdateCommandForArrayParam() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushArray", String[].class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnPushArrayUpdateCommandForVarArg() throws Exception {
+        // given
+        Method method = Update.class.getMethod("pushVarArg", String[].class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
+    }
+
     private interface Update {
 
         @DbField("embedded")
@@ -169,5 +248,29 @@ public class UpdateMapperTest {
         @DbField("set")
         @AddToSet
         Update addToSetVarArg(String... values);
+
+        @DbField("list")
+        @Push
+        Update pushSingle(String value);
+
+        @DbField("list")
+        @Push
+        Update pushMany(String value1, String value2);
+
+        @DbField("list")
+        @Push
+        Update pushCollection(Collection<String> values);
+
+        @DbField("list")
+        @Push
+        Update pushList(List<String> values);
+
+        @DbField("list")
+        @Push
+        Update pushArray(String[] values);
+
+        @DbField("list")
+        @Push
+        Update pushVarArg(String... values);
     }
 }

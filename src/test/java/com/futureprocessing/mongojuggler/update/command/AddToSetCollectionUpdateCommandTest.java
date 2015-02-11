@@ -8,12 +8,13 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AddToSetUpdateCommandTest {
+public class AddToSetCollectionUpdateCommandTest {
 
     private static final String FIELD = "testField";
-    private static final String VALUE = "SomeValue";
+    private static final String VALUE_1 = "SomeValue";
+    private static final String VALUE_2 = "AnotherValue";
 
-    private UpdateCommand command = new AddToSetUpdateCommand(FIELD);
+    private UpdateCommand command = new AddToSetCollectionUpdateCommand(FIELD);
 
     @Test
     public void shouldAddToSet() {
@@ -21,10 +22,10 @@ public class AddToSetUpdateCommandTest {
         UpdateBuilder builder = new RootUpdateBuilder();
 
         // when
-        command.update(builder, new Object[]{VALUE});
+        command.update(builder, new Object[]{asList(VALUE_1, VALUE_2)});
 
         // then
-        BasicDBObject expected = new BasicDBObject("$addToSet", new BasicDBObject(FIELD, new BasicDBObject("$each", asList(VALUE))));
+        BasicDBObject expected = new BasicDBObject("$addToSet", new BasicDBObject(FIELD, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
         assertThat(builder.getDocument()).isEqualTo(expected);
     }
 

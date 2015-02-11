@@ -1,4 +1,4 @@
-package com.futureprocessing.mongojuggler.update.command;
+package com.futureprocessing.mongojuggler.insert.command;
 
 import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
 import com.futureprocessing.mongojuggler.insert.command.InsertCommand;

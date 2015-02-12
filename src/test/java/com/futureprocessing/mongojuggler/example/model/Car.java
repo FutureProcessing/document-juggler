@@ -40,4 +40,8 @@ public interface Car {
     @DbField(CarsDBModel.Car.LUGGAGE)
     @DbEmbeddedDocument
     List<Luggage> getLuggage();
+
+    @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
+    @DbEmbeddedDocument
+    Set<Luggage> getRoofLuggage();
 }

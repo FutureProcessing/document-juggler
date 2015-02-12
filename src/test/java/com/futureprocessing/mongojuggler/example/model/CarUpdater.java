@@ -43,6 +43,10 @@ public interface CarUpdater {
 
     @DbField(CarsDBModel.Car.LUGGAGE)
     @DbEmbeddedDocument()
-    CarUpdater luggage(Consumer<LuggageUpdater>... consumers);
+    CarUpdater withLuggage(Consumer<LuggageUpdater>... consumers);
+
+    @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
+    @DbEmbeddedDocument()
+    CarUpdater withRoofLuggage(Consumer<LuggageUpdater>... consumers);
 
 }

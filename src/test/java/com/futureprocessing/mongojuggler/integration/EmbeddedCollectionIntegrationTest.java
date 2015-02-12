@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +28,7 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         int weight = 1;
 
         // when
-        String id = repo.insert(car -> car.luggage(
+        String id = repo.insert(car -> car.withLuggage(
                 luggage -> luggage
                         .withColor(color)
                         .withWeight(weight)
@@ -39,5 +40,28 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         assertThat(luggage).hasSize(1);
         assertThat(luggage.get(0).getColor()).isEqualTo(color);
         assertThat(luggage.get(0).getWeight()).isEqualTo(weight);
+    }
+
+    @Test
+    public void shouldReadSetOfEmbeddedDocuments() {
+        // given
+        String color = "black";
+        int weight = 1;
+
+        String id = repo.insert(car -> car.withRoofLuggage(
+                luggage -> luggage
+                        .withColor(color)
+                        .withWeight(weight)
+        ));
+
+        // when
+        Set<Luggage> set = repo.find(car -> car.withId(id)).first().getRoofLuggage();
+
+        // then
+        assertThat(set).hasSize(1);
+        set.forEach(luggage -> {
+            assertThat(luggage.getColor()).isEqualTo(color);
+            assertThat(luggage.getWeight()).isEqualTo(weight);
+        });
     }
 }

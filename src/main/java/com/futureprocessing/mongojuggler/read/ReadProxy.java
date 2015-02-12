@@ -21,10 +21,10 @@ public class ReadProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands, DBObject dbObject, Set<String> fields) {
         return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
-                new ReadProxy(readCommands, (BasicDBObject) dbObject, fields));
+                new ReadProxy(readerType, readCommands, (BasicDBObject) dbObject, fields));
     }
 
-    private ReadProxy(Map<Method, ReadCommand> readCommands, BasicDBObject dbObject, Set<String> queriedFields) {
+    private ReadProxy(Class readerType, Map<Method, ReadCommand> readCommands, BasicDBObject dbObject, Set<String> queriedFields) {
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
         this.readCommands = readCommands;
@@ -37,6 +37,10 @@ public class ReadProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object object, Method method, Object[] params) throws Throwable {
+        if (method.getDeclaringClass().equals(Object.class)) {
+           return method.invoke(this, params);
+        }
+
         return readCommands.get(method).read(dbObject, queriedFields);
     }
 

@@ -104,7 +104,20 @@ public class ReadMapperTest {
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
-        assertThat(command).isInstanceOf(EmbeddedListReadCommand.class);
+        assertThat(command).isInstanceOf(EmbeddedCollectionReadCommand.class);
+    }
+
+    @Test
+    public void shouldReturnEmbeddedSetReadCommand() throws Exception {
+        // given
+        Method method = Read.class.getMethod("embeddedSet");
+
+        // when
+        ReadMapper mapper = new ReadMapper(Read.class);
+
+        // then
+        ReadCommand command = mapper.get(Read.class).get(method);
+        assertThat(command).isInstanceOf(EmbeddedCollectionReadCommand.class);
     }
 
     private interface Read {
@@ -131,5 +144,9 @@ public class ReadMapperTest {
         @DbField("embeddedList")
         @DbEmbeddedDocument
         List<Empty> embeddedList();
+
+        @DbField("embeddedSet")
+        @DbEmbeddedDocument
+        Set<Empty> embeddedSet();
     }
 }

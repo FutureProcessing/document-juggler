@@ -36,4 +36,8 @@ public interface Car {
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument
     Engine getEngine();
+
+    @DbField(CarsDBModel.Car.LUGGAGE)
+    @DbEmbeddedDocument
+    List<Luggage.Read> getLuggage();
 }

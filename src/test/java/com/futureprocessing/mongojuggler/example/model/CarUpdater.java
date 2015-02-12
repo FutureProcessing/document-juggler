@@ -41,4 +41,8 @@ public interface CarUpdater {
     @DbEmbeddedDocument()
     CarUpdater engine(Consumer<EngineUpdater> consumer);
 
+    @DbField(CarsDBModel.Car.LUGGAGE)
+    @DbEmbeddedDocument()
+    CarUpdater luggage(Consumer<Luggage.Update>... consumers);
+
 }

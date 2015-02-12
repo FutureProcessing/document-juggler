@@ -8,6 +8,7 @@ import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.update.command.*;
 
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         String field = Metadata.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            Class<?> type = getEmbeddedDocumentType(method);
+            Class<?> type = method.isVarArgs() ? getEmbeddedListDocumentType(method) : getEmbeddedDocumentType(method);
             createMapping(type);
             return new EmbeddedUpdateCommand(field, type, this);
         }
@@ -65,5 +66,10 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
     private Class<?> getEmbeddedDocumentType(Method method) {
         ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
         return (Class<?>) type.getActualTypeArguments()[0];
+    }
+
+    private Class<?> getEmbeddedListDocumentType(Method method) {
+        GenericArrayType type = (GenericArrayType) method.getGenericParameterTypes()[0];
+        return (Class<?>) ((ParameterizedType)type.getGenericComponentType()).getActualTypeArguments()[0];
     }
 }

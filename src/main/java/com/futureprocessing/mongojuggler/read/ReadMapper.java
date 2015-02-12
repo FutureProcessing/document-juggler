@@ -3,6 +3,7 @@ package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsException;
 import com.futureprocessing.mongojuggler.read.command.*;
@@ -62,6 +63,9 @@ public final class ReadMapper extends Mapper<ReadCommand> {
     }
 
     private String getFieldName(Method method) {
+        if (method.isAnnotationPresent(Id.class)) {
+            return "_id";
+        }
         DbField field = method.getAnnotation(DbField.class);
         return field.value();
     }

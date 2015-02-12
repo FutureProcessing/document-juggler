@@ -3,12 +3,14 @@ package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.commons.Mapper;
-import com.futureprocessing.mongojuggler.commons.Validator;
 import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsException;
 import com.futureprocessing.mongojuggler.read.command.*;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
@@ -27,7 +29,21 @@ public final class ReadMapper extends Mapper<ReadCommand> {
         String field = getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
-            createMapping(method.getReturnType());
+            Class<?> returnType = method.getReturnType();
+
+            if (returnType.equals(List.class)) {
+                Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+                createMapping(embeddedType);
+                return EmbeddedCollectionReadCommand.forList(field, embeddedType, this);
+            }
+
+            if (returnType.equals(Set.class)) {
+                Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+                createMapping(embeddedType);
+                return EmbeddedCollectionReadCommand.forSet(field, embeddedType, this);
+            }
+
+            createMapping(returnType);
             return new EmbeddedReadCommand(field, method.getReturnType(), this);
         }
 
@@ -53,6 +69,9 @@ public final class ReadMapper extends Mapper<ReadCommand> {
     }
 
     private String getFieldName(Method method) {
+        if (method.isAnnotationPresent(Id.class)) {
+            return "_id";
+        }
         DbField field = method.getAnnotation(DbField.class);
         return field.value();
     }

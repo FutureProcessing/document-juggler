@@ -22,14 +22,15 @@ public class EmbeddedVarArgInsertCommand extends AbstractInsertCommand {
 
     @Override
     public void insert(BasicDBObject document, Object[] args) {
-        Object embedded = InsertProxy.create(embeddedType, mapper.get(embeddedType));
         Consumer[] consumers = (Consumer[]) args[0];
 
         List<BasicDBObject> documents = new ArrayList<>();
         for(Consumer consumer : consumers) {
+            Object embedded = InsertProxy.create(embeddedType, mapper.get(embeddedType));
             consumer.accept(embedded);
             documents.add(InsertProxy.extract(embedded).getDocument());
         }
+
         document.put(field, documents);
     }
 

@@ -4,6 +4,7 @@ package com.futureprocessing.mongojuggler.insert;
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.insert.command.*;
 
@@ -19,7 +20,7 @@ public final class InsertMapper extends Mapper<InsertCommand> {
     protected InsertCommand getCommand(Method method) {
         String field = getFieldName(method);
 
-        if (method.isAnnotationPresent(AddToSet.class)) {
+        if (method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
             return new UnsupportedInsertCommand();
         }
 

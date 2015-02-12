@@ -34,7 +34,7 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         ));
 
         // then
-        List<Luggage.Read> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
+        List<Luggage> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
 
         assertThat(luggage).hasSize(1);
         assertThat(luggage.get(0).getColor()).isEqualTo(color);

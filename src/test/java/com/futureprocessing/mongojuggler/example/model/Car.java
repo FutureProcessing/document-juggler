@@ -39,5 +39,5 @@ public interface Car {
 
     @DbField(CarsDBModel.Car.LUGGAGE)
     @DbEmbeddedDocument
-    List<Luggage.Read> getLuggage();
+    List<Luggage> getLuggage();
 }

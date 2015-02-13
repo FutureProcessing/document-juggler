@@ -17,14 +17,13 @@ import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class EmbeddedCollectionReadCommandTest {
+public class EmbeddedListReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
     private static final ReadMapper mapper = new ReadMapper(EMBEDDED_TYPE);
 
-    private ReadCommand listCommand = EmbeddedCollectionReadCommand.forList(FIELD, EMBEDDED_TYPE, mapper);
-    private ReadCommand setCommand = EmbeddedCollectionReadCommand.forSet(FIELD, EMBEDDED_TYPE, mapper);
+    private ReadCommand command = new EmbeddedListReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 
     @Test
     public void shouldThrowFieldNotLoadedExceptionWhenAccessingNotLoadedField() {
@@ -34,7 +33,7 @@ public class EmbeddedCollectionReadCommandTest {
 
         // when
         try {
-            listCommand.read(document, queriedFields);
+            command.read(document, queriedFields);
         } catch (FieldNotLoadedException e) {
             // then
             return;
@@ -50,7 +49,7 @@ public class EmbeddedCollectionReadCommandTest {
         Set<String> queriedFields = emptySet();
 
         // when
-        Object value = listCommand.read(document, queriedFields);
+        Object value = command.read(document, queriedFields);
 
         // then
         assertThat(value).isInstanceOf(List.class);
@@ -67,7 +66,7 @@ public class EmbeddedCollectionReadCommandTest {
         Set<String> queriedFields = asSet(FIELD);
 
         // when
-        Object value = listCommand.read(document, queriedFields);
+        Object value = command.read(document, queriedFields);
 
         // then
         assertThat(value).isInstanceOf(List.class);
@@ -78,38 +77,23 @@ public class EmbeddedCollectionReadCommandTest {
     }
 
     @Test
-    public void shouldReadValueFromSetWhenNoProjectionSpecified() {
+    public void shouldReturnUnmodifiableList() {
         // given
         BasicDBObject document = new BasicDBObject(FIELD, asList(new BasicDBObject()));
         Set<String> queriedFields = emptySet();
 
         // when
-        Object value = setCommand.read(document, queriedFields);
+        List value = (List) command.read(document, queriedFields);
 
         // then
-        assertThat(value).isInstanceOf(Set.class);
-
-        Set set = (Set) value;
-        assertThat(set).hasSize(1);
-        set.forEach(el -> assertThat(isProxyClass(el.getClass())).isTrue());
+        try {
+            value.add(new Object());
+        } catch (UnsupportedOperationException ex) {
+            return;
+        }
+        fail("Exception expected");
     }
 
-    @Test
-    public void shouldReadValueFromSetWhenProjectionSpecified() {
-        // given
-        BasicDBObject document = new BasicDBObject(FIELD, asList(new BasicDBObject()));
-        Set<String> queriedFields = asSet(FIELD);
-
-        // when
-        Object value = setCommand.read(document, queriedFields);
-
-        // then
-        assertThat(value).isInstanceOf(Set.class);
-
-        Set set = (Set) value;
-        assertThat(set).hasSize(1);
-        set.forEach(el -> assertThat(isProxyClass(el.getClass())).isTrue());
-    }
 
     @Test
     public void shouldReturnNullIfFieldIsEmpty() {
@@ -118,7 +102,7 @@ public class EmbeddedCollectionReadCommandTest {
         Set<String> queriedFields = emptySet();
 
         // when
-        Object value = listCommand.read(document, queriedFields);
+        Object value = command.read(document, queriedFields);
 
         // then
         assertThat(value).isNull();

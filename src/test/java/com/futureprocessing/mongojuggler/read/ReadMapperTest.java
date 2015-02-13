@@ -104,7 +104,7 @@ public class ReadMapperTest {
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
-        assertThat(command).isInstanceOf(EmbeddedCollectionReadCommand.class);
+        assertThat(command).isInstanceOf(EmbeddedListReadCommand.class);
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ReadMapperTest {
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
-        assertThat(command).isInstanceOf(EmbeddedCollectionReadCommand.class);
+        assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
     }
 
     private interface Read {

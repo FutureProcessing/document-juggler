@@ -43,6 +43,11 @@ public class EmbeddedUpdateBuilder implements UpdateBuilder {
         return new EmbeddedUpdateBuilder(this, field);
     }
 
+    @Override
+    public void inc(String field, Integer value) {
+        updateBuilder.inc(fullPath(field), value);
+    }
+
     private String fullPath(String embeddedField) {
         return field + "." + embeddedField;
     }

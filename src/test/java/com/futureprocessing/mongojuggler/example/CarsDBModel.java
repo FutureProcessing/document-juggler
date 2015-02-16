@@ -16,6 +16,7 @@ public interface CarsDBModel {
         String OWNERS = "owners";
         String LUGGAGE = "luggage";
         String ROOF_LUGGAGE = "roofLuggage";
+        String SIDE_NUMBER = "sideNumber";
 
         static interface Engine {
             String FUEL = "fuel";

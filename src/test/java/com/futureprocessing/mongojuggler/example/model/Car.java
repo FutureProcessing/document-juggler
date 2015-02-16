@@ -24,6 +24,9 @@ public interface Car {
     @DbField(CarsDBModel.Car.RELEASE_DATE)
     Date getReleaseDate();
 
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    int getSideNumber();
+
     @DbField(CarsDBModel.Car.AUTOMATIC_GEARBOX)
     boolean isAutomaticGearbox();
 

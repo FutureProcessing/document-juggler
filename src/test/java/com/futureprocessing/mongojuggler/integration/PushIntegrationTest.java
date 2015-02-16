@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PushIntegrationTest extends BaseIntegrationTest {
 
@@ -31,7 +32,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
-        Assertions.assertThat(owners).containsExactly("One", "Two");
+        assertThat(owners).containsExactly("One", "Two");
     }
 
     @Test
@@ -48,7 +49,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
-        Assertions.assertThat(owners).containsExactly("One", "Two", "Three");
+        assertThat(owners).containsExactly("One", "Two", "Three");
     }
 
     @Test
@@ -62,6 +63,6 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
-        Assertions.assertThat(owners).containsExactly("One");
+        assertThat(owners).containsExactly("One");
     }
 }

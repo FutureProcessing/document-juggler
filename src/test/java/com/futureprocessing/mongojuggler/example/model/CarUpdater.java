@@ -23,6 +23,13 @@ public interface CarUpdater {
     @DbField(CarsDBModel.Car.AUTOMATIC_GEARBOX)
     CarUpdater withAutomaticGearbox(boolean automaticGearbox);
 
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    CarUpdater withSideNumber(int number);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @Inc
+    CarUpdater increaseSideNumber(int value);
+
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     CarUpdater withPassengerNames(Set<String> passengerNames);
 

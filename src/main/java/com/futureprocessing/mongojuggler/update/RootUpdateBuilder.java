@@ -40,6 +40,11 @@ public class RootUpdateBuilder implements UpdateBuilder {
         return new EmbeddedUpdateBuilder(this, field);
     }
 
+    @Override
+    public void inc(String field, Integer value) {
+        get("$inc").append(field, value);
+    }
+
     private BasicDBObject get(String field) {
         BasicDBObject value = (BasicDBObject) document.get(field);
         if (value == null) {

@@ -34,13 +34,13 @@ public final class ReadMapper extends Mapper<ReadCommand> {
             if (returnType.equals(List.class)) {
                 Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
                 createMapping(embeddedType);
-                return EmbeddedCollectionReadCommand.forList(field, embeddedType, this);
+                return new EmbeddedListReadCommand(field, embeddedType, this);
             }
 
             if (returnType.equals(Set.class)) {
                 Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
                 createMapping(embeddedType);
-                return EmbeddedCollectionReadCommand.forSet(field, embeddedType, this);
+                return new EmbeddedSetReadCommand(field, embeddedType, this);
             }
 
             createMapping(returnType);

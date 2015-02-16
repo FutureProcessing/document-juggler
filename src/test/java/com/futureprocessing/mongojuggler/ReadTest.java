@@ -5,7 +5,7 @@ import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.example.model.Engine;
-import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
+import com.futureprocessing.mongojuggler.example.model.Luggage;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -20,9 +20,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Engine.CYLINDERS_NUMBER;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Engine.FUEL;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Luggage.COLOR;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Luggage.WEIGHT;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -79,6 +82,43 @@ public class ReadTest {
 
         // then
         verify(collection).findOne(eq(expectedQuery), any());
+    }
+
+    @Test
+    public void shouldCacheEmbeddedDoc() {
+        // given
+        BasicDBObject model = new BasicDBObject(ENGINE,
+                new BasicDBObject(CYLINDERS_NUMBER, 12).append(FUEL, "gas")
+        );
+        given(collection.findOne(any(), any())).willReturn(model);
+
+        Car car = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+
+        // when
+        Engine engine1 = car.getEngine();
+        Engine engine2 = car.getEngine();
+
+        // then
+        assertThat(engine2).isSameAs(engine1);
+    }
+
+    @Test
+    public void shouldCacheListOfEmbeddedDocs() {
+        // given
+        BasicDBObject model = new BasicDBObject(LUGGAGE, asList(
+                new BasicDBObject(WEIGHT, 1).append(COLOR, "black"),
+                new BasicDBObject(WEIGHT, 2).append(COLOR, "red")
+        ));
+        given(collection.findOne(any(), any())).willReturn(model);
+
+        Car car = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+
+        // when
+        List<Luggage> luggage1 = car.getLuggage();
+        List<Luggage> luggage2 = car.getLuggage();
+
+        // then
+        assertThat(luggage2).isSameAs(luggage1);
     }
 
 }

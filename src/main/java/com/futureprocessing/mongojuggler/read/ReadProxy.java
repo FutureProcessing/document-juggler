@@ -6,6 +6,7 @@ import com.mongodb.DBObject;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ public class ReadProxy implements InvocationHandler {
     private final BasicDBObject dbObject;
     private final Set<String> queriedFields;
     private final Map<Method, ReadCommand> readCommands;
+    private final Map<Method, Object> cache = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands, DBObject dbObject, Set<String> fields) {
@@ -38,10 +40,16 @@ public class ReadProxy implements InvocationHandler {
     @Override
     public Object invoke(Object object, Method method, Object[] params) throws Throwable {
         if (method.getDeclaringClass().equals(Object.class)) {
-           return method.invoke(this, params);
+            return method.invoke(this, params);
         }
 
-        return readCommands.get(method).read(dbObject, queriedFields);
+        if (cache.containsKey(method)) {
+            return cache.get(method);
+        }
+
+        Object value = readCommands.get(method).read(dbObject, queriedFields);
+        cache.put(method, value);
+        return value;
     }
 
 }

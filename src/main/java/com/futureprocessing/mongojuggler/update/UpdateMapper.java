@@ -3,6 +3,7 @@ package com.futureprocessing.mongojuggler.update;
 
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.mongojuggler.annotation.Inc;
 import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
@@ -53,6 +54,10 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
                 return new PushArrayUpdateCommand(field);
             }
             return new PushSingleUpdateCommand(field);
+        }
+
+        if( method.isAnnotationPresent(Inc.class)) {
+            return new IncrementUpdateCommand(field);
         }
 
         Class parameterClass = method.getParameterTypes()[0];

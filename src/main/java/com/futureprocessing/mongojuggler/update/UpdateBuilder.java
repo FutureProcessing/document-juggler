@@ -16,4 +16,6 @@ public interface UpdateBuilder {
     BasicDBObject getDocument();
 
     UpdateBuilder embedded(String field);
+
+    void inc(String field, Integer value);
 }

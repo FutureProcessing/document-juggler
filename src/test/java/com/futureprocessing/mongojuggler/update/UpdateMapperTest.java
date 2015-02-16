@@ -1,10 +1,7 @@
 package com.futureprocessing.mongojuggler.update;
 
 
-import com.futureprocessing.mongojuggler.annotation.AddToSet;
-import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.mongojuggler.annotation.DbField;
-import com.futureprocessing.mongojuggler.annotation.Push;
+import com.futureprocessing.mongojuggler.annotation.*;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.update.command.*;
 import org.junit.Test;
@@ -213,6 +210,19 @@ public class UpdateMapperTest {
         assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
     }
 
+    @Test
+    public void shouldReturnIncrementUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("increment", int.class);
+
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(Update.class).get(method);
+        assertThat(command).isInstanceOf(IncrementUpdateCommand.class);
+    }
+
     private interface Update {
 
         @DbField("embedded")
@@ -272,5 +282,9 @@ public class UpdateMapperTest {
         @DbField("list")
         @Push
         Update pushVarArg(String... values);
+
+        @DbField("increment")
+        @Inc
+        Update increment(int number);
     }
 }

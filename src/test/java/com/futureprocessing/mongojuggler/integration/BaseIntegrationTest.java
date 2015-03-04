@@ -1,5 +1,7 @@
 package com.futureprocessing.mongojuggler.integration;
 
+import com.futureprocessing.mongojuggler.SimpleDBProvider;
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -14,12 +16,12 @@ public abstract class BaseIntegrationTest {
     public static final String DB_NAME = "mongo-juggler-test";
 
     private static MongoClient client;
-
-
+    private static DB db;
 
     @BeforeClass
     public static void initMongo() throws Exception {
         client = new MongoClient(getMongoHost(), getMongoPort());
+        db = new SimpleDBProvider(client(), DB_NAME).db();
     }
 
     private static String getMongoHost() {
@@ -30,6 +32,10 @@ public abstract class BaseIntegrationTest {
     private static int getMongoPort() {
         String property = System.getProperty(PORT_KEY);
         return property != null ? Integer.parseInt(property) : DEFAULT_PORT;
+    }
+
+    public static DB db(){
+        return db;
     }
 
     public static MongoClient client() {

@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.query;
 
 @FunctionalInterface
-public interface QueryConsumer<QUERY> {
+public interface QuerierConsumer<QUERY> {
 
     void accept(QUERY query);
 }

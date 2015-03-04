@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@DbDocument(CarsDBModel.Car.COLLECTION)
 public interface CarUpdater {
 
     @DbField(CarsDBModel.Car.BRAND)

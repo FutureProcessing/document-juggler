@@ -50,7 +50,7 @@ public class ReadTest {
         given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
 
-        carsRepository = new CarsRepository(dbProvider);
+        carsRepository = new CarsRepository(dbProvider.db());
     }
 
     @Test

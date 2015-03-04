@@ -45,7 +45,7 @@ public class ReadListTest {
         given(db.getCollection(any())).willReturn(collection);
         given(collection.find(any(), any())).willReturn(cursor);
 
-        carsRepository = new CarsRepository(dbProvider);
+        carsRepository = new CarsRepository(dbProvider.db());
     }
 
     @Test

@@ -1,11 +1,11 @@
 package com.futureprocessing.mongojuggler;
 
 
-import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.insert.InsertMapper;
 import com.futureprocessing.mongojuggler.insert.InsertProxy;
+import com.futureprocessing.mongojuggler.insert.InserterConsumer;
 import com.futureprocessing.mongojuggler.query.QueriedDocuments;
-import com.futureprocessing.mongojuggler.query.QueryConsumer;
+import com.futureprocessing.mongojuggler.query.QuerierConsumer;
 import com.futureprocessing.mongojuggler.query.QueryMapper;
 import com.futureprocessing.mongojuggler.query.QueryProxy;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
@@ -13,28 +13,29 @@ import com.futureprocessing.mongojuggler.update.UpdateMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
-import java.util.function.Consumer;
-
-public class Repository<READER, UPDATER, QUERY, INSERTER> {
+public class Repository<READER, UPDATER, QUERIER, INSERTER> {
 
     private final Class<READER> readerClass;
     private final Class<UPDATER> updaterClass;
     private final Class<INSERTER> inserterClass;
-    private final MongoDBProvider dbProvider;
-    private final Class<QUERY> queryClass;
+    private final Class<QUERIER> queryClass;
+
+    private final DBCollection dbCollection;
 
     private final QueryMapper queryMapper;
     private final ReadMapper readMapper;
     private final InsertMapper insertMapper;
     private final UpdateMapper updateMapper;
 
-    public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERY> querierClass, Class<INSERTER> inserterClass,
-                      MongoDBProvider dbProvider) {
+    public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERIER> querierClass,
+                      Class<INSERTER> inserterClass,
+                      DBCollection dbCollection) {
         this.readerClass = readerClass;
         this.updaterClass = updaterClass;
         this.inserterClass = inserterClass;
-        this.dbProvider = dbProvider;
         this.queryClass = querierClass;
+
+        this.dbCollection = dbCollection;
 
         queryMapper = new QueryMapper(querierClass);
         readMapper = new ReadMapper(readerClass);
@@ -42,31 +43,26 @@ public class Repository<READER, UPDATER, QUERY, INSERTER> {
         updateMapper = new UpdateMapper(updaterClass);
     }
 
-    public QueriedDocuments<READER, UPDATER> find(QueryConsumer<QUERY> queryConsumer) {
-        QUERY query = QueryProxy.create(queryClass, queryMapper.get(queryClass));
-        queryConsumer.accept(query);
+    public QueriedDocuments<READER, UPDATER> find(QuerierConsumer<QUERIER> querierConsumer) {
+        QUERIER querier = QueryProxy.create(queryClass, queryMapper.get(queryClass));
+        querierConsumer.accept(querier);
 
-        return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, getDBCollection(),
-                                      QueryProxy.extract(query).toDBObject());
+        return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, dbCollection,
+                                      QueryProxy.extract(querier).toDBObject());
     }
 
     public QueriedDocuments<READER, UPDATER> find() {
-        return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, getDBCollection(), null);
+        return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, dbCollection, null);
     }
 
-    public String insert(Consumer<INSERTER> consumer) {
-        DBCollection collection = getDBCollection();
+    public String insert(InserterConsumer<INSERTER> consumer) {
         INSERTER inserter = InsertProxy.create(inserterClass, insertMapper.get(inserterClass));
         consumer.accept(inserter);
 
         BasicDBObject document = InsertProxy.extract(inserter).getDocument();
-        collection.insert(document);
+        dbCollection.insert(document);
         return document.getObjectId("_id").toHexString();
     }
 
-    private DBCollection getDBCollection() {
-        String collectionName = Metadata.getCollectionName(updaterClass);
-        return dbProvider.db().getCollection(collectionName);
-    }
 
 }

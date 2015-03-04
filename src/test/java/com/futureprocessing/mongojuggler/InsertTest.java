@@ -59,7 +59,7 @@ public class InsertTest {
             return null;
         });
 
-        carsRepository = new CarsRepository(dbProvider);
+        carsRepository = new CarsRepository(dbProvider.db());
     }
 
 

@@ -21,7 +21,7 @@ public class InsertIntegrationTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        repo = new CarsRepository(new SimpleDBProvider(client(), DB_NAME));
+        repo = new CarsRepository(db());
         collection = client().getDB(DB_NAME).getCollection(CarsDBModel.Car.COLLECTION);
     }
 

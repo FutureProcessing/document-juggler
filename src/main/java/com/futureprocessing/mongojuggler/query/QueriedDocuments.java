@@ -5,14 +5,10 @@ import com.futureprocessing.mongojuggler.exception.MissingPropertyException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
-import com.futureprocessing.mongojuggler.update.RootUpdateBuilder;
-import com.futureprocessing.mongojuggler.update.UpdateMapper;
-import com.futureprocessing.mongojuggler.update.UpdateProxy;
-import com.futureprocessing.mongojuggler.update.UpdateResult;
+import com.futureprocessing.mongojuggler.update.*;
 import com.mongodb.*;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 import static java.util.Collections.addAll;
 import static java.util.Collections.unmodifiableSet;
@@ -107,7 +103,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
         return this;
     }
 
-    public UpdateResult update(Consumer<UPDATER> consumer) {
+    public UpdateResult update(UpdaterConsumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
         UPDATER updater = UpdateProxy.create(updaterClass, updateMapper.get(updaterClass), new RootUpdateBuilder());

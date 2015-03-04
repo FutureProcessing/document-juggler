@@ -43,7 +43,7 @@ public class UpdateTest {
         given(collection.update(any(), any())).willReturn(writeResult);
         given(writeResult.getN()).willReturn(1);
 
-        carsRepository = new CarsRepository(dbProvider);
+        carsRepository = new CarsRepository(dbProvider.db());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.futureprocessing.mongojuggler.example.model;
 
-import com.futureprocessing.mongojuggler.annotation.DbDocument;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@DbDocument(CarsDBModel.Car.COLLECTION)
 public interface CarReader {
 
     @DbField(CarsDBModel.Car.ID)

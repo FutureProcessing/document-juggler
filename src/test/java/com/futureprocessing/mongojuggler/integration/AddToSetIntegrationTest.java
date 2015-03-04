@@ -21,7 +21,7 @@ public class AddToSetIntegrationTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        repo = new CarsRepository(new SimpleDBProvider(client(), DB_NAME));
+        repo = new CarsRepository(db());
     }
 
     @Test

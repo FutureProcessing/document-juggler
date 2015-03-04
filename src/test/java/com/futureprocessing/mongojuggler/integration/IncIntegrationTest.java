@@ -29,8 +29,8 @@ public class IncIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withSideNumber(number));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.increaseSideNumber(diff));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.increaseSideNumber(diff));
 
         // then
         int sideNumber = repo.find(car -> car.withId(id)).first().getSideNumber();
@@ -45,8 +45,8 @@ public class IncIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withSideNumber(number));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.increaseSideNumber(diff));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.increaseSideNumber(diff));
 
         // then
         int sideNumber = repo.find(car -> car.withId(id)).first().getSideNumber();
@@ -60,8 +60,8 @@ public class IncIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withModel("F1"));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.increaseSideNumber(diff));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.increaseSideNumber(diff));
 
         // then
         int sideNumber = repo.find(car -> car.withId(id)).first().getSideNumber();

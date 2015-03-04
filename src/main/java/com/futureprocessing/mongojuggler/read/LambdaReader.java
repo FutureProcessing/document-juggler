@@ -1,28 +1,40 @@
 package com.futureprocessing.mongojuggler.read;
 
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
+import com.futureprocessing.mongojuggler.exception.MissingPropertyException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
+import com.futureprocessing.mongojuggler.update.RootUpdateBuilder;
+import com.futureprocessing.mongojuggler.update.UpdateMapper;
+import com.futureprocessing.mongojuggler.update.UpdateProxy;
+import com.futureprocessing.mongojuggler.update.UpdateResult;
 import com.mongodb.*;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static java.util.Collections.addAll;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.OptionalInt.empty;
 import static java.util.OptionalInt.of;
 
-public class LambdaReader<READER> {
+public class LambdaReader<READER, UPDATER> {
 
     private final Class<READER> readerClass;
-    private final ReadMapper mapper;
+    private final Class<UPDATER> updaterClass;
+    private final ReadMapper readMapper;
+    private final UpdateMapper updateMapper;
     private final DBCollection dbCollection;
     private final DBObject query;
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
-    public LambdaReader(Class<READER> readerClass, ReadMapper mapper, DBCollection dbCollection, DBObject query) {
+    public LambdaReader(Class<READER> readerClass, Class<UPDATER> updaterClass,
+                        ReadMapper readMapper, UpdateMapper updateMapper,
+                        DBCollection dbCollection, DBObject query) {
         this.readerClass = readerClass;
-        this.mapper = mapper;
+        this.readMapper = readMapper;
+        this.updaterClass = updaterClass;
+        this.updateMapper = updateMapper;
         this.dbCollection = dbCollection;
         this.query = query;
     }
@@ -33,7 +45,7 @@ public class LambdaReader<READER> {
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        return ReadProxy.create(readerClass, mapper.get(readerClass), dbObject, fields);
+        return ReadProxy.create(readerClass, readMapper.get(readerClass), dbObject, fields);
     }
 
     public List<READER> all(String... fieldsToFetch) {
@@ -51,7 +63,7 @@ public class LambdaReader<READER> {
             }
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
-                list.add(ReadProxy.create(readerClass, mapper.get(readerClass), document, fields));
+                list.add(ReadProxy.create(readerClass, readMapper.get(readerClass), document, fields));
             }
         }
 
@@ -73,7 +85,7 @@ public class LambdaReader<READER> {
         return start.get();
     }
 
-    public LambdaReader<READER> skip(int skip) {
+    public LambdaReader<READER, UPDATER> skip(int skip) {
         if (this.skip.isPresent()) {
             throw new SkipAlreadyPresentException();
         }
@@ -81,11 +93,25 @@ public class LambdaReader<READER> {
         return this;
     }
 
-    public LambdaReader<READER> limit(int limit) {
+    public LambdaReader<READER, UPDATER> limit(int limit) {
         if (this.limit.isPresent()) {
             throw new LimitAlreadyPresentException();
         }
         this.limit = of(limit);
         return this;
+    }
+
+    public UpdateResult update(Consumer<UPDATER> consumer) {
+        DBCollection collection = dbCollection;
+
+        UPDATER updater = UpdateProxy.create(updaterClass, updateMapper.get(updaterClass), new RootUpdateBuilder());
+        consumer.accept(updater);
+
+        BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();
+        if (document.isEmpty()) {
+            throw new MissingPropertyException("No property to update specified");
+        }
+        WriteResult result = collection.update(query, document);
+        return new UpdateResult(result);
     }
 }

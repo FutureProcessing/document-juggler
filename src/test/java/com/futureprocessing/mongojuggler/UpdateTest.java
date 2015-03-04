@@ -51,7 +51,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.update(car -> car.withId(ID)).with(car -> car.addPassengerName("Kowalski"));
+        carsRepository.find(car -> car.withId(ID)).update(car -> car.addPassengerName("Kowalski"));
 
         //then
         verify(db).getCollection(eq(CarsDBModel.Car.COLLECTION));
@@ -63,8 +63,8 @@ public class UpdateTest {
         //given
 
         //when
-        UpdateResult result = carsRepository.update(car -> car.withId(ID))
-                .with(car -> car.withModel("Corsa"));
+        UpdateResult result = carsRepository.find(car -> car.withId(ID))
+                .update(car -> car.withModel("Corsa"));
 
         //then
         assertThat(result.getAffectedCount()).isEqualTo(1);
@@ -78,8 +78,8 @@ public class UpdateTest {
 
         //when
         try {
-            carsRepository.update(car -> car.withId(ID))
-                    .with(car -> car.withBrand(newBrand))
+            carsRepository.find(car -> car.withId(ID))
+                    .update(car -> car.withBrand(newBrand))
                     .ensureOneUpdated();
         } catch (InvalidNumberOfDocumentsAffected e) {
             //then

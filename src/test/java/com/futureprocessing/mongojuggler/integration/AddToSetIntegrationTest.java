@@ -30,8 +30,8 @@ public class AddToSetIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withPassengerNames(asSet("One")));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.addPassengerName("Two"));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.addPassengerName("Two"));
 
         // then
         Set<String> passengers = repo.find(car -> car.withId(id)).first().getPassengersNames();
@@ -44,8 +44,8 @@ public class AddToSetIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withPassengerNames(asSet("One")));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car
+        repo.find(car -> car.withId(id))
+                .update(car -> car
                                 .addPassengerName("Two")
                                 .addPassengerName("Three")
                 );
@@ -61,8 +61,8 @@ public class AddToSetIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withModel("Model"));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.addPassengerName("One"));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.addPassengerName("One"));
 
         // then
         Set<String> passengers = repo.find(car -> car.withId(id)).first().getPassengersNames();

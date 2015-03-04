@@ -1,8 +1,10 @@
-package com.futureprocessing.mongojuggler.read;
+package com.futureprocessing.mongojuggler.query;
 
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.mongojuggler.exception.MissingPropertyException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
+import com.futureprocessing.mongojuggler.read.ReadMapper;
+import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.futureprocessing.mongojuggler.update.RootUpdateBuilder;
 import com.futureprocessing.mongojuggler.update.UpdateMapper;
 import com.futureprocessing.mongojuggler.update.UpdateProxy;
@@ -17,7 +19,7 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.OptionalInt.empty;
 import static java.util.OptionalInt.of;
 
-public class LambdaReader<READER, UPDATER> {
+public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<READER> {
 
     private final Class<READER> readerClass;
     private final Class<UPDATER> updaterClass;
@@ -28,9 +30,9 @@ public class LambdaReader<READER, UPDATER> {
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
-    public LambdaReader(Class<READER> readerClass, Class<UPDATER> updaterClass,
-                        ReadMapper readMapper, UpdateMapper updateMapper,
-                        DBCollection dbCollection, DBObject query) {
+    public QueriedDocuments(Class<READER> readerClass, Class<UPDATER> updaterClass,
+                            ReadMapper readMapper, UpdateMapper updateMapper,
+                            DBCollection dbCollection, DBObject query) {
         this.readerClass = readerClass;
         this.readMapper = readMapper;
         this.updaterClass = updaterClass;
@@ -39,6 +41,7 @@ public class LambdaReader<READER, UPDATER> {
         this.query = query;
     }
 
+    @Override
     public READER first(String... fieldsToFetch) {
         Set<String> fields = toSet(fieldsToFetch);
         DBObject projection = getProjection(fields);
@@ -48,6 +51,7 @@ public class LambdaReader<READER, UPDATER> {
         return ReadProxy.create(readerClass, readMapper.get(readerClass), dbObject, fields);
     }
 
+    @Override
     public List<READER> all(String... fieldsToFetch) {
         Set<String> fields = toSet(fieldsToFetch);
         DBObject projection = getProjection(fields);
@@ -85,7 +89,8 @@ public class LambdaReader<READER, UPDATER> {
         return start.get();
     }
 
-    public LambdaReader<READER, UPDATER> skip(int skip) {
+    @Override
+    public ReadQueriedDocuments<READER> skip(int skip) {
         if (this.skip.isPresent()) {
             throw new SkipAlreadyPresentException();
         }
@@ -93,7 +98,8 @@ public class LambdaReader<READER, UPDATER> {
         return this;
     }
 
-    public LambdaReader<READER, UPDATER> limit(int limit) {
+    @Override
+    public ReadQueriedDocuments<READER> limit(int limit) {
         if (this.limit.isPresent()) {
             throw new LimitAlreadyPresentException();
         }

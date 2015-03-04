@@ -157,7 +157,8 @@ public class InsertTest {
         assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
-    @Test
+    //todo enable when there will be support for mixed reader, inserter, updater interfaces
+    /*@Test
     public void shouldThrowUnsupportedActionExceptionWhenAddingToListWhileInsert() {
         //given
         final String newPassenger = "Adam";
@@ -172,7 +173,7 @@ public class InsertTest {
         //then
         fail("Should throw exception");
     }
-
+*/
     @Test
     public void shouldReturnInsertedDocumentId() {
         // given

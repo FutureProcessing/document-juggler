@@ -2,7 +2,7 @@ package com.futureprocessing.mongojuggler;
 
 
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
+import com.futureprocessing.mongojuggler.example.model.CarReader;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
@@ -62,10 +62,10 @@ public class ReadListTest {
         given(cursor.next()).willReturn(car1, car2);
 
         // when
-        List<Car> cars = carsRepository.find(car -> car.withBrand(brand)).all();
+        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand(brand)).all();
 
         // then
-        assertThat(extractProperty("model").from(cars)).containsExactly(model1, model2);
+        assertThat(extractProperty("model").from(carReaders)).containsExactly(model1, model2);
     }
 
     @Test
@@ -74,10 +74,10 @@ public class ReadListTest {
         given(cursor.hasNext()).willReturn(false);
 
         // when
-        List<Car> cars = carsRepository.find(car -> car.withBrand("Fiat")).all();
+        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand("Fiat")).all();
 
         // then
-        assertThat(cars).isEmpty();
+        assertThat(carReaders).isEmpty();
     }
 
     @Test
@@ -142,11 +142,11 @@ public class ReadListTest {
         given(cursor.hasNext()).willReturn(true, false);
         given(cursor.next()).willReturn(dbObject);
 
-        List<Car> cars = carsRepository.find(car -> car.withBrand("fiat")).all(MODEL);
+        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand("fiat")).all(MODEL);
 
         // when
         try {
-            cars.get(0).getBrand();
+            carReaders.get(0).getBrand();
         } catch (FieldNotLoadedException e) {
             // then
             return;

@@ -15,10 +15,11 @@ import com.mongodb.DBCollection;
 
 import java.util.function.Consumer;
 
-public class Repository<READER, UPDATER, QUERY> {
+public class Repository<READER, UPDATER, QUERY, INSERTER> {
 
     private final Class<READER> readerClass;
     private final Class<UPDATER> updaterClass;
+    private final Class<INSERTER> inserterClass;
     private final MongoDBProvider dbProvider;
     private final Class<QUERY> queryClass;
 
@@ -27,16 +28,17 @@ public class Repository<READER, UPDATER, QUERY> {
     private final InsertMapper insertMapper;
     private final UpdateMapper updateMapper;
 
-    public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERY> queryClass,
+    public Repository(Class<READER> readerClass, Class<UPDATER> updaterClass, Class<QUERY> querierClass, Class<INSERTER> inserterClass,
                       MongoDBProvider dbProvider) {
         this.readerClass = readerClass;
         this.updaterClass = updaterClass;
+        this.inserterClass = inserterClass;
         this.dbProvider = dbProvider;
-        this.queryClass = queryClass;
+        this.queryClass = querierClass;
 
-        queryMapper = new QueryMapper(queryClass);
+        queryMapper = new QueryMapper(querierClass);
         readMapper = new ReadMapper(readerClass);
-        insertMapper = new InsertMapper(updaterClass);
+        insertMapper = new InsertMapper(inserterClass);
         updateMapper = new UpdateMapper(updaterClass);
     }
 
@@ -52,12 +54,12 @@ public class Repository<READER, UPDATER, QUERY> {
         return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, getDBCollection(), null);
     }
 
-    public String insert(Consumer<UPDATER> consumer) {
+    public String insert(Consumer<INSERTER> consumer) {
         DBCollection collection = getDBCollection();
-        UPDATER updater = InsertProxy.create(updaterClass, insertMapper.get(updaterClass));
-        consumer.accept(updater);
+        INSERTER inserter = InsertProxy.create(inserterClass, insertMapper.get(inserterClass));
+        consumer.accept(inserter);
 
-        BasicDBObject document = InsertProxy.extract(updater).getDocument();
+        BasicDBObject document = InsertProxy.extract(inserter).getDocument();
         collection.insert(document);
         return document.getObjectId("_id").toHexString();
     }

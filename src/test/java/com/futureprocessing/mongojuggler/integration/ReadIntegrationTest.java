@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler.integration;
 
 import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
+import com.futureprocessing.mongojuggler.example.model.CarReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
                 .withModel(model));
 
         // when
-        Car document = repo.find(car -> car.withId(id)).first();
+        CarReader document = repo.find(car -> car.withId(id)).first();
 
         assertThat(document.getBrand()).isEqualTo(brand);
         assertThat(document.getModel()).isEqualTo(model);
@@ -49,7 +49,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model2));
 
         // when
-        List<Car> list = repo.find(car -> car.withBrand(brand)).all();
+        List<CarReader> list = repo.find(car -> car.withBrand(brand)).all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2);
@@ -68,7 +68,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model3));
 
         // when
-        List<Car> list = repo.find(car -> car.withBrand(brand)).skip(1).limit(1).all();
+        List<CarReader> list = repo.find(car -> car.withBrand(brand)).skip(1).limit(1).all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model2);
@@ -87,7 +87,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model3));
 
         // when
-        List<Car> list = repo.find().all();
+        List<CarReader> list = repo.find().all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2, model3);

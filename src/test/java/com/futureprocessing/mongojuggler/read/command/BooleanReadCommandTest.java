@@ -1,19 +1,16 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
-import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.AUTOMATIC_GEARBOX;
 import static com.futureprocessing.mongojuggler.helper.Sets.asSet;
 import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 public class BooleanReadCommandTest {

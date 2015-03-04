@@ -2,6 +2,7 @@ package com.futureprocessing.mongojuggler;
 
 
 import com.futureprocessing.mongojuggler.commons.Metadata;
+import com.futureprocessing.mongojuggler.query.QueryConsumer;
 import com.futureprocessing.mongojuggler.read.LambdaReader;
 import com.futureprocessing.mongojuggler.query.QueryMapper;
 import com.futureprocessing.mongojuggler.query.QueryProxy;
@@ -39,7 +40,7 @@ public class Repository<READER, UPDATER, QUERY> {
         updateMapper = new UpdateMapper(updaterClass);
     }
 
-    public LambdaReader<READER> find(Consumer<QUERY> queryConsumer) {
+    public LambdaReader<READER> find(QueryConsumer<QUERY> queryConsumer) {
         QUERY query = QueryProxy.create(queryClass, queryMapper.get(queryClass));
         queryConsumer.accept(query);
 
@@ -68,13 +69,12 @@ public class Repository<READER, UPDATER, QUERY> {
         return dbProvider.db().getCollection(collectionName);
     }
 
-    public LambdaUpdater<UPDATER> update(Consumer<QUERY> consumer) {
+    public LambdaUpdater<UPDATER> update(QueryConsumer<QUERY> queryConsumer) {
         QUERY query = QueryProxy.create(queryClass, queryMapper.get(queryClass));
-        consumer.accept(query);
+        queryConsumer.accept(query);
 
-        LambdaUpdater<UPDATER> lambdaUpdater = new LambdaUpdater<>(updaterClass, updateMapper, getDBCollection(),
+        return new LambdaUpdater<>(updaterClass, updateMapper, getDBCollection(),
                 QueryProxy.extract(query).toDBObject());
-        return lambdaUpdater;
     }
 
 }

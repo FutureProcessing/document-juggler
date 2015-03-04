@@ -16,7 +16,7 @@ public abstract class Mapper<C> {
     }
 
     public final Map<Method, C> get(Class<?> clazz) {
-        return  mappings.get(clazz);
+        return mappings.get(clazz);
     }
 
     protected void createMapping(Class<?> clazz) {

@@ -63,6 +63,6 @@ public class RootUpdateBuilder implements UpdateBuilder {
             push.put(field, object);
         }
 
-       return (List) object.get("$each");
+        return (List) object.get("$each");
     }
 }

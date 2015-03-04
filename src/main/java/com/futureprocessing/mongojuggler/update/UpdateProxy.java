@@ -16,9 +16,10 @@ public class UpdateProxy implements InvocationHandler {
     private final Map<Method, UpdateCommand> updateCommands;
 
     @SuppressWarnings("unchecked")
-    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Map<Method, UpdateCommand> updateCommands, UpdateBuilder updateBuilder) {
+    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Map<Method, UpdateCommand> updateCommands,
+                                           UpdateBuilder updateBuilder) {
         return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass},
-                new UpdateProxy(updateCommands, updateBuilder));
+                                          new UpdateProxy(updateCommands, updateBuilder));
     }
 
     public static UpdateProxy extract(Object updater) {

@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import static java.lang.String.format;
 
-public class InvalidArgumentsException extends InvalidModelInterfaceException{
+public class InvalidArgumentsException extends InvalidModelInterfaceException {
 
     private final Method method;
 

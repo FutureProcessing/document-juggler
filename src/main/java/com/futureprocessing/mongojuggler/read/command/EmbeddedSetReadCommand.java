@@ -6,11 +6,8 @@ import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableSet;
@@ -32,7 +29,7 @@ public class EmbeddedSetReadCommand extends AbstractReadCommand {
     protected Object readValue(BasicDBObject document) {
         List list = (List) document.get(field);
 
-        return list == null? null : unmodifiableSet((Set<?>) list.stream()
+        return list == null ? null : unmodifiableSet((Set<?>) list.stream()
                 .map(el -> ReadProxy.create(clazz, mapper.get(clazz), (DBObject) el, unmodifiableSet(emptySet())))
                 .collect(toSet()));
 

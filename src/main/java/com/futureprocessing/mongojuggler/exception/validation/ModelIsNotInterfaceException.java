@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler.exception.validation;
 
 import static java.lang.String.format;
 
-public class ModelIsNotInterfaceException extends InvalidModelInterfaceException{
+public class ModelIsNotInterfaceException extends InvalidModelInterfaceException {
 
     private final Class<?> clazz;
 

@@ -18,7 +18,8 @@ public class QueryProxy implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     public static <QUERY> QUERY create(Class<QUERY> queryClass, Map<Method, QueryCommand> queryCommands) {
-        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass}, new QueryProxy(queryCommands));
+        return (QUERY) newProxyInstance(queryClass.getClassLoader(), new Class[]{queryClass},
+                                        new QueryProxy(queryCommands));
     }
 
     public static QueryProxy extract(Object query) {

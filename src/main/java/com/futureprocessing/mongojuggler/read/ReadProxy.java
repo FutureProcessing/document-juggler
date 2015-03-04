@@ -21,12 +21,14 @@ public class ReadProxy implements InvocationHandler {
     private final Map<Method, Object> cache = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands, DBObject dbObject, Set<String> fields) {
+    public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands,
+                                         DBObject dbObject, Set<String> fields) {
         return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
-                new ReadProxy(readerType, readCommands, (BasicDBObject) dbObject, fields));
+                                         new ReadProxy(readerType, readCommands, (BasicDBObject) dbObject, fields));
     }
 
-    private ReadProxy(Class readerType, Map<Method, ReadCommand> readCommands, BasicDBObject dbObject, Set<String> queriedFields) {
+    private ReadProxy(Class readerType, Map<Method, ReadCommand> readCommands, BasicDBObject dbObject,
+                      Set<String> queriedFields) {
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
         this.readCommands = readCommands;

@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 public class Metadata {
 
     public static String getFieldName(Method method) {
-        if(method.isAnnotationPresent(Id.class)) {
+        if (method.isAnnotationPresent(Id.class)) {
             return "_id";
         }
         DbField field = method.getAnnotation(DbField.class);
@@ -19,7 +19,6 @@ public class Metadata {
     public static String getCollectionName(Class<?> clazz) {
         return clazz.getAnnotation(DbDocument.class).value();
     }
-
 
 
 }

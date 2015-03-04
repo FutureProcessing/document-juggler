@@ -7,12 +7,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-import static java.util.Collections.emptySet;
-import static java.util.Collections.unmodifiableList;
-import static java.util.Collections.unmodifiableSet;
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 
 public class EmbeddedListReadCommand extends AbstractReadCommand {
@@ -31,7 +27,7 @@ public class EmbeddedListReadCommand extends AbstractReadCommand {
     protected Object readValue(BasicDBObject document) {
         List list = (List) document.get(field);
 
-        return list == null? null : unmodifiableList((List<?>) list.stream()
+        return list == null ? null : unmodifiableList((List<?>) list.stream()
                 .map(el -> ReadProxy.create(clazz, mapper.get(clazz), (DBObject) el, unmodifiableSet(emptySet())))
                 .collect(toList()));
 

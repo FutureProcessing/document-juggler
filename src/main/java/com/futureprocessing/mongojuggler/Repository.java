@@ -4,10 +4,10 @@ package com.futureprocessing.mongojuggler;
 import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.insert.InsertMapper;
 import com.futureprocessing.mongojuggler.insert.InsertProxy;
+import com.futureprocessing.mongojuggler.query.QueriedDocuments;
 import com.futureprocessing.mongojuggler.query.QueryConsumer;
 import com.futureprocessing.mongojuggler.query.QueryMapper;
 import com.futureprocessing.mongojuggler.query.QueryProxy;
-import com.futureprocessing.mongojuggler.query.QueriedDocuments;
 import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.update.UpdateMapper;
 import com.mongodb.BasicDBObject;
@@ -45,7 +45,7 @@ public class Repository<READER, UPDATER, QUERY> {
         queryConsumer.accept(query);
 
         return new QueriedDocuments<>(readerClass, updaterClass, readMapper, updateMapper, getDBCollection(),
-                                  QueryProxy.extract(query).toDBObject());
+                                      QueryProxy.extract(query).toDBObject());
     }
 
     public QueriedDocuments<READER, UPDATER> find() {

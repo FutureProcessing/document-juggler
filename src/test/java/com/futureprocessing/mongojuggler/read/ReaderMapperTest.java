@@ -25,7 +25,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(IdReadCommand.class);
     }
 
@@ -38,7 +38,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanReadCommand.class);
     }
 
@@ -51,7 +51,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanReadCommand.class);
     }
 
@@ -64,7 +64,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(SetReadCommand.class);
     }
 
@@ -77,7 +77,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicReadCommand.class);
     }
 
@@ -90,7 +90,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedReadCommand.class);
     }
 
@@ -103,7 +103,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedListReadCommand.class);
     }
 
@@ -116,7 +116,7 @@ public class ReaderMapperTest {
         ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
     }
 

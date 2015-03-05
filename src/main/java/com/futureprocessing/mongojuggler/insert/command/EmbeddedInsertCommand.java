@@ -20,7 +20,7 @@ public class EmbeddedInsertCommand extends AbstractInsertCommand {
 
     @Override
     public void insert(BasicDBObject document, Object[] args) {
-        Object embedded = InsertProxy.create(embeddedType, mapper.get(embeddedType));
+        Object embedded = InsertProxy.create(embeddedType, mapper.get());
         Consumer consumer = (Consumer) args[0];
         consumer.accept(embedded);
 

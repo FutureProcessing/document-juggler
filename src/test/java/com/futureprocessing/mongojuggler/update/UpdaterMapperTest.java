@@ -24,7 +24,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedUpdateCommand.class);
     }
 
@@ -37,7 +37,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanUpdateCommand.class);
     }
 
@@ -50,7 +50,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanUpdateCommand.class);
     }
 
@@ -63,7 +63,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetSingleUpdateCommand.class);
     }
 
@@ -76,7 +76,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetManyUpdateCommand.class);
     }
 
@@ -89,7 +89,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetCollectionUpdateCommand.class);
     }
 
@@ -102,7 +102,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetCollectionUpdateCommand.class);
     }
 
@@ -115,7 +115,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetArrayUpdateCommand.class);
     }
 
@@ -128,7 +128,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(AddToSetArrayUpdateCommand.class);
     }
 
@@ -141,7 +141,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushSingleUpdateCommand.class);
     }
 
@@ -154,7 +154,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushManyUpdateCommand.class);
     }
 
@@ -167,7 +167,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
     }
 
@@ -180,7 +180,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
     }
 
@@ -193,7 +193,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
     }
 
@@ -206,7 +206,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
     }
 
@@ -219,7 +219,7 @@ public class UpdaterMapperTest {
         UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
-        UpdateCommand command = mapper.get(Update.class).get(method);
+        UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(IncrementUpdateCommand.class);
     }
 

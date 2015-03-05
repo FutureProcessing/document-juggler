@@ -30,7 +30,7 @@ public class EmbeddedSetReadCommand extends AbstractReadCommand {
         List list = (List) document.get(field);
 
         return list == null ? null : unmodifiableSet((Set<?>) list.stream()
-                .map(el -> ReadProxy.create(clazz, mapper.get(clazz), (DBObject) el, unmodifiableSet(emptySet())))
+                .map(el -> ReadProxy.create(clazz, mapper.get(), (DBObject) el, unmodifiableSet(emptySet())))
                 .collect(toSet()));
 
     }

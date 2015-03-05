@@ -15,15 +15,10 @@ import com.mongodb.DBCollection;
 
 public class Repository<INSERTER, QUERIER, READER, UPDATER> {
 
-    private final Class<INSERTER> inserterClass;
-    private final Class<QUERIER> querierClass;
-    private final Class<READER> readerClass;
-    private final Class<UPDATER> updaterClass;
-
-    private final InserterMapper inserterMapper;
-    private final QuerierMapper querierMapper;
-    private final ReaderMapper readerMapper;
-    private final UpdaterMapper updaterMapper;
+    private final Operator<INSERTER, InserterMapper> inserterOperator;
+    private final Operator<QUERIER, QuerierMapper> querierOperator;
+    private final Operator<READER, ReaderMapper> readerOperator;
+    private final Operator<UPDATER, UpdaterMapper> updaterOperator;
 
     private final DBCollection dbCollection;
 
@@ -34,31 +29,26 @@ public class Repository<INSERTER, QUERIER, READER, UPDATER> {
                       Class<UPDATER> updaterClass) {
         this.dbCollection = dbCollection;
 
-        this.inserterClass = inserterClass;
-        this.querierClass = querierClass;
-        this.readerClass = readerClass;
-        this.updaterClass = updaterClass;
-
-        this.inserterMapper = new InserterMapper(inserterClass);
-        this.querierMapper = new QuerierMapper(querierClass);
-        this.readerMapper = new ReaderMapper(readerClass);
-        this.updaterMapper = new UpdaterMapper(updaterClass);
+        this.inserterOperator = new Operator<>(inserterClass, new InserterMapper(inserterClass));
+        this.querierOperator = new Operator<>(querierClass, new QuerierMapper(querierClass));
+        this.readerOperator = new Operator<>(readerClass, new ReaderMapper(readerClass));
+        this.updaterOperator = new Operator<>(updaterClass, new UpdaterMapper(updaterClass));
     }
 
     public QueriedDocuments<READER, UPDATER> find(QuerierConsumer<QUERIER> querierConsumer) {
-        QUERIER querier = QueryProxy.create(querierClass, querierMapper.get(querierClass));
+        QUERIER querier = QueryProxy.create(querierOperator.getRootClass(), querierOperator.getMapper().get());
         querierConsumer.accept(querier);
 
-        return new QueriedDocuments<>(readerClass, updaterClass, readerMapper, updaterMapper, dbCollection,
+        return new QueriedDocuments<>(readerOperator, updaterOperator, dbCollection,
                 QueryProxy.extract(querier).toDBObject());
     }
 
     public QueriedDocuments<READER, UPDATER> find() {
-        return new QueriedDocuments<>(readerClass, updaterClass, readerMapper, updaterMapper, dbCollection, null);
+        return new QueriedDocuments<>(readerOperator, updaterOperator, dbCollection, null);
     }
 
     public String insert(InserterConsumer<INSERTER> consumer) {
-        INSERTER inserter = InsertProxy.create(inserterClass, inserterMapper.get(inserterClass));
+        INSERTER inserter = InsertProxy.create(inserterOperator.getRootClass(), inserterOperator.getMapper().get());
         consumer.accept(inserter);
 
         BasicDBObject document = InsertProxy.extract(inserter).getDocument();

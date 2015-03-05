@@ -25,7 +25,7 @@ public class InserterMapperTest {
         InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
-        InsertCommand command = mapper.get(Insert.class).get(method);
+        InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedInsertCommand.class);
     }
 
@@ -38,7 +38,7 @@ public class InserterMapperTest {
         InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
-        InsertCommand command = mapper.get(Insert.class).get(method);
+        InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedVarArgInsertCommand.class);
     }
 
@@ -51,7 +51,7 @@ public class InserterMapperTest {
         InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
-        InsertCommand command = mapper.get(Insert.class).get(method);
+        InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicInsertCommand.class);
     }
 
@@ -64,7 +64,7 @@ public class InserterMapperTest {
         InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
-        InsertCommand command = mapper.get(Insert.class).get(method);
+        InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 
@@ -77,7 +77,7 @@ public class InserterMapperTest {
         InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
-        InsertCommand command = mapper.get(Insert.class).get(method);
+        InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 

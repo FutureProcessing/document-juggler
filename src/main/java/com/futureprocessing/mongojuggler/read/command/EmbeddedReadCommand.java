@@ -23,7 +23,7 @@ public class EmbeddedReadCommand extends AbstractReadCommand {
     @Override
     protected Object readValue(BasicDBObject document) {
         DBObject embedded = (DBObject) document.get(field);
-        return embedded != null ? ReadProxy.create(clazz, mapper.get(clazz), embedded,
+        return embedded != null ? ReadProxy.create(clazz, mapper.get(), embedded,
                                                    unmodifiableSet(emptySet())) : null;
     }
 }

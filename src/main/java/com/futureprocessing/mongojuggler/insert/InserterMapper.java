@@ -12,9 +12,9 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
-public final class InsertMapper extends Mapper<InsertCommand> {
+public final class InserterMapper extends Mapper<InsertCommand> {
 
-    public InsertMapper(Class clazz) {
+    public InserterMapper(Class clazz) {
         super(clazz);
     }
 

@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
 
 import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
-public class QueryMapper extends Mapper<QueryCommand> {
+public class QuerierMapper extends Mapper<QueryCommand> {
 
-    public QueryMapper(Class clazz) {
+    public QuerierMapper(Class clazz) {
         super(clazz);
     }
 

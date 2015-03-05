@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpdateMapperTest {
+public class UpdaterMapperTest {
 
     @Test
     public void shouldReturnEmbeddedUpdateCommand() throws Exception {
@@ -21,7 +21,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("embedded", Consumer.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -34,7 +34,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("bigBoolean", Boolean.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -47,7 +47,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("primitiveBoolean", boolean.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -60,7 +60,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetSingle", String.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -73,7 +73,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetMany", String.class, String.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -86,7 +86,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetCollection", Collection.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -99,7 +99,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetList", List.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -112,7 +112,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetArray", String[].class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -125,7 +125,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("addToSetVarArg", String[].class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -138,7 +138,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushSingle", String.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -151,7 +151,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushMany", String.class, String.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -164,7 +164,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushCollection", Collection.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -177,7 +177,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushList", List.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -190,7 +190,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushArray", String[].class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -203,7 +203,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("pushVarArg", String[].class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);
@@ -216,7 +216,7 @@ public class UpdateMapperTest {
         Method method = Update.class.getMethod("increment", int.class);
 
         // when
-        UpdateMapper mapper = new UpdateMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
 
         // then
         UpdateCommand command = mapper.get(Update.class).get(method);

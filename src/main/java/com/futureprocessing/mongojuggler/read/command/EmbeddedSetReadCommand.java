@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
-import com.futureprocessing.mongojuggler.read.ReadMapper;
+import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -16,9 +16,9 @@ import static java.util.stream.Collectors.toSet;
 public class EmbeddedSetReadCommand extends AbstractReadCommand {
 
     private final Class clazz;
-    private final ReadMapper mapper;
+    private final ReaderMapper mapper;
 
-    public EmbeddedSetReadCommand(String field, Class clazz, ReadMapper mapper) {
+    public EmbeddedSetReadCommand(String field, Class clazz, ReaderMapper mapper) {
         super(field);
         this.clazz = clazz;
         this.mapper = mapper;

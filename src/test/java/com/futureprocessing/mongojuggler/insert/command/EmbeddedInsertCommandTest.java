@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
-import com.futureprocessing.mongojuggler.insert.InsertMapper;
+import com.futureprocessing.mongojuggler.insert.InserterMapper;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class EmbeddedInsertCommandTest {
     private static final String EMBEDDED_FIELD = "embeddedField";
     private static final String VALUE = "SomeValue";
 
-    private InsertMapper mapper = new InsertMapper(Insert.class);
+    private InserterMapper mapper = new InserterMapper(Insert.class);
     private InsertCommand command = new EmbeddedInsertCommand(FIELD, Insert.class, mapper);
 
     @Test

@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReadMapperTest {
+public class ReaderMapperTest {
 
     @Test
     public void shouldReturnIdReadCommand() throws Exception {
@@ -22,7 +22,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("id");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -35,7 +35,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("primitiveBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -48,7 +48,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("bigBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -61,7 +61,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("set");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -74,7 +74,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("basic");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -87,7 +87,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embedded");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -100,7 +100,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embeddedList");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);
@@ -113,7 +113,7 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embeddedSet");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
         ReadCommand command = mapper.get(Read.class).get(method);

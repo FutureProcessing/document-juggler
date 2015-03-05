@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InsertMapperTest {
+public class InserterMapperTest {
 
     @Test
     public void shouldReturnEmbeddedInsertCommand() throws Exception {
@@ -22,7 +22,7 @@ public class InsertMapperTest {
         Method method = Insert.class.getMethod("embedded", Consumer.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
         InsertCommand command = mapper.get(Insert.class).get(method);
@@ -35,7 +35,7 @@ public class InsertMapperTest {
         Method method = Insert.class.getMethod("embeddedVarArg", Consumer[].class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
         InsertCommand command = mapper.get(Insert.class).get(method);
@@ -48,7 +48,7 @@ public class InsertMapperTest {
         Method method = Insert.class.getMethod("value", String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
         InsertCommand command = mapper.get(Insert.class).get(method);
@@ -61,7 +61,7 @@ public class InsertMapperTest {
         Method method = Insert.class.getMethod("unsupportedAddToSet", String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
         InsertCommand command = mapper.get(Insert.class).get(method);
@@ -74,7 +74,7 @@ public class InsertMapperTest {
         Method method = Insert.class.getMethod("unsupportedPush", String.class, String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class);
 
         // then
         InsertCommand command = mapper.get(Insert.class).get(method);

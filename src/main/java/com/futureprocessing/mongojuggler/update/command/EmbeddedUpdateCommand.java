@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.update.command;
 
 import com.futureprocessing.mongojuggler.update.UpdateBuilder;
-import com.futureprocessing.mongojuggler.update.UpdateMapper;
+import com.futureprocessing.mongojuggler.update.UpdaterMapper;
 import com.futureprocessing.mongojuggler.update.UpdateProxy;
 
 import java.util.function.Consumer;
@@ -9,9 +9,9 @@ import java.util.function.Consumer;
 public class EmbeddedUpdateCommand extends AbstractUpdateCommand {
 
     private final Class clazz;
-    private final UpdateMapper mapper;
+    private final UpdaterMapper mapper;
 
-    public EmbeddedUpdateCommand(String field, Class clazz, UpdateMapper mapper) {
+    public EmbeddedUpdateCommand(String field, Class clazz, UpdaterMapper mapper) {
         super(field);
         this.clazz = clazz;
         this.mapper = mapper;

@@ -5,10 +5,13 @@ import com.futureprocessing.mongojuggler.Repository;
 import com.futureprocessing.mongojuggler.example.model.Car;
 import com.mongodb.DB;
 
-public class CarsRepository extends Repository<Car.Reader, Car.Updater, Car.Querier, Car.Inserter> {
+public class CarsRepository extends Repository<Car.Inserter, Car.Querier, Car.Reader, Car.Updater> {
 
     public CarsRepository(DB db) {
-        super(Car.Reader.class, Car.Updater.class, Car.Querier.class, Car.Inserter.class,
-              db.getCollection(CarsDBModel.Car.COLLECTION));
+        super(db.getCollection(CarsDBModel.Car.COLLECTION),
+                Car.Inserter.class,
+                Car.Querier.class,
+                Car.Reader.class,
+                Car.Updater.class);
     }
 }

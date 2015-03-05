@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
 
-import com.futureprocessing.mongojuggler.insert.InsertMapper;
+import com.futureprocessing.mongojuggler.insert.InserterMapper;
 import com.futureprocessing.mongojuggler.insert.InsertProxy;
 import com.mongodb.BasicDBObject;
 
@@ -12,9 +12,9 @@ import java.util.function.Consumer;
 public class EmbeddedVarArgInsertCommand extends AbstractInsertCommand {
 
     private final Class<?> embeddedType;
-    private final InsertMapper mapper;
+    private final InserterMapper mapper;
 
-    public EmbeddedVarArgInsertCommand(String field, Class<?> embeddedType, InsertMapper mapper) {
+    public EmbeddedVarArgInsertCommand(String field, Class<?> embeddedType, InserterMapper mapper) {
         super(field);
         this.embeddedType = embeddedType;
         this.mapper = mapper;

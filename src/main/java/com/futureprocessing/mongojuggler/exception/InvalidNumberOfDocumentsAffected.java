@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler.exception;
 
 import static java.lang.String.format;
 
-public class InvalidNumberOfDocumentsAffected extends RuntimeException{
+public class InvalidNumberOfDocumentsAffected extends RuntimeException {
 
     private final int affected;
     private final int expected;

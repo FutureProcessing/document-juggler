@@ -1,8 +1,6 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
 import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
-import com.futureprocessing.mongojuggler.insert.command.InsertCommand;
-import com.futureprocessing.mongojuggler.insert.command.UnsupportedInsertCommand;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 

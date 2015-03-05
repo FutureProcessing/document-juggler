@@ -56,7 +56,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new PushSingleUpdateCommand(field);
         }
 
-        if( method.isAnnotationPresent(Inc.class)) {
+        if (method.isAnnotationPresent(Inc.class)) {
             return new IncrementUpdateCommand(field);
         }
 
@@ -75,6 +75,6 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
 
     private Class<?> getEmbeddedListDocumentType(Method method) {
         GenericArrayType type = (GenericArrayType) method.getGenericParameterTypes()[0];
-        return (Class<?>) ((ParameterizedType)type.getGenericComponentType()).getActualTypeArguments()[0];
+        return (Class<?>) ((ParameterizedType) type.getGenericComponentType()).getActualTypeArguments()[0];
     }
 }

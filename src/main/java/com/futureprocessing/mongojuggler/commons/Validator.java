@@ -22,5 +22,6 @@ public final class Validator {
         }
     }
 
-    private Validator() {}
+    private Validator() {
+    }
 }

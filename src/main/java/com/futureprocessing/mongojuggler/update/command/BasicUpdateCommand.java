@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler.update.command;
 
 import com.futureprocessing.mongojuggler.update.UpdateBuilder;
 
-public class BasicUpdateCommand extends AbstractUpdateCommand{
+public class BasicUpdateCommand extends AbstractUpdateCommand {
 
     public BasicUpdateCommand(String field) {
         super(field);

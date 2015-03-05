@@ -16,8 +16,9 @@ public class InsertProxy implements InvocationHandler {
     private final Map<Method, InsertCommand> insertCommands;
 
     @SuppressWarnings("unchecked")
-    public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Map<Method, InsertCommand> insertCommands) {
-        return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass}, new InsertProxy(insertCommands));
+    public static <INSERTER> INSERTER create(Class<INSERTER> inserterClass, Map<Method, InsertCommand> insertCommands) {
+        return (INSERTER) newProxyInstance(inserterClass.getClassLoader(), new Class[]{inserterClass},
+                                           new InsertProxy(insertCommands));
     }
 
     public static InsertProxy extract(Object updater) {

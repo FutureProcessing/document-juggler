@@ -1,9 +1,7 @@
 package com.futureprocessing.mongojuggler.integration;
 
 
-import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,7 +16,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        repo = new CarsRepository(new SimpleDBProvider(client(), DB_NAME));
+        repo = new CarsRepository(db());
     }
 
     @Test
@@ -27,8 +25,8 @@ public class PushIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withOwners(asList("One")));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.addOwner("Two"));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.addOwner("Two"));
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
@@ -41,8 +39,8 @@ public class PushIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withOwners(asList("One")));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car
+        repo.find(car -> car.withId(id))
+                .update(car -> car
                                 .addOwner("Two")
                                 .addOwner("Three")
                 );
@@ -58,8 +56,8 @@ public class PushIntegrationTest extends BaseIntegrationTest {
         String id = repo.insert(car -> car.withModel("Model"));
 
         // when
-        repo.update(car -> car.withId(id))
-                .with(car -> car.addOwner("One"));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.addOwner("One"));
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();

@@ -25,7 +25,7 @@ public class EmbeddedVarArgInsertCommand extends AbstractInsertCommand {
         Consumer[] consumers = (Consumer[]) args[0];
 
         List<BasicDBObject> documents = new ArrayList<>();
-        for(Consumer consumer : consumers) {
+        for (Consumer consumer : consumers) {
             Object embedded = InsertProxy.create(embeddedType, mapper.get(embeddedType));
             consumer.accept(embedded);
             documents.add(InsertProxy.extract(embedded).getDocument());

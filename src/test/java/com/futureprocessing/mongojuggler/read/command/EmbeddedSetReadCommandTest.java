@@ -7,7 +7,6 @@ import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.helper.Sets.asSet;

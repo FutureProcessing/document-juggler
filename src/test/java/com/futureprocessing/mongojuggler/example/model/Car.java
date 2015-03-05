@@ -47,10 +47,10 @@ public interface Car {
 
     interface Querier {
         @Id
-        CarQuery withId(String id);
+        Querier withId(String id);
 
         @DbField(CarsDBModel.Car.BRAND)
-        CarQuery withBrand(String brand);
+        Querier withBrand(String brand);
     }
 
     interface Reader {

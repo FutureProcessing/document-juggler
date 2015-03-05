@@ -2,8 +2,6 @@ package com.futureprocessing.mongojuggler.insert.command;
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.insert.InsertMapper;
-import com.futureprocessing.mongojuggler.insert.command.EmbeddedInsertCommand;
-import com.futureprocessing.mongojuggler.insert.command.InsertCommand;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 

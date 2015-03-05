@@ -1,9 +1,7 @@
 package com.futureprocessing.mongojuggler.integration;
 
 
-import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

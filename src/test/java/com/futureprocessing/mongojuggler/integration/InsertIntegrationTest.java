@@ -1,7 +1,6 @@
 package com.futureprocessing.mongojuggler.integration;
 
 
-import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.mongodb.BasicDBObject;

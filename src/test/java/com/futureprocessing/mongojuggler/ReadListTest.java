@@ -2,7 +2,7 @@ package com.futureprocessing.mongojuggler;
 
 
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.CarReader;
+import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
@@ -19,9 +19,7 @@ import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
 import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.MODEL;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -62,7 +60,7 @@ public class ReadListTest {
         given(cursor.next()).willReturn(car1, car2);
 
         // when
-        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand(brand)).all();
+        List<Car.Reader> carReaders = carsRepository.find(car -> car.withBrand(brand)).all();
 
         // then
         assertThat(extractProperty("model").from(carReaders)).containsExactly(model1, model2);
@@ -74,7 +72,7 @@ public class ReadListTest {
         given(cursor.hasNext()).willReturn(false);
 
         // when
-        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand("Fiat")).all();
+        List<Car.Reader> carReaders = carsRepository.find(car -> car.withBrand("Fiat")).all();
 
         // then
         assertThat(carReaders).isEmpty();
@@ -142,7 +140,7 @@ public class ReadListTest {
         given(cursor.hasNext()).willReturn(true, false);
         given(cursor.next()).willReturn(dbObject);
 
-        List<CarReader> carReaders = carsRepository.find(car -> car.withBrand("fiat")).all(MODEL);
+        List<Car.Reader> carReaders = carsRepository.find(car -> car.withBrand("fiat")).all(MODEL);
 
         // when
         try {

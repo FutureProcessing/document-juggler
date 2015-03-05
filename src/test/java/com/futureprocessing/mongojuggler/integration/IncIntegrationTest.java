@@ -1,15 +1,10 @@
 package com.futureprocessing.mongojuggler.integration;
 
 
-import com.futureprocessing.mongojuggler.SimpleDBProvider;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.List;
-
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class IncIntegrationTest extends BaseIntegrationTest {

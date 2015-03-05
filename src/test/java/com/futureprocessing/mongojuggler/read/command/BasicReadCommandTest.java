@@ -5,7 +5,6 @@ import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.helper.Sets.asSet;

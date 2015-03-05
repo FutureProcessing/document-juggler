@@ -5,7 +5,6 @@ import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +50,7 @@ public class SetReadCommandTest {
 
         // then
         assertThat(value).isInstanceOf(Set.class);
-        assertThat((Set)value).containsAll(VALUES);
+        assertThat((Set) value).containsAll(VALUES);
     }
 
     @Test
@@ -66,6 +65,6 @@ public class SetReadCommandTest {
 
         // then
         assertThat(value).isInstanceOf(Set.class);
-        assertThat((Set)value).containsAll(VALUES);
+        assertThat((Set) value).containsAll(VALUES);
     }
 }

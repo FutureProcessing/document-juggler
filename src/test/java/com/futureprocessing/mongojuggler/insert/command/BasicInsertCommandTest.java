@@ -1,7 +1,5 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
-import com.futureprocessing.mongojuggler.insert.command.BasicInsertCommand;
-import com.futureprocessing.mongojuggler.insert.command.InsertCommand;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 

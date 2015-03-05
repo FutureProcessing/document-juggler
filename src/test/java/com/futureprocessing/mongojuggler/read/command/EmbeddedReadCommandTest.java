@@ -19,7 +19,7 @@ public class EmbeddedReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Engine.class;
-    private static final ReadMapper mapper  = new ReadMapper(EMBEDDED_TYPE);
+    private static final ReadMapper mapper = new ReadMapper(EMBEDDED_TYPE);
 
     private ReadCommand command = new EmbeddedReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

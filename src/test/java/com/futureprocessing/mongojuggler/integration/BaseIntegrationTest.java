@@ -34,7 +34,7 @@ public abstract class BaseIntegrationTest {
         return property != null ? Integer.parseInt(property) : DEFAULT_PORT;
     }
 
-    public static DB db(){
+    public static DB db() {
         return db;
     }
 

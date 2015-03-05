@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler;
 
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.CarReader;
+import com.futureprocessing.mongojuggler.example.model.Car;
 import com.futureprocessing.mongojuggler.example.model.Engine;
 import com.futureprocessing.mongojuggler.example.model.Luggage;
 import com.mongodb.BasicDBObject;
@@ -64,7 +64,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        CarReader entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(BRAND);
+        Car.Reader entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(BRAND);
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -92,7 +92,7 @@ public class ReadTest {
         );
         given(collection.findOne(any(), any())).willReturn(model);
 
-        CarReader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+        Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
         Engine engine1 = carReader.getEngine();
@@ -111,7 +111,7 @@ public class ReadTest {
         ));
         given(collection.findOne(any(), any())).willReturn(model);
 
-        CarReader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+        Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
         List<Luggage> luggage1 = carReader.getLuggage();

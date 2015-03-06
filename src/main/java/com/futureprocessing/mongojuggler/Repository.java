@@ -12,6 +12,7 @@ import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.futureprocessing.mongojuggler.update.UpdaterMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 public class Repository<INSERTER, QUERIER, READER, UPDATER> {
 

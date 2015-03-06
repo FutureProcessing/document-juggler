@@ -2,17 +2,16 @@ package com.futureprocessing.mongojuggler.update;
 
 import com.mongodb.WriteResult;
 
-public class UpdateResult extends OperationResult {
-
-    public UpdateResult(WriteResult result) {
+public class RemoveResult extends OperationResult {
+    public RemoveResult(WriteResult result) {
         super(result);
     }
 
-    public void ensureOneUpdated() {
+    public void ensureOneDeleted() {
         ensureAffected(1);
     }
 
-    public void ensureUpdated(int expected) {
+    public void ensureDeleted(int expected) {
         ensureAffected(expected);
     }
 }

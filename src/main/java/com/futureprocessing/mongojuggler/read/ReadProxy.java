@@ -36,7 +36,6 @@ public class ReadProxy implements InvocationHandler {
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
         }
-
     }
 
     @Override

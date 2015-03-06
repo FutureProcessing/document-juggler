@@ -91,4 +91,27 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2, model3);
     }
+
+    @Test
+    public void shouldReturnNullIfDocumentNotFoundInEmptyDB() {
+        //given
+
+        //when
+        Car.Reader first = repo.find().first();
+
+        //then
+        assertThat(first).isNull();
+    }
+
+    @Test
+    public void shouldReturnNullIfDocumentNotFound() {
+        //given
+        repo.insert(car -> car.withBrand("BMW"));
+
+        //when
+        Car.Reader first = repo.find(car -> car.withBrand("ABC")).first();
+
+        //then
+        assertThat(first).isNull();
+    }
 }

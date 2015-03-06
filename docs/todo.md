@@ -4,7 +4,7 @@ ToDo in Mongo Juggler
 Integration tests on real mongo
 -------------------------------
 - [X] Use Embedded Mongo
-- [ ] Use environment property for mongoDB address/port to allow running tests from Intellij Idea (any other IDE)
+- [X] Use environment property for mongoDB address/port to allow running tests from Intellij Idea (any other IDE)
 
 Reader Set support
 ------------------
@@ -30,11 +30,11 @@ carRepo.update(car -> car.withId("abc"))
 
 Validation of interfaces
 ------------------------
-Reader, Updater and Query interfaces should be validated during Repository creation.
+Reader, Updater and Querier interfaces should be validated during Repository creation.
+- [ ] Inserter
+- [X] Querier
 - [X] Reader
 - [ ] Updater
-- [X] Query
-
 
 Interface for limit, skip and all
 ---------------------------------
@@ -47,7 +47,7 @@ Query should have method to return all results matching query.
 
 ObjectId instead of Strings
 ---------------------------
-- [ ] In database Id should be stored as ObjectId.
+- [X] In database Id should be stored as ObjectId.
 - [X] repo.insert(...) should return String representation of ObjectId.
 - [ ] repo.insert(...) should throw exception with information what went wrong
 ```java
@@ -75,17 +75,18 @@ carsRepository.bulkInsert(car -> car.addPassengerName(newPassenger), car -> car.
 Update modifiers
 ----------------
 Add support for other update modifiers. For instance:
-- $inc
-- $currentDate
+- [X] $inc
+- [ ] $currentDate
 
 Update with {upsert: true}
 ----------------
-Add createOrUpdate method (with {upsert: true} behind the scenes).
+- [ ] Add createOrUpdate method (with {upsert: true} behind the scenes).
 
 findAndModify() support
 ----------------
-Add a possibility to return documents during an update (before or after update - this is configurable in mongo).
+- [ ] Add a possibility to return documents during an update (before or after update - this is configurable in mongo).
 
 Possibility to choose between save() and update()
 ----------------
-update() can crete or update document, while save() can create or replace whole existing document.
+- [ ] update() can create or update document, while save() can create or replace whole existing document.
+//todo Kanicz isn't it the same with update("$set", ....) ?

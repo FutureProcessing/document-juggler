@@ -45,6 +45,10 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
+        if (dbObject == null){
+            return null;
+        }
+
         return createReadProxy(dbObject, fields);
     }
 
@@ -109,7 +113,6 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     }
 
     public UpdateResult update(UpdaterConsumer<UPDATER> consumer) {
-        DBCollection collection = dbCollection;
 
         UPDATER updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
         consumer.accept(updater);
@@ -118,7 +121,12 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
         if (document.isEmpty()) {
             throw new MissingPropertyException("No property to update specified");
         }
-        WriteResult result = collection.update(query, document);
+        WriteResult result = dbCollection.update(query, document);
         return new UpdateResult(result);
+    }
+
+    public RemoveResult remove(){
+        WriteResult result = dbCollection.remove(query);
+        return new RemoveResult(result);
     }
 }

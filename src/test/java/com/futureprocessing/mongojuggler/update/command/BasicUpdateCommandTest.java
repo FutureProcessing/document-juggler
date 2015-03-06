@@ -12,7 +12,7 @@ public class BasicUpdateCommandTest {
     private static final String FIELD = "testField";
     private static final String VALUE = "SomeValue";
 
-    private UpdateCommand command = new BasicUpdateCommand(FIELD);
+    private UpdateCommand command = new BasicUpdateCommand(FIELD, false);
 
     @Test
     public void shouldSetValue() {
@@ -28,7 +28,7 @@ public class BasicUpdateCommandTest {
     }
 
     @Test
-    public void shouldUnsetIfValueIsNull() {
+    public void shouldSetValueToNull() {
         // given
         UpdateBuilder builder = new RootUpdateBuilder();
 
@@ -37,6 +37,20 @@ public class BasicUpdateCommandTest {
 
         // then
         BasicDBObject expected = new BasicDBObject("$set", new BasicDBObject(FIELD, null));
+        assertThat(builder.getDocument()).isEqualTo(expected);
+    }
+
+    @Test
+    public void shouldUnsetIfValueIsNull() {
+        // given
+        UpdateCommand command = new BasicUpdateCommand(FIELD, true);
+        UpdateBuilder builder = new RootUpdateBuilder();
+
+        // when
+        command.update(builder, new Object[]{null});
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$unset", new BasicDBObject(FIELD, null));
         assertThat(builder.getDocument()).isEqualTo(expected);
     }
 }

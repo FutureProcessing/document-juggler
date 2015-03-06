@@ -63,10 +63,12 @@ public class UpdaterMapper extends Mapper<UpdateCommand> {
 
         Class parameterClass = method.getParameterTypes()[0];
         if (parameterClass.equals(boolean.class) || parameterClass.equals(Boolean.class)) {
-            return new BooleanUpdateCommand(field);
+            return new BooleanUpdateCommand(field,
+                    method.isAnnotationPresent(UnsetIfNull.class),
+                    method.isAnnotationPresent(UnsetIfFalse.class));
         }
 
-        return new BasicUpdateCommand(field);
+        return new BasicUpdateCommand(field, method.isAnnotationPresent(UnsetIfNull.class));
     }
 
     private Class<?> getEmbeddedDocumentType(Method method) {

@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReadMapperTest {
+public class ReaderMapperTest {
 
     @Test
     public void shouldReturnIdReadCommand() throws Exception {
@@ -22,10 +22,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("id");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(IdReadCommand.class);
     }
 
@@ -35,10 +35,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("primitiveBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanReadCommand.class);
     }
 
@@ -48,10 +48,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("bigBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanReadCommand.class);
     }
 
@@ -61,10 +61,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("set");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(SetReadCommand.class);
     }
 
@@ -74,10 +74,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("basic");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicReadCommand.class);
     }
 
@@ -87,10 +87,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embedded");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedReadCommand.class);
     }
 
@@ -100,10 +100,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embeddedList");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedListReadCommand.class);
     }
 
@@ -113,10 +113,10 @@ public class ReadMapperTest {
         Method method = Read.class.getMethod("embeddedSet");
 
         // when
-        ReadMapper mapper = new ReadMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class);
 
         // then
-        ReadCommand command = mapper.get(Read.class).get(method);
+        ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
     }
 

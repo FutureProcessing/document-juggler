@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
-import com.futureprocessing.mongojuggler.read.ReadMapper;
+import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -12,9 +12,9 @@ import static java.util.Collections.unmodifiableSet;
 public class EmbeddedReadCommand extends AbstractReadCommand {
 
     private final Class clazz;
-    private final ReadMapper mapper;
+    private final ReaderMapper mapper;
 
-    public EmbeddedReadCommand(String field, Class clazz, ReadMapper mapper) {
+    public EmbeddedReadCommand(String field, Class clazz, ReaderMapper mapper) {
         super(field);
         this.clazz = clazz;
         this.mapper = mapper;
@@ -23,7 +23,7 @@ public class EmbeddedReadCommand extends AbstractReadCommand {
     @Override
     protected Object readValue(BasicDBObject document) {
         DBObject embedded = (DBObject) document.get(field);
-        return embedded != null ? ReadProxy.create(clazz, mapper.get(clazz), embedded,
+        return embedded != null ? ReadProxy.create(clazz, mapper.get(), embedded,
                                                    unmodifiableSet(emptySet())) : null;
     }
 }

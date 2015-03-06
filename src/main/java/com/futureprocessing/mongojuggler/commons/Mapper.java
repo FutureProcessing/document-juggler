@@ -3,35 +3,41 @@ package com.futureprocessing.mongojuggler.commons;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.commons.Validator.validateInterface;
 
-public abstract class Mapper<C> {
+public abstract class Mapper<COMMAND_TYPE> {
 
-    private final Map<Class, Map<Method, C>> mappings = new HashMap<>();
+    private final Set<Class> mappedClasses = new HashSet<>();
+    private final Map<Method, COMMAND_TYPE> mappings = new HashMap<>();
 
     protected Mapper(Class clazz) {
         createMapping(clazz);
     }
 
-    public final Map<Method, C> get(Class<?> clazz) {
-        return mappings.get(clazz);
+    public final Map<Method, COMMAND_TYPE> get() {
+        return mappings;
+    }
+
+    public COMMAND_TYPE get(Method method) {
+        return mappings.get(method);
     }
 
     protected void createMapping(Class<?> clazz) {
-        if (!mappings.containsKey(clazz)) {
+        if (!mappedClasses.contains(clazz)) {
             validateInterface(clazz);
 
-            Map<Method, C> map = new HashMap<>();
-            mappings.put(clazz, map);
-
             for (Method method : clazz.getMethods()) {
-                map.put(method, getCommand(method));
+                mappings.put(method, getCommand(method));
             }
+
+            mappedClasses.add(clazz);
         }
     }
 
-    protected abstract C getCommand(Method method);
+    protected abstract COMMAND_TYPE getCommand(Method method);
 
 }

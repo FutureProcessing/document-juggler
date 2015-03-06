@@ -5,7 +5,7 @@ import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsEx
 import com.futureprocessing.mongojuggler.exception.validation.InvalidReturnValueException;
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
-import com.futureprocessing.mongojuggler.query.QueryMapper;
+import com.futureprocessing.mongojuggler.query.QuerierMapper;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new QueryMapper(NotInterface.class);
+            new QuerierMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -42,7 +42,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new QueryMapper(UnknownFieldQuery.class);
+            new QuerierMapper(UnknownFieldQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("withId", String.class));
@@ -63,7 +63,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new QueryMapper(InvalidReturnTypeQuery.class);
+            new QuerierMapper(InvalidReturnTypeQuery.class);
         } catch (InvalidReturnValueException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(InvalidReturnTypeQuery.class.getMethod("withId", String.class));
@@ -85,7 +85,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new QueryMapper(NoArgumentQuery.class);
+            new QuerierMapper(NoArgumentQuery.class);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(NoArgumentQuery.class.getMethod("withId"));
@@ -107,7 +107,7 @@ public class QueryValidationTest {
 
         try {
             // when
-            new QueryMapper(TwoArgumentQuery.class);
+            new QuerierMapper(TwoArgumentQuery.class);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(TwoArgumentQuery.class.getMethod("withId", String.class, String.class));

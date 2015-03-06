@@ -3,7 +3,7 @@ package com.futureprocessing.mongojuggler.read.command;
 
 import com.futureprocessing.mongojuggler.example.model.Luggage;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
-import com.futureprocessing.mongojuggler.read.ReadMapper;
+import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class EmbeddedListReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
-    private static final ReadMapper mapper = new ReadMapper(EMBEDDED_TYPE);
+    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE);
 
     private ReadCommand command = new EmbeddedListReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

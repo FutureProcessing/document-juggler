@@ -1,10 +1,11 @@
 package com.futureprocessing.mongojuggler.query;
 
+import com.futureprocessing.mongojuggler.Operator;
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.mongojuggler.exception.MissingPropertyException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
-import com.futureprocessing.mongojuggler.read.ReadMapper;
 import com.futureprocessing.mongojuggler.read.ReadProxy;
+import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.futureprocessing.mongojuggler.update.*;
 import com.mongodb.*;
 
@@ -17,22 +18,22 @@ import static java.util.OptionalInt.of;
 
 public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<READER> {
 
-    private final Class<READER> readerClass;
-    private final Class<UPDATER> updaterClass;
-    private final ReadMapper readMapper;
-    private final UpdateMapper updateMapper;
+    private final Operator<READER, ReaderMapper> readerOperator;
+    private final Operator<UPDATER, UpdaterMapper> updaterOperator;
+
     private final DBCollection dbCollection;
     private final DBObject query;
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
-    public QueriedDocuments(Class<READER> readerClass, Class<UPDATER> updaterClass,
-                            ReadMapper readMapper, UpdateMapper updateMapper,
-                            DBCollection dbCollection, DBObject query) {
-        this.readerClass = readerClass;
-        this.readMapper = readMapper;
-        this.updaterClass = updaterClass;
-        this.updateMapper = updateMapper;
+
+    public QueriedDocuments(Operator<READER, ReaderMapper> readerOperator,
+                            Operator<UPDATER, UpdaterMapper> updaterOperator,
+                            DBCollection dbCollection,
+                            DBObject query) {
+        this.readerOperator = readerOperator;
+        this.updaterOperator = updaterOperator;
+
         this.dbCollection = dbCollection;
         this.query = query;
     }
@@ -44,7 +45,11 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        return ReadProxy.create(readerClass, readMapper.get(readerClass), dbObject, fields);
+        return createReadProxy(dbObject, fields);
+    }
+
+    private READER createReadProxy(DBObject dbObject, Set<String> fields) {
+        return ReadProxy.create(readerOperator.getRootClass(), readerOperator.getMapper().get(), dbObject, fields);
     }
 
     @Override
@@ -63,7 +68,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
             }
             while (cursor.hasNext()) {
                 DBObject document = cursor.next();
-                list.add(ReadProxy.create(readerClass, readMapper.get(readerClass), document, fields));
+                list.add(createReadProxy(document, fields));
             }
         }
 
@@ -106,7 +111,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     public UpdateResult update(UpdaterConsumer<UPDATER> consumer) {
         DBCollection collection = dbCollection;
 
-        UPDATER updater = UpdateProxy.create(updaterClass, updateMapper.get(updaterClass), new RootUpdateBuilder());
+        UPDATER updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
         consumer.accept(updater);
 
         BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();

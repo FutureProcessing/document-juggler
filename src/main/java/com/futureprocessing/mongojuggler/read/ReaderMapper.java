@@ -15,9 +15,9 @@ import java.util.Set;
 
 import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
-public final class ReadMapper extends Mapper<ReadCommand> {
+public final class ReaderMapper extends Mapper<ReadCommand> {
 
-    public ReadMapper(Class clazz) {
+    public ReaderMapper(Class clazz) {
         super(clazz);
     }
 

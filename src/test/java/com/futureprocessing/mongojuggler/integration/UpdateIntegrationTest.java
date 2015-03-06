@@ -1,19 +1,19 @@
 package com.futureprocessing.mongojuggler.integration;
 
-
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.MODEL;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InsertIntegrationTest extends BaseIntegrationTest {
+public class UpdateIntegrationTest extends BaseIntegrationTest {
 
     private static CarsRepository repo;
     private static DBCollection collection;
@@ -25,43 +25,19 @@ public class InsertIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void shouldInsertDocument() {
-        // given
+    public void shouldSetNullValue() {
+        //given
         String brand = "Honda";
         String model = "HR-V";
 
-        // when
         String id = repo.insert(car -> car
                 .withBrand(brand)
                 .withModel(model));
 
-        // then
-        DBObject document = collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
-
-        assertThat(document.get(BRAND)).isEqualTo(brand);
-        assertThat(document.get(MODEL)).isEqualTo(model);
-    }
-
-    @Test
-    public void shouldReturnInsertedDocumentId() {
-        // given
-
-        // when
-        String id = repo.insert(car -> car.withBrand("Ford"));
-
-        // then
-        assertThat(id).isNotEmpty();
-    }
-
-    @Test
-    public void shouldSetNullValue() {
-        //given
-        String brand = "Honda";
-
         //when
-        String id = repo.insert(car -> car
-                .withBrand(brand)
-                .withModel(null));
+        repo.find(car -> car.withId(id))
+                .update(car -> car.withModel(null))
+                .ensureOneUpdated();
 
         //then
         BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
@@ -69,5 +45,28 @@ public class InsertIntegrationTest extends BaseIntegrationTest {
         assertThat(document.get(BRAND)).isEqualTo(brand);
         assertThat(document.containsField(MODEL)).isTrue();
         assertThat(document.get(MODEL)).isNull();
+    }
+
+    @Test
+    public void shouldSetCorrectValue() {
+        //given
+        String brand = "Honda";
+        String model = "HR-V";
+
+        String id = repo.insert(car -> car
+                .withBrand(brand)
+                .withModel(null));
+
+        //when
+        repo.find(car -> car.withId(id))
+                .update(car -> car.withModel(model))
+                .ensureOneUpdated();
+
+        //then
+        BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
+
+        assertThat(document.get(BRAND)).isEqualTo(brand);
+        assertThat(document.containsField(MODEL)).isTrue();
+        assertThat(document.get(MODEL)).isEqualTo(model);
     }
 }

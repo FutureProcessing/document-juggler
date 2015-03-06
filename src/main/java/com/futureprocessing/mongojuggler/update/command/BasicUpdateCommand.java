@@ -13,10 +13,6 @@ public class BasicUpdateCommand extends AbstractUpdateCommand {
     public void update(UpdateBuilder updateBuilder, Object[] args) {
         Object value = args[0];
 
-        if (value != null) {
-            updateBuilder.set(field, value);
-        } else {
-            updateBuilder.unset(field);
-        }
+        updateBuilder.set(field, value);
     }
 }

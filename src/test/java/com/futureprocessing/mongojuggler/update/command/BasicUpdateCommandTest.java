@@ -36,7 +36,7 @@ public class BasicUpdateCommandTest {
         command.update(builder, new Object[]{null});
 
         // then
-        BasicDBObject expected = new BasicDBObject("$unset", new BasicDBObject(FIELD, null));
+        BasicDBObject expected = new BasicDBObject("$set", new BasicDBObject(FIELD, null));
         assertThat(builder.getDocument()).isEqualTo(expected);
     }
 }

@@ -95,8 +95,8 @@ public class ReadTest {
         Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
-        Engine engine1 = carReader.getEngine();
-        Engine engine2 = carReader.getEngine();
+        Engine.Reader engine1 = carReader.getEngine();
+        Engine.Reader engine2 = carReader.getEngine();
 
         // then
         assertThat(engine2).isSameAs(engine1);
@@ -114,8 +114,8 @@ public class ReadTest {
         Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
-        List<Luggage> luggage1 = carReader.getLuggage();
-        List<Luggage> luggage2 = carReader.getLuggage();
+        List<Luggage.Reader> luggage1 = carReader.getLuggage();
+        List<Luggage.Reader> luggage2 = carReader.getLuggage();
 
         // then
         assertThat(luggage2).isSameAs(luggage1);

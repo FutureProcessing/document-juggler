@@ -34,15 +34,15 @@ public interface Car {
 
         @DbField(CarsDBModel.Car.ENGINE)
         @DbEmbeddedDocument()
-        Inserter engine(Consumer<EngineUpdater> consumer);
+        Inserter engine(Consumer<Engine.Modifier> consumer);
 
         @DbField(CarsDBModel.Car.LUGGAGE)
         @DbEmbeddedDocument()
-        Inserter withLuggage(Consumer<LuggageUpdater>... consumers);
+        Inserter withLuggage(Consumer<Luggage.Modifier>... consumers);
 
         @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
         @DbEmbeddedDocument()
-        Inserter withRoofLuggage(Consumer<LuggageUpdater>... consumers);
+        Inserter withRoofLuggage(Consumer<Luggage.Modifier>... consumers);
     }
 
     interface Querier {
@@ -81,15 +81,15 @@ public interface Car {
 
         @DbField(CarsDBModel.Car.ENGINE)
         @DbEmbeddedDocument
-        Engine getEngine();
+        Engine.Reader getEngine();
 
         @DbField(CarsDBModel.Car.LUGGAGE)
         @DbEmbeddedDocument
-        List<Luggage> getLuggage();
+        List<Luggage.Reader> getLuggage();
 
         @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
         @DbEmbeddedDocument
-        Set<Luggage> getRoofLuggage();
+        Set<Luggage.Reader> getRoofLuggage();
     }
 
     interface Updater {
@@ -133,15 +133,15 @@ public interface Car {
 
         @DbField(CarsDBModel.Car.ENGINE)
         @DbEmbeddedDocument()
-        Updater engine(Consumer<EngineUpdater> consumer);
+        Updater engine(Consumer<Engine.Modifier> consumer);
 
         @DbField(CarsDBModel.Car.LUGGAGE)
         @DbEmbeddedDocument()
-        Updater withLuggage(Consumer<LuggageUpdater>... consumers);
+        Updater withLuggage(Consumer<Luggage.Modifier>... consumers);
 
         @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
         @DbEmbeddedDocument()
-        Updater withRoofLuggage(Consumer<LuggageUpdater>... consumers);
+        Updater withRoofLuggage(Consumer<Luggage.Modifier>... consumers);
 
     }
 }

@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 

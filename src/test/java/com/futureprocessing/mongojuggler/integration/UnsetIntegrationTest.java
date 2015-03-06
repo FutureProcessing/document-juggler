@@ -2,7 +2,6 @@ package com.futureprocessing.mongojuggler.integration;
 
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.EngineUpdater;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import org.bson.types.ObjectId;
@@ -55,7 +54,7 @@ public class UnsetIntegrationTest extends BaseIntegrationTest {
 
         //when
         repo.find(car -> car.withId(id))
-                .update(car -> car.engine(EngineUpdater::withoutCylindersNumber))
+                .update(car -> car.engine(engine -> engine.withoutCylindersNumber()))
                 .ensureOneUpdated();
 
         //then

@@ -100,6 +100,10 @@ public interface Car {
         @DbField(CarsDBModel.Car.MODEL)
         Updater withModel(String model);
 
+        @DbField(CarsDBModel.Car.MODEL)
+        @Unset
+        Updater withoutModel();
+
         @DbField(CarsDBModel.Car.RELEASE_DATE)
         Updater withReleaseDate(Date releaseDate);
 

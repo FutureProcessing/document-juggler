@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.example.model;
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
+import com.futureprocessing.mongojuggler.annotation.Unset;
 import com.futureprocessing.mongojuggler.example.CarsDBModel;
 
 public interface EngineUpdater {
@@ -10,4 +11,9 @@ public interface EngineUpdater {
 
     @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
     EngineUpdater withCylindersNumber(int cylindersNumber);
+
+    @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
+    @Unset
+    void withoutCylindersNumber();
+
 }

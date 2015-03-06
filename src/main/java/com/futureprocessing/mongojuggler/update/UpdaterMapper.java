@@ -1,10 +1,7 @@
 package com.futureprocessing.mongojuggler.update;
 
 
-import com.futureprocessing.mongojuggler.annotation.AddToSet;
-import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.mongojuggler.annotation.Inc;
-import com.futureprocessing.mongojuggler.annotation.Push;
+import com.futureprocessing.mongojuggler.annotation.*;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.update.command.*;
@@ -58,6 +55,10 @@ public class UpdaterMapper extends Mapper<UpdateCommand> {
 
         if (method.isAnnotationPresent(Inc.class)) {
             return new IncrementUpdateCommand(field);
+        }
+
+        if (method.isAnnotationPresent(Unset.class)){
+            return new UnsetCommand(field);
         }
 
         Class parameterClass = method.getParameterTypes()[0];

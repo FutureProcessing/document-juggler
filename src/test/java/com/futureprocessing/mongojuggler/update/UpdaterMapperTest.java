@@ -223,6 +223,20 @@ public class UpdaterMapperTest {
         assertThat(command).isInstanceOf(IncrementUpdateCommand.class);
     }
 
+    @Test
+    public void shouldReturnUnsetUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("fieldToUnset");
+
+        // when
+        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(UnsetCommand.class);
+    }
+
+
     private interface Update {
 
         @DbField("embedded")
@@ -286,5 +300,9 @@ public class UpdaterMapperTest {
         @DbField("increment")
         @Inc
         Update increment(int number);
+
+        @DbField("fieldToUnset")
+        @Unset
+        Update fieldToUnset();
     }
 }

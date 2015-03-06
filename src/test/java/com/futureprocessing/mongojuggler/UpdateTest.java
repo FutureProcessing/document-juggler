@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler;
 
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
-import com.futureprocessing.mongojuggler.example.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
 import com.futureprocessing.mongojuggler.exception.InvalidNumberOfDocumentsAffected;
 import com.futureprocessing.mongojuggler.update.UpdateResult;
 import com.mongodb.DB;

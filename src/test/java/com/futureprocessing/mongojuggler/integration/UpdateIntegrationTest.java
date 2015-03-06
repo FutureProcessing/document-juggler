@@ -1,14 +1,14 @@
 package com.futureprocessing.mongojuggler.integration;
 
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
-import com.futureprocessing.mongojuggler.example.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import org.bson.types.ObjectId;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateIntegrationTest extends BaseIntegrationTest {

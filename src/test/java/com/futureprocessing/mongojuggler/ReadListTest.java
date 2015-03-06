@@ -1,8 +1,8 @@
 package com.futureprocessing.mongojuggler;
 
 
-import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.model.Car;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.mongojuggler.exception.SkipAlreadyPresentException;
@@ -15,8 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.BRAND;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.MODEL;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.BRAND;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.MODEL;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.*;

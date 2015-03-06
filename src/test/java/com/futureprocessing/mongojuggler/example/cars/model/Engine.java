@@ -1,9 +1,9 @@
-package com.futureprocessing.mongojuggler.example.model;
+package com.futureprocessing.mongojuggler.example.cars.model;
 
 
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Unset;
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
 
 public interface Engine {
 

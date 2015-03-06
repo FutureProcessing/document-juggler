@@ -1,7 +1,7 @@
-package com.futureprocessing.mongojuggler.example.model;
+package com.futureprocessing.mongojuggler.example.cars.model;
 
 import com.futureprocessing.mongojuggler.annotation.*;
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
 
 import java.util.Date;
 import java.util.List;

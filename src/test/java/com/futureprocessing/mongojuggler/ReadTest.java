@@ -1,11 +1,11 @@
 package com.futureprocessing.mongojuggler;
 
 
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
-import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
-import com.futureprocessing.mongojuggler.example.model.Engine;
-import com.futureprocessing.mongojuggler.example.model.Luggage;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.model.Car;
+import com.futureprocessing.mongojuggler.example.cars.model.Engine;
+import com.futureprocessing.mongojuggler.example.cars.model.Luggage;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -19,11 +19,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Engine.CYLINDERS_NUMBER;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Engine.FUEL;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Luggage.COLOR;
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.Luggage.WEIGHT;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.Engine.CYLINDERS_NUMBER;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.Engine.FUEL;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.Luggage.COLOR;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.Luggage.WEIGHT;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

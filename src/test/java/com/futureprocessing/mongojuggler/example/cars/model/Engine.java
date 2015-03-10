@@ -16,16 +16,24 @@ public interface Engine {
         int getCylindersNumber();
     }
 
-    interface Modifier {
+    interface Updater {
         @DbField(CarsDBModel.Car.Engine.FUEL)
-        Modifier withFuel(String fuel);
+        Updater withFuel(String fuel);
 
         @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
-        Modifier withCylindersNumber(int cylindersNumber);
+        Updater withCylindersNumber(int cylindersNumber);
 
         @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
         @Unset
         void withoutCylindersNumber();
+    }
+
+    interface Inserter {
+        @DbField(CarsDBModel.Car.Engine.FUEL)
+        Inserter withFuel(String fuel);
+
+        @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
+        Inserter withCylindersNumber(int cylindersNumber);
     }
 
 }

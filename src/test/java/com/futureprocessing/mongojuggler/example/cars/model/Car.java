@@ -34,7 +34,7 @@ public interface Car {
 
         @DbField(CarsDBModel.Car.ENGINE)
         @DbEmbeddedDocument()
-        Inserter engine(Consumer<Engine.Modifier> consumer);
+        Inserter engine(Consumer<Engine.Inserter> consumer);
 
         @DbField(CarsDBModel.Car.LUGGAGE)
         @DbEmbeddedDocument()
@@ -133,7 +133,7 @@ public interface Car {
 
         @DbField(CarsDBModel.Car.ENGINE)
         @DbEmbeddedDocument()
-        Updater engine(Consumer<Engine.Modifier> consumer);
+        Updater engine(Consumer<Engine.Updater> consumer);
 
         @DbField(CarsDBModel.Car.LUGGAGE)
         @DbEmbeddedDocument()

@@ -238,6 +238,17 @@ public class UpdaterMapperTest {
         assertThat(command).isInstanceOf(UnsetCommand.class);
     }
 
+    @Test
+    public void shouldReturnUnsupportedUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("getter");
+        // when
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
+
+        // then
+        UpdateCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(UnsupportedUpdateCommand.class);
+    }
 
     private interface Update {
 
@@ -306,5 +317,8 @@ public class UpdaterMapperTest {
         @DbField("fieldToUnset")
         @Unset
         Update fieldToUnset();
+
+        @DbField("getter")
+        String getter();
     }
 }

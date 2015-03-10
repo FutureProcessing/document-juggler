@@ -1,30 +1,22 @@
 package com.futureprocessing.mongojuggler.read;
 
 
-import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
-import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.read.command.*;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
-import static com.futureprocessing.mongojuggler.MappingMode.LENIENT;
-import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@RunWith(JUnitParamsRunner.class)
 public class ReaderMapperTest {
 
     @Test
@@ -33,7 +25,7 @@ public class ReaderMapperTest {
 
         try {
             // when
-            new ReaderMapper(NotInterface.class, STRICT);
+            new ReaderMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -57,7 +49,7 @@ public class ReaderMapperTest {
 
         try {
             // when
-            new ReaderMapper(UnknownFieldQuery.class, STRICT);
+            new ReaderMapper(UnknownFieldQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
@@ -77,7 +69,7 @@ public class ReaderMapperTest {
         Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
 
         // when
-        ReaderMapper mapper = new ReaderMapper(ReaderWithArguments.class, LENIENT);
+        ReaderMapper mapper = new ReaderMapper(ReaderWithArguments.class);
         ReadCommand command = mapper.getCommand(method);
 
         //then
@@ -89,18 +81,14 @@ public class ReaderMapperTest {
         String getTest(String arg);
     }
 
-    Object[] mappingModes() {
-        return MappingMode.values();
-    }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnIdReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnIdReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("id");
+        Method method = Model.class.getMethod("id");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -108,13 +96,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnBooleanReadCommandForPrimitiveBoolean(MappingMode mappingMode) throws Exception {
+    public void shouldReturnBooleanReadCommandForPrimitiveBoolean() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("primitiveBoolean");
+        Method method = Model.class.getMethod("primitiveBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -122,13 +109,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnBooleanReadCommandForBigBoolean(MappingMode mappingMode) throws Exception {
+    public void shouldReturnBooleanReadCommandForBigBoolean() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("bigBoolean");
+        Method method = Model.class.getMethod("bigBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -136,13 +122,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnSetReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnSetReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("set");
+        Method method = Model.class.getMethod("set");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -150,13 +135,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnBasicReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnBasicReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("basic");
+        Method method = Model.class.getMethod("basic");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -164,13 +148,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnEmbeddedReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnEmbeddedReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("embedded");
+        Method method = Model.class.getMethod("embedded");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -178,13 +161,12 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnEmbeddedListReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnEmbeddedListReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("embeddedList");
+        Method method = Model.class.getMethod("embeddedList");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -192,20 +174,19 @@ public class ReaderMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnEmbeddedSetReadCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnEmbeddedSetReadCommand() throws Exception {
         // given
-        Method method = TestStrictModeReader.class.getMethod("embeddedSet");
+        Method method = Model.class.getMethod("embeddedSet");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(TestStrictModeReader.class, mappingMode);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
     }
 
-    private interface TestStrictModeReader {
+    private interface Model {
 
         @Id
         String id();

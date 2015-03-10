@@ -25,12 +25,10 @@ public class Repository<MODEL> {
     public Repository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
 
-        MappingMode mappingMode = MappingMode.LENIENT;
-
-        this.inserterOperator = new Operator<>(modelClass, new InserterMapper(modelClass, mappingMode));
-        this.querierOperator = new Operator<>(modelClass, new QuerierMapper(modelClass, mappingMode));
-        this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass, mappingMode));
-        this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass, mappingMode));
+        this.inserterOperator = new Operator<>(modelClass, new InserterMapper(modelClass));
+        this.querierOperator = new Operator<>(modelClass, new QuerierMapper(modelClass));
+        this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass));
+        this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass));
     }
 
     public QueriedDocuments<MODEL> find(QuerierConsumer<MODEL> querierConsumer) {

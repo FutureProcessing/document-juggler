@@ -1,40 +1,30 @@
 package com.futureprocessing.mongojuggler.insert;
 
 
-import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.*;
 import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
-import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.insert.command.*;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
-@RunWith(JUnitParamsRunner.class)
 public class InserterMapperTest {
 
-    Object[] mappingModes() {
-        return MappingMode.values();
-    }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface(MappingMode mappingMode) {
+
+    public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface() {
         // given
 
         try {
             // when
-            new InserterMapper(NotInterface.class, mappingMode);
+            new InserterMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -52,13 +42,12 @@ public class InserterMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldThrowUnknownFieldExceptionIfOneOfMethodsIsNotAnnotatedWithDbField(MappingMode mappingMode) throws Exception {
+    public void shouldThrowUnknownFieldExceptionIfOneOfMethodsIsNotAnnotatedWithDbField() throws Exception {
         // given
 
         try {
             // when
-            new InserterMapper(UnknownFieldQuery.class, mappingMode);
+            new InserterMapper(UnknownFieldQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
@@ -74,13 +63,12 @@ public class InserterMapperTest {
 
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnEmbeddedInsertCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnEmbeddedInsertCommand() throws Exception {
         // given
         Method method = StrictModeInserter.class.getMethod("embedded", Consumer.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class, mappingMode);
+        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -88,13 +76,12 @@ public class InserterMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnEmbeddedVarArgInsertCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnEmbeddedVarArgInsertCommand() throws Exception {
         // given
         Method method = StrictModeInserter.class.getMethod("embeddedVarArg", Consumer[].class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class, mappingMode);
+        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -102,13 +89,12 @@ public class InserterMapperTest {
     }
 
     @Test
-    @Parameters(method = "mappingModes")
-    public void shouldReturnBasicInsertCommand(MappingMode mappingMode) throws Exception {
+    public void shouldReturnBasicInsertCommand() throws Exception {
         // given
         Method method = StrictModeInserter.class.getMethod("value", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class, mappingMode);
+        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -128,28 +114,11 @@ public class InserterMapperTest {
         Method method = UnsupportedAddToSet.class.getMethod("unsupportedAddToSet", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(UnsupportedAddToSet.class, MappingMode.LENIENT);
+        InserterMapper mapper = new InserterMapper(UnsupportedAddToSet.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
-    }
-
-    @Test
-    public void shouldThrowUnsupportedMethodExceptionForAddToSetAnnotationInStrictMode() throws Exception {
-        // given
-        Method method = UnsupportedAddToSet.class.getMethod("unsupportedAddToSet", String.class);
-
-        // when
-        try {
-            new InserterMapper(UnsupportedAddToSet.class, MappingMode.STRICT);
-        } catch (UnsupportedMethodException e) {
-            // then
-            assertThat(e.getMethod()).isEqualTo(method);
-            return;
-        }
-
-        fail("Should have thrown exception");
     }
 
     private interface UnsupportedPush {
@@ -164,28 +133,11 @@ public class InserterMapperTest {
         Method method = UnsupportedPush.class.getMethod("unsupportedPush", String.class, String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(UnsupportedPush.class, MappingMode.LENIENT);
+        InserterMapper mapper = new InserterMapper(UnsupportedPush.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
-    }
-
-    @Test
-    public void shouldThrowUnsupportedMethodExceptionForPushAnnotationInStrictMode() throws Exception {
-        // given
-        Method method = UnsupportedPush.class.getMethod("unsupportedPush", String.class, String.class);
-
-        // when
-        try {
-            new InserterMapper(UnsupportedPush.class, MappingMode.STRICT);
-        } catch (UnsupportedMethodException e) {
-            // then
-            assertThat(e.getMethod()).isEqualTo(method);
-            return;
-        }
-
-        fail("Should have thrown exception");
     }
 
 
@@ -200,29 +152,11 @@ public class InserterMapperTest {
         Method method = WrongGetter.class.getMethod("wrongGetter");
 
         // when
-        InserterMapper mapper = new InserterMapper(WrongGetter.class, MappingMode.LENIENT);
+        InserterMapper mapper = new InserterMapper(WrongGetter.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
-    }
-
-
-    @Test
-    public void shouldThrowUnsupportedMethodExceptionForIllegalMethodInStrictMode() throws Exception {
-        // given
-        Method method = WrongGetter.class.getMethod("wrongGetter");
-
-        // when
-        try {
-            new InserterMapper(WrongGetter.class, MappingMode.STRICT);
-        } catch (UnsupportedMethodException e) {
-            // then
-            assertThat(e.getMethod()).isEqualTo(method);
-            return;
-        }
-
-        fail("Should have thrown exception");
     }
 
     private interface StrictModeInserter {

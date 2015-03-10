@@ -1,13 +1,11 @@
 package com.futureprocessing.mongojuggler.insert;
 
 
-import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
-import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.futureprocessing.mongojuggler.insert.command.*;
 
 import java.lang.reflect.GenericArrayType;
@@ -16,8 +14,8 @@ import java.lang.reflect.ParameterizedType;
 
 public final class InserterMapper extends Mapper<InsertCommand> {
 
-    public InserterMapper(Class clazz, MappingMode mappingMode) {
-        super(clazz, mappingMode);
+    public InserterMapper(Class clazz) {
+        super(clazz);
     }
 
     @Override
@@ -25,9 +23,6 @@ public final class InserterMapper extends Mapper<InsertCommand> {
         String field = Metadata.getFieldName(method);
 
         if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
-            if (isStrictMode()) {
-                throw new UnsupportedMethodException(method);
-            }
             return new UnsupportedInsertCommand(method);
         }
 

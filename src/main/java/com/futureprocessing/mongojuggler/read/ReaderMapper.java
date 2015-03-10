@@ -1,12 +1,10 @@
 package com.futureprocessing.mongojuggler.read;
 
 
-import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.commons.Mapper;
-import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.futureprocessing.mongojuggler.read.command.*;
 
 import java.lang.reflect.Method;
@@ -16,8 +14,8 @@ import java.util.Set;
 
 public final class ReaderMapper extends Mapper<ReadCommand> {
 
-    public ReaderMapper(Class clazz, MappingMode mappingMode) {
-        super(clazz, mappingMode);
+    public ReaderMapper(Class clazz) {
+        super(clazz);
     }
 
     @Override

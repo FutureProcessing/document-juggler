@@ -1,5 +1,6 @@
 package com.futureprocessing.mongojuggler.query;
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.exception.validation.*;
@@ -14,6 +15,8 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
 
+import static com.futureprocessing.mongojuggler.MappingMode.LENIENT;
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -27,7 +30,7 @@ public class QuerierMapperTest {
 
         try {
             // when
-            new QuerierMapper(NotInterface.class);
+            new QuerierMapper(NotInterface.class, STRICT);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -45,17 +48,17 @@ public class QuerierMapperTest {
     }
 
     Object[] trueFalseParameters(){
-        return $(true, false);
+        return $(STRICT, LENIENT);
     }
 
     @Test
     @Parameters(method = "trueFalseParameters")
-    public void shouldReturnIdQueryCommand(boolean isStrictMode) throws NoSuchMethodException {
+    public void shouldReturnIdQueryCommand(MappingMode mappingMode) throws NoSuchMethodException {
         // given
         Method method = TestStrictModeQuerier.class.getMethod("id", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class, isStrictMode);
+        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class, mappingMode);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -64,12 +67,12 @@ public class QuerierMapperTest {
 
     @Test
     @Parameters(method = "trueFalseParameters")
-    public void shouldReturnBasicQueryCommand(boolean isStrictMode) throws NoSuchMethodException {
+    public void shouldReturnBasicQueryCommand(MappingMode mappingMode) throws NoSuchMethodException {
         // given
         Method method = TestStrictModeQuerier.class.getMethod("withString", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class, isStrictMode);
+        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class, mappingMode);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -96,7 +99,7 @@ public class QuerierMapperTest {
         Method method = TestEasyModeQuerier.class.getMethod("getFieldA");
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestEasyModeQuerier.class, false);
+        QuerierMapper mapper = new QuerierMapper(TestEasyModeQuerier.class, LENIENT);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -110,7 +113,7 @@ public class QuerierMapperTest {
 
         try {
             // when
-            new QuerierMapper(TestEasyModeQuerier.class, true);
+            new QuerierMapper(TestEasyModeQuerier.class, STRICT);
         } catch (UnsupportedMethodException e) {
             //then
             assertThat(e.getMethod()).isEqualTo(method);

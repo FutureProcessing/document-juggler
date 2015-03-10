@@ -4,16 +4,17 @@ import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodE
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+
 import static org.assertj.core.api.Assertions.fail;
 
 
 public class UnsupportedInsertCommandTest {
 
-    private InsertCommand command = new UnsupportedInsertCommand(null);
-
     @Test
-    public void shouldThrowUnsupportedActionExceptionWhenInserting() {
+    public void shouldThrowUnsupportedActionExceptionWhenInserting() throws NoSuchMethodException {
         // given
+        InsertCommand command = new UnsupportedInsertCommand(Object.class.getMethod("equals", Object.class));
         BasicDBObject document = new BasicDBObject();
 
         try {

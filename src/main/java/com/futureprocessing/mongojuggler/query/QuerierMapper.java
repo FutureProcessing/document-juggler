@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.query;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.commons.Mapper;
@@ -16,12 +17,8 @@ import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
 public class QuerierMapper extends Mapper<QueryCommand> {
 
-    public QuerierMapper(Class clazz) {
-        this(clazz, true);
-    }
-
-    public QuerierMapper(Class clazz, boolean strictMode) {
-        super(clazz, strictMode);
+    public QuerierMapper(Class clazz, MappingMode mappingMode) {
+        super(clazz, mappingMode);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.insert;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.Push;
@@ -14,12 +15,8 @@ import java.lang.reflect.ParameterizedType;
 
 public final class InserterMapper extends Mapper<InsertCommand> {
 
-    public InserterMapper(Class clazz) {
-        this(clazz, true);
-    }
-
-    public InserterMapper(Class clazz, boolean strictMode) {
-        super(clazz, strictMode);
+    public InserterMapper(Class clazz, MappingMode mappingMode) {
+        super(clazz, mappingMode);
     }
 
     @Override

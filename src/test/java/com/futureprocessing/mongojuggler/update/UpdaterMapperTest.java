@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.update;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.*;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.update.command.*;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdaterMapperTest {
@@ -21,7 +23,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("embedded", Consumer.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -34,7 +36,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("bigBoolean", Boolean.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -47,7 +49,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("primitiveBoolean", boolean.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -60,7 +62,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetSingle", String.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -73,7 +75,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetMany", String.class, String.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -86,7 +88,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetCollection", Collection.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -99,7 +101,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetList", List.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -112,7 +114,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetArray", String[].class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -125,7 +127,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("addToSetVarArg", String[].class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -138,7 +140,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushSingle", String.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -151,7 +153,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushMany", String.class, String.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -164,7 +166,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushCollection", Collection.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -177,7 +179,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushList", List.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -190,7 +192,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushArray", String[].class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -203,7 +205,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("pushVarArg", String[].class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -216,7 +218,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("increment", int.class);
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);
@@ -229,7 +231,7 @@ public class UpdaterMapperTest {
         Method method = Update.class.getMethod("fieldToUnset");
 
         // when
-        UpdaterMapper mapper = new UpdaterMapper(Update.class);
+        UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
 
         // then
         UpdateCommand command = mapper.get(method);

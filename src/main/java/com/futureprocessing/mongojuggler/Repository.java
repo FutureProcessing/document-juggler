@@ -29,14 +29,14 @@ public class Repository<INSERTER, QUERIER, READER, UPDATER> {
                       Class<UPDATER> updaterClass) {
         this.dbCollection = dbCollection;
 
-        boolean isFullModel = inserterClass != querierClass ||
+        MappingMode mappingMode = inserterClass != querierClass ||
                 inserterClass != readerClass ||
-                inserterClass != updaterClass;
+                inserterClass != updaterClass ? MappingMode.STRICT : MappingMode.LENIENT;
 
-        this.inserterOperator = new Operator<>(inserterClass, new InserterMapper(inserterClass, isFullModel));
-        this.querierOperator = new Operator<>(querierClass, new QuerierMapper(querierClass, isFullModel));
-        this.readerOperator = new Operator<>(readerClass, new ReaderMapper(readerClass, isFullModel));
-        this.updaterOperator = new Operator<>(updaterClass, new UpdaterMapper(updaterClass, isFullModel));
+        this.inserterOperator = new Operator<>(inserterClass, new InserterMapper(inserterClass, mappingMode));
+        this.querierOperator = new Operator<>(querierClass, new QuerierMapper(querierClass, mappingMode));
+        this.readerOperator = new Operator<>(readerClass, new ReaderMapper(readerClass, mappingMode));
+        this.updaterOperator = new Operator<>(updaterClass, new UpdaterMapper(updaterClass, mappingMode));
     }
 
     public QueriedDocuments<READER, UPDATER> find(QuerierConsumer<QUERIER> querierConsumer) {

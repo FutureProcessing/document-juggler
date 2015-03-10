@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.function.Consumer;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmbeddedInsertCommandTest {
@@ -15,7 +16,7 @@ public class EmbeddedInsertCommandTest {
     private static final String EMBEDDED_FIELD = "embeddedField";
     private static final String VALUE = "SomeValue";
 
-    private InserterMapper mapper = new InserterMapper(Insert.class);
+    private InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
     private InsertCommand command = new EmbeddedInsertCommand(FIELD, Insert.class, mapper);
 
     @Test

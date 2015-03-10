@@ -8,6 +8,7 @@ import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldExcept
 import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import org.junit.Test;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
@@ -19,7 +20,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new ReaderMapper(NotInterface.class);
+            new ReaderMapper(NotInterface.class, STRICT);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -43,7 +44,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new ReaderMapper(UnknownFieldQuery.class);
+            new ReaderMapper(UnknownFieldQuery.class, STRICT);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
@@ -64,7 +65,7 @@ public class ReadValidationTest {
 
         try {
             // when
-            new ReaderMapper(ReaderWithArguments.class);
+            new ReaderMapper(ReaderWithArguments.class, STRICT);
         } catch (InvalidArgumentsException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(ReaderWithArguments.class.getMethod("getTest", String.class));

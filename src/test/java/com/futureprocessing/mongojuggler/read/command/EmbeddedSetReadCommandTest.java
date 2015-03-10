@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.example.cars.model.Luggage;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.read.ReaderMapper;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static com.futureprocessing.mongojuggler.helper.Sets.asSet;
 import static java.lang.reflect.Proxy.isProxyClass;
 import static java.util.Arrays.asList;
@@ -20,7 +22,7 @@ public class EmbeddedSetReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
-    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE);
+    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE, STRICT);
 
     private ReadCommand command = new EmbeddedSetReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

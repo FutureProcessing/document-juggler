@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.read;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
@@ -17,12 +18,8 @@ import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
 public final class ReaderMapper extends Mapper<ReadCommand> {
 
-    public ReaderMapper(Class clazz) {
-        this(clazz, true);
-    }
-
-    public ReaderMapper(Class clazz, boolean strictMode) {
-        super(clazz, strictMode);
+    public ReaderMapper(Class clazz, MappingMode mappingMode) {
+        super(clazz, mappingMode);
     }
 
     @Override

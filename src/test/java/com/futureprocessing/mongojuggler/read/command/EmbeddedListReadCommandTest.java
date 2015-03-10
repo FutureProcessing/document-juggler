@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Set;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static com.futureprocessing.mongojuggler.helper.Sets.asSet;
 import static java.lang.reflect.Proxy.isProxyClass;
 import static java.util.Arrays.asList;
@@ -21,7 +22,7 @@ public class EmbeddedListReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
-    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE);
+    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE, STRICT);
 
     private ReadCommand command = new EmbeddedListReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

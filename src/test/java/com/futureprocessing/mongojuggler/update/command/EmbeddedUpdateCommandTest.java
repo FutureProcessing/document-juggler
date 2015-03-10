@@ -1,5 +1,6 @@
 package com.futureprocessing.mongojuggler.update.command;
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.update.RootUpdateBuilder;
 import com.futureprocessing.mongojuggler.update.UpdateBuilder;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.function.Consumer;
 
+import static com.futureprocessing.mongojuggler.MappingMode.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmbeddedUpdateCommandTest {
@@ -17,7 +19,7 @@ public class EmbeddedUpdateCommandTest {
     private static final String EMBEDDED_FIELD = "eField";
     private static final String VALUE = "SomeValue";
 
-    private UpdaterMapper mapper = new UpdaterMapper(Update.class);
+    private UpdaterMapper mapper = new UpdaterMapper(Update.class, STRICT);
     private UpdateCommand command = new EmbeddedUpdateCommand(FIELD, Update.class, mapper);
 
     @Test

@@ -1,6 +1,8 @@
 package com.futureprocessing.mongojuggler.commons;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,10 +15,10 @@ public abstract class Mapper<COMMAND_TYPE> {
 
     private final Set<Class> mappedClasses = new HashSet<>();
     private final Map<Method, COMMAND_TYPE> mappings = new HashMap<>();
-    private final boolean strictMode;
+    private final MappingMode mappingMode;
 
-    protected Mapper(Class clazz, boolean strictMode) {
-        this.strictMode = strictMode;
+    protected Mapper(Class clazz, MappingMode mappingMode) {
+        this.mappingMode = mappingMode;
         createMapping(clazz);
     }
 
@@ -43,6 +45,6 @@ public abstract class Mapper<COMMAND_TYPE> {
     protected abstract COMMAND_TYPE getCommand(Method method);
 
     protected boolean isStrictMode() {
-        return strictMode;
+        return mappingMode == MappingMode.STRICT;
     }
 }

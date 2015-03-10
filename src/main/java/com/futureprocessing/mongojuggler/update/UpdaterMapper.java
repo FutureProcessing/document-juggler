@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.update;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.*;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
@@ -13,12 +14,8 @@ import java.util.Collection;
 
 public class UpdaterMapper extends Mapper<UpdateCommand> {
 
-    public UpdaterMapper(Class clazz) {
-        this(clazz, true);
-    }
-
-    public UpdaterMapper(Class clazz, boolean strictMode) {
-        super(clazz, strictMode);
+    public UpdaterMapper(Class clazz, MappingMode mappingMode) {
+        super(clazz, mappingMode);
     }
 
     @Override

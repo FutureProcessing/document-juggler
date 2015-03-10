@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.read;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
@@ -12,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReaderMapperTest {
@@ -22,7 +24,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("id");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -35,7 +37,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("primitiveBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -48,7 +50,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("bigBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -61,7 +63,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("set");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -74,7 +76,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("basic");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -87,7 +89,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("embedded");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -100,7 +102,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("embeddedList");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -113,7 +115,7 @@ public class ReaderMapperTest {
         Method method = Read.class.getMethod("embeddedSet");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Read.class, STRICT);
 
         // then
         ReadCommand command = mapper.get(method);

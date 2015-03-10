@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.example.cars.model.Engine;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.read.ReaderMapper;
@@ -19,7 +20,7 @@ public class EmbeddedReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Engine.class;
-    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE);
+    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE, MappingMode.STRICT);
 
     private ReadCommand command = new EmbeddedReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

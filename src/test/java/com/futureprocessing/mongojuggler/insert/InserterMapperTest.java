@@ -1,6 +1,7 @@
 package com.futureprocessing.mongojuggler.insert;
 
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InserterMapperTest {
@@ -22,7 +24,7 @@ public class InserterMapperTest {
         Method method = Insert.class.getMethod("embedded", Consumer.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -35,7 +37,7 @@ public class InserterMapperTest {
         Method method = Insert.class.getMethod("embeddedVarArg", Consumer[].class);
 
         // when
-        InserterMapper mapper = new InserterMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -48,7 +50,7 @@ public class InserterMapperTest {
         Method method = Insert.class.getMethod("value", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -61,7 +63,7 @@ public class InserterMapperTest {
         Method method = Insert.class.getMethod("unsupportedAddToSet", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -74,7 +76,7 @@ public class InserterMapperTest {
         Method method = Insert.class.getMethod("unsupportedPush", String.class, String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(Insert.class);
+        InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
 
         // then
         InsertCommand command = mapper.get(method);

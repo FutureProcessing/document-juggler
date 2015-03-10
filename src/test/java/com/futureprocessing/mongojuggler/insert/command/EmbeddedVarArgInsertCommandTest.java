@@ -1,5 +1,6 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
+import com.futureprocessing.mongojuggler.MappingMode;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.insert.InserterMapper;
 import com.mongodb.BasicDBObject;
@@ -7,6 +8,7 @@ import org.junit.Test;
 
 import java.util.function.Consumer;
 
+import static com.futureprocessing.mongojuggler.MappingMode.STRICT;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +19,7 @@ public class EmbeddedVarArgInsertCommandTest {
     private static final String VALUE1 = "SomeValue";
     private static final String VALUE2 = "SomeValue";
 
-    private InserterMapper mapper = new InserterMapper(Insert.class);
+    private InserterMapper mapper = new InserterMapper(Insert.class, STRICT);
     private InsertCommand command = new EmbeddedVarArgInsertCommand(FIELD, Insert.class, mapper);
 
     @Test

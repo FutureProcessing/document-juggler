@@ -12,7 +12,6 @@ import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.futureprocessing.mongojuggler.update.UpdaterMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 public class Repository<INSERTER, QUERIER, READER, UPDATER> {
 
@@ -30,10 +29,14 @@ public class Repository<INSERTER, QUERIER, READER, UPDATER> {
                       Class<UPDATER> updaterClass) {
         this.dbCollection = dbCollection;
 
-        this.inserterOperator = new Operator<>(inserterClass, new InserterMapper(inserterClass));
-        this.querierOperator = new Operator<>(querierClass, new QuerierMapper(querierClass));
-        this.readerOperator = new Operator<>(readerClass, new ReaderMapper(readerClass));
-        this.updaterOperator = new Operator<>(updaterClass, new UpdaterMapper(updaterClass));
+        boolean isFullModel = inserterClass != querierClass ||
+                inserterClass != readerClass ||
+                inserterClass != updaterClass;
+
+        this.inserterOperator = new Operator<>(inserterClass, new InserterMapper(inserterClass, isFullModel));
+        this.querierOperator = new Operator<>(querierClass, new QuerierMapper(querierClass, isFullModel));
+        this.readerOperator = new Operator<>(readerClass, new ReaderMapper(readerClass, isFullModel));
+        this.updaterOperator = new Operator<>(updaterClass, new UpdaterMapper(updaterClass, isFullModel));
     }
 
     public QueriedDocuments<READER, UPDATER> find(QuerierConsumer<QUERIER> querierConsumer) {

@@ -1,6 +1,6 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
-import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
+import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class UnsupportedInsertCommandTest {
 
-    private InsertCommand command = new UnsupportedInsertCommand();
+    private InsertCommand command = new UnsupportedInsertCommand(null);
 
     @Test
     public void shouldThrowUnsupportedActionExceptionWhenInserting() {
@@ -19,7 +19,7 @@ public class UnsupportedInsertCommandTest {
         try {
             // when
             command.insert(document, new Object[]{});
-        } catch (UnsupportedActionException ex) {
+        } catch (UnsupportedMethodException ex) {
             // then
             return;
         }

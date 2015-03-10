@@ -18,7 +18,11 @@ import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 public final class ReaderMapper extends Mapper<ReadCommand> {
 
     public ReaderMapper(Class clazz) {
-        super(clazz);
+        this(clazz, true);
+    }
+
+    public ReaderMapper(Class clazz, boolean strictMode) {
+        super(clazz, strictMode);
     }
 
     @Override

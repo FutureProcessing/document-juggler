@@ -14,7 +14,11 @@ import java.util.Collection;
 public class UpdaterMapper extends Mapper<UpdateCommand> {
 
     public UpdaterMapper(Class clazz) {
-        super(clazz);
+        this(clazz, true);
+    }
+
+    public UpdaterMapper(Class clazz, boolean strictMode) {
+        super(clazz, strictMode);
     }
 
     @Override

@@ -55,7 +55,7 @@ public interface Car {
 
     interface Reader {
 
-        @DbField(CarsDBModel.Car.ID)
+        @DbField(CarsDBModel.Car.ID) //todo return ObjectId, use @Id for id as String
         String getId();
 
         @DbField(CarsDBModel.Car.BRAND)

@@ -13,8 +13,6 @@ import com.futureprocessing.mongojuggler.query.command.UnsupportedQueryCommand;
 
 import java.lang.reflect.Method;
 
-import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
-
 public class QuerierMapper extends Mapper<QueryCommand> {
 
     public QuerierMapper(Class clazz, MappingMode mappingMode) {
@@ -23,10 +21,9 @@ public class QuerierMapper extends Mapper<QueryCommand> {
 
     @Override
     protected QueryCommand getCommand(Method method) {
-        validateField(method);
 
-        if (!hasCorrectReturnType(method) || !hasCorrectParameters(method)){
-            if (isStrictMode()){
+        if (!hasCorrectReturnType(method) || !hasCorrectParameters(method)) {
+            if (isStrictMode()) {
                 throw new UnsupportedMethodException(method);
             }
             return new UnsupportedQueryCommand(method);

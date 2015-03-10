@@ -14,8 +14,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Set;
 
-import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
-
 public final class ReaderMapper extends Mapper<ReadCommand> {
 
     public ReaderMapper(Class clazz, MappingMode mappingMode) {
@@ -24,9 +22,8 @@ public final class ReaderMapper extends Mapper<ReadCommand> {
 
     @Override
     protected ReadCommand getCommand(Method method) {
-        validateField(method);
-        if (!hasCorrectParameters(method)){
-            if (isStrictMode()){
+        if (!hasCorrectParameters(method)) {
+            if (isStrictMode()) {
                 throw new UnsupportedMethodException(method);
             }
             return new UnsupportedReadCommand(method);

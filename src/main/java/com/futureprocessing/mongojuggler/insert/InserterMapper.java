@@ -7,6 +7,7 @@ import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Mapper;
 import com.futureprocessing.mongojuggler.commons.Metadata;
+import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.futureprocessing.mongojuggler.insert.command.*;
 
 import java.lang.reflect.GenericArrayType;
@@ -23,7 +24,10 @@ public final class InserterMapper extends Mapper<InsertCommand> {
     protected InsertCommand getCommand(Method method) {
         String field = Metadata.getFieldName(method);
 
-        if (method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+        if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+            if (isStrictMode()) {
+                throw new UnsupportedMethodException(method);
+            }
             return new UnsupportedInsertCommand(method);
         }
 
@@ -40,6 +44,10 @@ public final class InserterMapper extends Mapper<InsertCommand> {
         }
 
         return new BasicInsertCommand(field);
+    }
+
+    private boolean hasCorrectParameters(Method method) {
+        return method.getParameterCount() > 0;
     }
 
     private Class<?> getEmbeddedDocumentType(Method method) {

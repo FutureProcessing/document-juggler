@@ -106,8 +106,6 @@ public class ReaderMapperTest {
         String getTest(String arg);
     }
 
-    //=====================================================
-
     Object[] mappingModes() {
         return MappingMode.values();
     }

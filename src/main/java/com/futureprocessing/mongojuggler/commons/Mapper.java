@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 import static com.futureprocessing.mongojuggler.commons.Validator.validateInterface;
 
 public abstract class Mapper<COMMAND_TYPE> {
@@ -35,6 +36,7 @@ public abstract class Mapper<COMMAND_TYPE> {
             validateInterface(clazz);
 
             for (Method method : clazz.getMethods()) {
+                validateField(method);
                 mappings.put(method, getCommand(method));
             }
 

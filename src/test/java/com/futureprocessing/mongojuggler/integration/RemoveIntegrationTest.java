@@ -39,7 +39,7 @@ public class RemoveIntegrationTest extends BaseIntegrationTest {
         repo.find(car -> car.withId(id)).remove().ensureOneDeleted();
 
         //then
-        Car.Reader car = repo.find(c -> c.withId(id)).first();
+        Car car = repo.find(c -> c.withId(id)).first();
         assertThat(car).isNull();
 
         BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));

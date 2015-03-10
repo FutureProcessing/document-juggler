@@ -64,7 +64,7 @@ public class ReadTest {
         given(collection.findOne(any(), any())).willReturn(dbObject);
 
         // when
-        Car.Reader entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(BRAND);
+        Car entity = carsRepository.find(car -> car.withId(PROPER_ID)).first(BRAND);
 
         // then
         assertThat(entity.getBrand()).isEqualTo(brand);
@@ -92,11 +92,11 @@ public class ReadTest {
         );
         given(collection.findOne(any(), any())).willReturn(model);
 
-        Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+        Car carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
-        Engine.Reader engine1 = carReader.getEngine();
-        Engine.Reader engine2 = carReader.getEngine();
+        Engine engine1 = carReader.getEngine();
+        Engine engine2 = carReader.getEngine();
 
         // then
         assertThat(engine2).isSameAs(engine1);
@@ -111,11 +111,11 @@ public class ReadTest {
         ));
         given(collection.findOne(any(), any())).willReturn(model);
 
-        Car.Reader carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
+        Car carReader = carsRepository.find(c -> c.withId(PROPER_ID)).first();
 
         // when
-        List<Luggage.Reader> luggage1 = carReader.getLuggage();
-        List<Luggage.Reader> luggage2 = carReader.getLuggage();
+        List<Luggage> luggage1 = carReader.getLuggage();
+        List<Luggage> luggage2 = carReader.getLuggage();
 
         // then
         assertThat(luggage2).isSameAs(luggage1);

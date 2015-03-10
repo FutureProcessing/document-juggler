@@ -35,7 +35,7 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         ));
 
         // then
-        List<Luggage.Reader> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
+        List<Luggage> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
 
         assertThat(luggage).hasSize(1);
         assertThat(luggage.get(0).getColor()).isEqualTo(color);
@@ -62,7 +62,7 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         ));
 
         // then
-        List<Luggage.Reader> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
+        List<Luggage> luggage = repo.find(car -> car.withId(id)).first().getLuggage();
 
         assertThat(luggage).hasSize(2);
         assertThat(extractProperty("color").from(luggage)).containsExactly(color1, color2);
@@ -82,7 +82,7 @@ public class EmbeddedCollectionIntegrationTest extends BaseIntegrationTest {
         ));
 
         // when
-        Set<Luggage.Reader> set = repo.find(car -> car.withId(id)).first().getRoofLuggage();
+        Set<Luggage> set = repo.find(car -> car.withId(id)).first().getRoofLuggage();
 
         // then
         assertThat(set).hasSize(1);

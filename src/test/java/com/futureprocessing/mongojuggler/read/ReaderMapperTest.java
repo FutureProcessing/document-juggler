@@ -72,23 +72,6 @@ public class ReaderMapperTest {
     }
 
     @Test
-    public void shouldThrowInvalidArgumentsExceptionWhenReadMethodHasArguments() throws Exception {
-        // given
-        Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
-
-        try {
-            // when
-            new ReaderMapper(ReaderWithArguments.class, STRICT);
-        } catch (UnsupportedMethodException ex) {
-            // then
-            assertThat(ex.getMethod()).isEqualTo(method);
-            return;
-        }
-
-        fail();
-    }
-
-    @Test
     public void shouldReturnUnsupportedReadCommandWhenReadMethodHasArguments() throws Exception {
         // given
         Method method = ReaderWithArguments.class.getMethod("getTest", String.class);

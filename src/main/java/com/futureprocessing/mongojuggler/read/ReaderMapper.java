@@ -23,9 +23,6 @@ public final class ReaderMapper extends Mapper<ReadCommand> {
     @Override
     protected ReadCommand getCommand(Method method) {
         if (!hasCorrectParameters(method)) {
-            if (isStrictMode()) {
-                throw new UnsupportedMethodException(method);
-            }
             return new UnsupportedReadCommand(method);
         }
 

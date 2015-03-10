@@ -31,7 +31,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
                 .withModel(model));
 
         // when
-        Car.Reader document = repo.find(car -> car.withId(id)).first();
+        Car document = repo.find(car -> car.withId(id)).first();
 
         assertThat(document.getBrand()).isEqualTo(brand);
         assertThat(document.getModel()).isEqualTo(model);
@@ -48,7 +48,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model2));
 
         // when
-        List<Car.Reader> list = repo.find(car -> car.withBrand(brand)).all();
+        List<Car> list = repo.find(car -> car.withBrand(brand)).all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2);
@@ -67,7 +67,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model3));
 
         // when
-        List<Car.Reader> list = repo.find(car -> car.withBrand(brand)).skip(1).limit(1).all();
+        List<Car> list = repo.find(car -> car.withBrand(brand)).skip(1).limit(1).all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model2);
@@ -86,7 +86,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand(brand).withModel(model3));
 
         // when
-        List<Car.Reader> list = repo.find().all();
+        List<Car> list = repo.find().all();
 
         // then
         assertThat(extractProperty("model").from(list)).containsExactly(model1, model2, model3);
@@ -97,7 +97,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         //given
 
         //when
-        Car.Reader first = repo.find().first();
+        Car first = repo.find().first();
 
         //then
         assertThat(first).isNull();
@@ -109,7 +109,7 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         repo.insert(car -> car.withBrand("BMW"));
 
         //when
-        Car.Reader first = repo.find(car -> car.withBrand("ABC")).first();
+        Car first = repo.find(car -> car.withBrand("ABC")).first();
 
         //then
         assertThat(first).isNull();

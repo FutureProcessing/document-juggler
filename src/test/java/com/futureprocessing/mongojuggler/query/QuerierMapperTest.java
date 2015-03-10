@@ -47,12 +47,12 @@ public class QuerierMapperTest {
         }
     }
 
-    Object[] trueFalseParameters(){
-        return $(STRICT, LENIENT);
+    Object[] mappingModes(){
+        return MappingMode.values();
     }
 
     @Test
-    @Parameters(method = "trueFalseParameters")
+    @Parameters(method = "mappingModes")
     public void shouldReturnIdQueryCommand(MappingMode mappingMode) throws NoSuchMethodException {
         // given
         Method method = TestStrictModeQuerier.class.getMethod("id", String.class);
@@ -66,7 +66,7 @@ public class QuerierMapperTest {
     }
 
     @Test
-    @Parameters(method = "trueFalseParameters")
+    @Parameters(method = "mappingModes")
     public void shouldReturnBasicQueryCommand(MappingMode mappingMode) throws NoSuchMethodException {
         // given
         Method method = TestStrictModeQuerier.class.getMethod("withString", String.class);

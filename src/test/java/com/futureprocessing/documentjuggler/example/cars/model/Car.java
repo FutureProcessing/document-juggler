@@ -78,6 +78,9 @@ public interface Car {
     @DbField(CarsDBModel.Car.OWNERS)
     Car withOwners(List<String> owners);
 
+    @DbField(CarsDBModel.Car.OWNERS)
+    Car withOwners(String...owners);
+
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     @AddToSet
     Car addPassengerName(String passengerName);

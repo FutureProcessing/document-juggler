@@ -41,16 +41,12 @@ public class ReadTest {
     private DB db;
     @Mock
     private DBCollection collection;
-    @Mock
-    private MongoDBProvider dbProvider;
-
 
     @Before
     public void before() {
-        given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
 
-        carsRepository = new CarsRepository(dbProvider.db());
+        carsRepository = new CarsRepository(db);
     }
 
     @Test

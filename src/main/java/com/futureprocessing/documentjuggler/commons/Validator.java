@@ -21,7 +21,4 @@ public final class Validator {
             throw new UnknownFieldException(method);
         }
     }
-
-    private Validator() {
-    }
 }

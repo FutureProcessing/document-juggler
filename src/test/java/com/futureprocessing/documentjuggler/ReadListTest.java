@@ -33,17 +33,13 @@ public class ReadListTest {
     private DBCollection collection;
     @Mock
     private DBCursor cursor;
-    @Mock
-    private MongoDBProvider dbProvider;
-
 
     @Before
     public void before() {
-        given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
         given(collection.find(any(), any())).willReturn(cursor);
 
-        carsRepository = new CarsRepository(dbProvider.db());
+        carsRepository = new CarsRepository(db);
     }
 
     @Test

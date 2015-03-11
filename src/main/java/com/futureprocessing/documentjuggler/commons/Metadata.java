@@ -5,7 +5,7 @@ import com.futureprocessing.documentjuggler.annotation.Id;
 
 import java.lang.reflect.Method;
 
-public class Metadata {
+public abstract class Metadata {
 
     public static String getFieldName(Method method) {
         if (method.isAnnotationPresent(Id.class)) {

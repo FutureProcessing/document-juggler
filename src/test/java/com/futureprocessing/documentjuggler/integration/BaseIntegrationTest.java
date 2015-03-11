@@ -1,6 +1,5 @@
 package com.futureprocessing.documentjuggler.integration;
 
-import com.futureprocessing.documentjuggler.SimpleDBProvider;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.junit.After;
@@ -13,7 +12,7 @@ public abstract class BaseIntegrationTest {
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 27017;
 
-    public static final String DB_NAME = "mongo-juggler-test";
+    public static final String DB_NAME = "juggler-test";
 
     private static MongoClient client;
     private static DB db;
@@ -21,7 +20,7 @@ public abstract class BaseIntegrationTest {
     @BeforeClass
     public static void initMongo() throws Exception {
         client = new MongoClient(getMongoHost(), getMongoPort());
-        db = new SimpleDBProvider(client(), DB_NAME).db();
+        db = client.getDB(DB_NAME);
     }
 
     private static String getMongoHost() {

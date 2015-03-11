@@ -32,18 +32,15 @@ public class UpdateTest {
     @Mock
     private DBCollection collection;
     @Mock
-    private MongoDBProvider dbProvider;
-    @Mock
     private WriteResult writeResult;
 
     @Before
     public void before() {
-        given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
         given(collection.update(any(), any())).willReturn(writeResult);
         given(writeResult.getN()).willReturn(1);
 
-        carsRepository = new CarsRepository(dbProvider.db());
+        carsRepository = new CarsRepository(db);
     }
 
     @Test

@@ -35,8 +35,6 @@ public class InsertTest {
     private DB db;
     @Mock
     private DBCollection collection;
-    @Mock
-    private MongoDBProvider dbProvider;
 
     private ObjectId insertedId = new ObjectId();
     private BasicDBObject insertedDocument;
@@ -44,7 +42,6 @@ public class InsertTest {
 
     @Before
     public void before() {
-        given(dbProvider.db()).willReturn(db);
         given(db.getCollection(any())).willReturn(collection);
 
         given(collection.insert(Mockito.<DBObject[]>any())).will(invocationOnMock -> {
@@ -54,7 +51,7 @@ public class InsertTest {
             return null;
         });
 
-        carsRepository = new CarsRepository(dbProvider.db());
+        carsRepository = new CarsRepository(db);
     }
 
 

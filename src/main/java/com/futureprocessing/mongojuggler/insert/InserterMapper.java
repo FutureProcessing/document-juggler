@@ -3,9 +3,9 @@ package com.futureprocessing.mongojuggler.insert;
 
 import com.futureprocessing.mongojuggler.annotation.AddToSet;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Push;
 import com.futureprocessing.mongojuggler.commons.Mapper;
+import com.futureprocessing.mongojuggler.commons.Metadata;
 import com.futureprocessing.mongojuggler.insert.command.*;
 
 import java.lang.reflect.GenericArrayType;
@@ -20,10 +20,10 @@ public final class InserterMapper extends Mapper<InsertCommand> {
 
     @Override
     protected InsertCommand getCommand(Method method) {
-        String field = getFieldName(method);
+        String field = Metadata.getFieldName(method);
 
-        if (method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
-            return new UnsupportedInsertCommand();
+        if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+            return new UnsupportedInsertCommand(method);
         }
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
@@ -41,9 +41,8 @@ public final class InserterMapper extends Mapper<InsertCommand> {
         return new BasicInsertCommand(field);
     }
 
-    private String getFieldName(Method method) {
-        DbField field = method.getAnnotation(DbField.class);
-        return field.value();
+    private boolean hasCorrectParameters(Method method) {
+        return method.getParameterCount() > 0;
     }
 
     private Class<?> getEmbeddedDocumentType(Method method) {

@@ -1,4 +1,4 @@
-package com.futureprocessing.mongojuggler.example;
+package com.futureprocessing.mongojuggler.example.cars;
 
 
 public interface CarsDBModel {

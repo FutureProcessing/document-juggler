@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.integration;
 
 
-import com.futureprocessing.mongojuggler.example.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -1,8 +1,8 @@
 package com.futureprocessing.mongojuggler.integration;
 
-import com.futureprocessing.mongojuggler.example.CarsDBModel;
-import com.futureprocessing.mongojuggler.example.CarsRepository;
-import com.futureprocessing.mongojuggler.example.model.Car;
+import com.futureprocessing.mongojuggler.example.cars.CarsDBModel;
+import com.futureprocessing.mongojuggler.example.cars.CarsRepository;
+import com.futureprocessing.mongojuggler.example.cars.model.Car;
 import com.futureprocessing.mongojuggler.exception.InvalidNumberOfDocumentsAffected;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.futureprocessing.mongojuggler.example.CarsDBModel.Car.*;
+import static com.futureprocessing.mongojuggler.example.cars.CarsDBModel.Car.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -39,7 +39,7 @@ public class RemoveIntegrationTest extends BaseIntegrationTest {
         repo.find(car -> car.withId(id)).remove().ensureOneDeleted();
 
         //then
-        Car.Reader car = repo.find(c -> c.withId(id)).first();
+        Car car = repo.find(c -> c.withId(id)).first();
         assertThat(car).isNull();
 
         BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));

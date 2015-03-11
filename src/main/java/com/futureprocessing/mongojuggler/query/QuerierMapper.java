@@ -4,15 +4,12 @@ package com.futureprocessing.mongojuggler.query;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
 import com.futureprocessing.mongojuggler.commons.Mapper;
-import com.futureprocessing.mongojuggler.exception.validation.InvalidArgumentsException;
-import com.futureprocessing.mongojuggler.exception.validation.InvalidReturnValueException;
 import com.futureprocessing.mongojuggler.query.command.BasicQueryCommand;
 import com.futureprocessing.mongojuggler.query.command.IdQueryCommand;
 import com.futureprocessing.mongojuggler.query.command.QueryCommand;
+import com.futureprocessing.mongojuggler.query.command.UnsupportedQueryCommand;
 
 import java.lang.reflect.Method;
-
-import static com.futureprocessing.mongojuggler.commons.Validator.validateField;
 
 public class QuerierMapper extends Mapper<QueryCommand> {
 
@@ -22,9 +19,10 @@ public class QuerierMapper extends Mapper<QueryCommand> {
 
     @Override
     protected QueryCommand getCommand(Method method) {
-        validateField(method);
-        validateReturnType(method);
-        validateArguments(method);
+
+        if (!hasCorrectReturnType(method) || !hasCorrectParameters(method)) {
+            return new UnsupportedQueryCommand(method);
+        }
 
         if (method.isAnnotationPresent(Id.class)) {
             return new IdQueryCommand();
@@ -32,21 +30,16 @@ public class QuerierMapper extends Mapper<QueryCommand> {
 
         String field = method.getAnnotation(DbField.class).value();
         return new BasicQueryCommand(field);
-
     }
 
-    private void validateReturnType(Method method) {
+    private boolean hasCorrectReturnType(Method method) {
         Class<?> returnType = method.getReturnType();
         Class<?> clazz = method.getDeclaringClass();
 
-        if (!returnType.equals(clazz) && !returnType.equals(Void.TYPE)) {
-            throw new InvalidReturnValueException(method);
-        }
+        return returnType.equals(clazz) || returnType.equals(Void.TYPE);
     }
 
-    private void validateArguments(Method method) {
-        if (method.getParameterCount() != 1) {
-            throw new InvalidArgumentsException(method);
-        }
+    private boolean hasCorrectParameters(Method method) {
+        return method.getParameterCount() == 1;
     }
 }

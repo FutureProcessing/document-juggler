@@ -25,7 +25,7 @@ public class PushSingleUpdateCommandTest {
 
         // then
         BasicDBObject expected = new BasicDBObject("$push",
-                                                   new BasicDBObject(FIELD, new BasicDBObject("$each", asList(VALUE))));
+                new BasicDBObject(FIELD, new BasicDBObject("$each", asList(VALUE))));
         assertThat(builder.getDocument()).isEqualTo(expected);
     }
 

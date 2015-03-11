@@ -21,6 +21,10 @@ public class UpdaterMapper extends Mapper<UpdateCommand> {
     protected UpdateCommand getCommand(Method method) {
         String field = Metadata.getFieldName(method);
 
+        if (!hasCorrectReturnType(method)) {
+            return new UnsupportedUpdateCommand(method);
+        }
+
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
             Class<?> type = method.isVarArgs() ? getEmbeddedListDocumentType(method) : getEmbeddedDocumentType(method);
             createMapping(type);
@@ -57,7 +61,7 @@ public class UpdaterMapper extends Mapper<UpdateCommand> {
             return new IncrementUpdateCommand(field);
         }
 
-        if (method.isAnnotationPresent(Unset.class)){
+        if (method.isAnnotationPresent(Unset.class)) {
             return new UnsetCommand(field);
         }
 
@@ -69,6 +73,13 @@ public class UpdaterMapper extends Mapper<UpdateCommand> {
         }
 
         return new BasicUpdateCommand(field, method.isAnnotationPresent(UnsetIfNull.class));
+    }
+
+    private boolean hasCorrectReturnType(Method method) {
+        Class<?> returnType = method.getReturnType();
+        Class<?> clazz = method.getDeclaringClass();
+
+        return returnType.equals(clazz) || returnType.equals(Void.TYPE);
     }
 
     private Class<?> getEmbeddedDocumentType(Method method) {

@@ -1,7 +1,7 @@
 package com.futureprocessing.mongojuggler.read.command;
 
 
-import com.futureprocessing.mongojuggler.example.model.Engine;
+import com.futureprocessing.mongojuggler.example.cars.model.Engine;
 import com.futureprocessing.mongojuggler.exception.FieldNotLoadedException;
 import com.futureprocessing.mongojuggler.read.ReaderMapper;
 import com.mongodb.BasicDBObject;

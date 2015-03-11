@@ -1,25 +1,26 @@
 package com.futureprocessing.mongojuggler.insert.command;
 
-import com.futureprocessing.mongojuggler.exception.UnsupportedActionException;
+import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
+
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.fail;
 
 
 public class UnsupportedInsertCommandTest {
 
-    private InsertCommand command = new UnsupportedInsertCommand();
-
     @Test
-    public void shouldThrowUnsupportedActionExceptionWhenInserting() {
+    public void shouldThrowUnsupportedActionExceptionWhenInserting() throws NoSuchMethodException {
         // given
+        InsertCommand command = new UnsupportedInsertCommand(Object.class.getMethod("equals", Object.class));
         BasicDBObject document = new BasicDBObject();
 
         try {
             // when
             command.insert(document, new Object[]{});
-        } catch (UnsupportedActionException ex) {
+        } catch (UnsupportedMethodException ex) {
             // then
             return;
         }

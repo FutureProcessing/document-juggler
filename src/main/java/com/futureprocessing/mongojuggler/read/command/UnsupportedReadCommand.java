@@ -1,21 +1,21 @@
-package com.futureprocessing.mongojuggler.insert.command;
+package com.futureprocessing.mongojuggler.read.command;
 
 import com.futureprocessing.mongojuggler.exception.validation.UnsupportedMethodException;
 import com.mongodb.BasicDBObject;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
-
-public class UnsupportedInsertCommand implements InsertCommand {
+public class UnsupportedReadCommand implements ReadCommand {
 
     private final Method method;
 
-    public UnsupportedInsertCommand(Method method) {
+    public UnsupportedReadCommand(Method method) {
         this.method = method;
     }
 
     @Override
-    public void insert(BasicDBObject document, Object[] args) {
+    public Object read(BasicDBObject document, Set<String> queriedFields) {
         throw new UnsupportedMethodException(method);
     }
 }

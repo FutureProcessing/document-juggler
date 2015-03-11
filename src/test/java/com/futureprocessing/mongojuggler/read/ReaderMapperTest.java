@@ -4,6 +4,8 @@ package com.futureprocessing.mongojuggler.read;
 import com.futureprocessing.mongojuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.mongojuggler.annotation.DbField;
 import com.futureprocessing.mongojuggler.annotation.Id;
+import com.futureprocessing.mongojuggler.exception.validation.ModelIsNotInterfaceException;
+import com.futureprocessing.mongojuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.mongojuggler.helper.Empty;
 import com.futureprocessing.mongojuggler.read.command.*;
 import org.junit.Test;
@@ -13,16 +15,80 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class ReaderMapperTest {
 
     @Test
-    public void shouldReturnIdReadCommand() throws Exception {
+    public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface() {
         // given
-        Method method = Read.class.getMethod("id");
+
+        try {
+            // when
+            new ReaderMapper(NotInterface.class);
+        } catch (ModelIsNotInterfaceException ex) {
+            //then
+            assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
+            return;
+        }
+
+        fail();
+    }
+
+    private class NotInterface {
+
+        @Id
+        String getId() {
+            return null;
+        }
+    }
+
+    @Test
+    public void shouldThrowUnknownFieldExceptionIfOneOfMethodsIsNotAnnotatedWithDbField() throws Exception {
+        // given
+
+        try {
+            // when
+            new ReaderMapper(UnknownFieldQuery.class);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
+            return;
+        }
+
+        fail();
+    }
+
+    private interface UnknownFieldQuery {
+        String getId();
+    }
+
+    @Test
+    public void shouldReturnUnsupportedReadCommandWhenReadMethodHasArguments() throws Exception {
+        // given
+        Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(ReaderWithArguments.class);
+        ReadCommand command = mapper.getCommand(method);
+
+        //then
+        assertThat(command).isInstanceOf(UnsupportedReadCommand.class);
+    }
+
+    private interface ReaderWithArguments {
+        @DbField("Test")
+        String getTest(String arg);
+    }
+
+
+    @Test
+    public void shouldReturnIdReadCommand() throws Exception {
+        // given
+        Method method = Model.class.getMethod("id");
+
+        // when
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -32,10 +98,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnBooleanReadCommandForPrimitiveBoolean() throws Exception {
         // given
-        Method method = Read.class.getMethod("primitiveBoolean");
+        Method method = Model.class.getMethod("primitiveBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -45,10 +111,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnBooleanReadCommandForBigBoolean() throws Exception {
         // given
-        Method method = Read.class.getMethod("bigBoolean");
+        Method method = Model.class.getMethod("bigBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -58,10 +124,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnSetReadCommand() throws Exception {
         // given
-        Method method = Read.class.getMethod("set");
+        Method method = Model.class.getMethod("set");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -71,10 +137,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnBasicReadCommand() throws Exception {
         // given
-        Method method = Read.class.getMethod("basic");
+        Method method = Model.class.getMethod("basic");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -84,10 +150,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnEmbeddedReadCommand() throws Exception {
         // given
-        Method method = Read.class.getMethod("embedded");
+        Method method = Model.class.getMethod("embedded");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -97,10 +163,10 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnEmbeddedListReadCommand() throws Exception {
         // given
-        Method method = Read.class.getMethod("embeddedList");
+        Method method = Model.class.getMethod("embeddedList");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -110,17 +176,17 @@ public class ReaderMapperTest {
     @Test
     public void shouldReturnEmbeddedSetReadCommand() throws Exception {
         // given
-        Method method = Read.class.getMethod("embeddedSet");
+        Method method = Model.class.getMethod("embeddedSet");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Read.class);
+        ReaderMapper mapper = new ReaderMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
     }
 
-    private interface Read {
+    private interface Model {
 
         @Id
         String id();

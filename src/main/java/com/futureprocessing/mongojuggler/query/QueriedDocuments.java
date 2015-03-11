@@ -16,10 +16,10 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.OptionalInt.empty;
 import static java.util.OptionalInt.of;
 
-public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<READER> {
+public class QueriedDocuments<MODEL> implements ReadQueriedDocuments<MODEL> {
 
-    private final Operator<READER, ReaderMapper> readerOperator;
-    private final Operator<UPDATER, UpdaterMapper> updaterOperator;
+    private final Operator<MODEL, ReaderMapper> readerOperator;
+    private final Operator<MODEL, UpdaterMapper> updaterOperator;
 
     private final DBCollection dbCollection;
     private final DBObject query;
@@ -27,8 +27,8 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     private OptionalInt limit = empty();
 
 
-    public QueriedDocuments(Operator<READER, ReaderMapper> readerOperator,
-                            Operator<UPDATER, UpdaterMapper> updaterOperator,
+    public QueriedDocuments(Operator<MODEL, ReaderMapper> readerOperator,
+                            Operator<MODEL, UpdaterMapper> updaterOperator,
                             DBCollection dbCollection,
                             DBObject query) {
         this.readerOperator = readerOperator;
@@ -39,7 +39,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     }
 
     @Override
-    public READER first(String... fieldsToFetch) {
+    public MODEL first(String... fieldsToFetch) {
         Set<String> fields = toSet(fieldsToFetch);
         DBObject projection = getProjection(fields);
 
@@ -52,16 +52,16 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
         return createReadProxy(dbObject, fields);
     }
 
-    private READER createReadProxy(DBObject dbObject, Set<String> fields) {
+    private MODEL createReadProxy(DBObject dbObject, Set<String> fields) {
         return ReadProxy.create(readerOperator.getRootClass(), readerOperator.getMapper().get(), dbObject, fields);
     }
 
     @Override
-    public List<READER> all(String... fieldsToFetch) {
+    public List<MODEL> all(String... fieldsToFetch) {
         Set<String> fields = toSet(fieldsToFetch);
         DBObject projection = getProjection(fields);
 
-        List<READER> list = new ArrayList<>();
+        List<MODEL> list = new ArrayList<>();
 
         try (DBCursor cursor = dbCollection.find(query, projection)) {
             if (skip.isPresent()) {
@@ -95,7 +95,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     }
 
     @Override
-    public ReadQueriedDocuments<READER> skip(int skip) {
+    public ReadQueriedDocuments<MODEL> skip(int skip) {
         if (this.skip.isPresent()) {
             throw new SkipAlreadyPresentException();
         }
@@ -104,7 +104,7 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
     }
 
     @Override
-    public ReadQueriedDocuments<READER> limit(int limit) {
+    public ReadQueriedDocuments<MODEL> limit(int limit) {
         if (this.limit.isPresent()) {
             throw new LimitAlreadyPresentException();
         }
@@ -112,9 +112,9 @@ public class QueriedDocuments<READER, UPDATER> implements ReadQueriedDocuments<R
         return this;
     }
 
-    public UpdateResult update(UpdaterConsumer<UPDATER> consumer) {
+    public UpdateResult update(UpdaterConsumer<MODEL> consumer) {
 
-        UPDATER updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
+        MODEL updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
         consumer.accept(updater);
 
         BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();

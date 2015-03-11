@@ -16,6 +16,12 @@ import static org.junit.Assert.fail;
 
 public class QuerierMapperTest {
 
+    private class NotInterface {
+        NotInterface withId(String id) {
+            return null;
+        }
+    }
+
     @Test
     public void shouldThrowModelIsNotInterfaceExceptionIfQueryIsNotInterface() {
         // given
@@ -32,20 +38,24 @@ public class QuerierMapperTest {
         fail();
     }
 
-    private class NotInterface {
+    private interface Model {
+        @Id
+        Model id(String id);
 
-        NotInterface withId(String id) {
-            return null;
-        }
+        @DbField("string")
+        Model withString(String string);
+
+        @DbField("fieldA")
+        String getFieldA();
     }
 
     @Test
     public void shouldReturnIdQueryCommand() throws NoSuchMethodException {
         // given
-        Method method = TestStrictModeQuerier.class.getMethod("id", String.class);
+        Method method = Model.class.getMethod("id", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class);
+        QuerierMapper mapper = new QuerierMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -55,37 +65,23 @@ public class QuerierMapperTest {
     @Test
     public void shouldReturnBasicQueryCommand() throws NoSuchMethodException {
         // given
-        Method method = TestStrictModeQuerier.class.getMethod("withString", String.class);
+        Method method = Model.class.getMethod("withString", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestStrictModeQuerier.class);
+        QuerierMapper mapper = new QuerierMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicQueryCommand.class);
     }
 
-    private interface TestStrictModeQuerier {
-
-        @Id
-        TestStrictModeQuerier id(String id);
-
-        @DbField("string")
-        TestStrictModeQuerier withString(String string);
-    }
-
-    private interface TestEasyModeQuerier {
-        @DbField("fieldA")
-        String getFieldA();
-    }
-
     @Test
     public void shouldReturnUnsupportedMethodCommand() throws NoSuchMethodException {
         // given
-        Method method = TestEasyModeQuerier.class.getMethod("getFieldA");
+        Method method = Model.class.getMethod("getFieldA");
 
         // when
-        QuerierMapper mapper = new QuerierMapper(TestEasyModeQuerier.class);
+        QuerierMapper mapper = new QuerierMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);

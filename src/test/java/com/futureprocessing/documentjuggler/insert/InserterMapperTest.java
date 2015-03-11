@@ -17,8 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InserterMapperTest {
 
 
-    @Test
+    private class NotInterface {
+        @Id
+        String getId() {
+            return null;
+        }
+    }
 
+    @Test
     public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface() {
         // given
 
@@ -34,11 +40,8 @@ public class InserterMapperTest {
         Assert.fail();
     }
 
-    private class NotInterface {
-        @Id
-        String getId() {
-            return null;
-        }
+    private interface ModelWithUnknownQuery {
+        String getId();
     }
 
     @Test
@@ -47,28 +50,48 @@ public class InserterMapperTest {
 
         try {
             // when
-            new InserterMapper(UnknownFieldQuery.class);
+            new InserterMapper(ModelWithUnknownQuery.class);
         } catch (UnknownFieldException ex) {
             // then
-            assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
+            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownQuery.class.getMethod("getId"));
             return;
         }
 
         Assert.fail();
     }
 
-    private interface UnknownFieldQuery {
-        String getId();
-    }
+    private interface Model {
 
+        @DbField("embedded")
+        @DbEmbeddedDocument
+        Model embedded(Consumer<Empty> consumer);
+
+        @DbField("embedded")
+        @DbEmbeddedDocument
+        Model embeddedVarArg(Consumer<Empty>... consumers);
+
+        @DbField("value")
+        Model value(String value);
+
+        @DbField("set")
+        @AddToSet
+        Model unsupportedAddToSet(String value);
+
+        @DbField("list")
+        @Push
+        Model unsupportedPush(String value1, String value2);
+
+        @DbField("wrongGetter")
+        String wrongGetter();
+    }
 
     @Test
     public void shouldReturnEmbeddedInsertCommand() throws Exception {
         // given
-        Method method = StrictModeInserter.class.getMethod("embedded", Consumer.class);
+        Method method = Model.class.getMethod("embedded", Consumer.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -78,10 +101,10 @@ public class InserterMapperTest {
     @Test
     public void shouldReturnEmbeddedVarArgInsertCommand() throws Exception {
         // given
-        Method method = StrictModeInserter.class.getMethod("embeddedVarArg", Consumer[].class);
+        Method method = Model.class.getMethod("embeddedVarArg", Consumer[].class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -91,10 +114,10 @@ public class InserterMapperTest {
     @Test
     public void shouldReturnBasicInsertCommand() throws Exception {
         // given
-        Method method = StrictModeInserter.class.getMethod("value", String.class);
+        Method method = Model.class.getMethod("value", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(StrictModeInserter.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -102,74 +125,43 @@ public class InserterMapperTest {
     }
 
 
-    private interface UnsupportedAddToSet {
-        @DbField("set")
-        @AddToSet
-        StrictModeInserter unsupportedAddToSet(String value);
-    }
-
     @Test
-    public void shouldReturnUnsupportedInsertCommandForAddToSetAnnotationInLenientMode() throws Exception {
+    public void shouldReturnUnsupportedInsertCommandForAddToSetAnnotation() throws Exception {
         // given
-        Method method = UnsupportedAddToSet.class.getMethod("unsupportedAddToSet", String.class);
+        Method method = Model.class.getMethod("unsupportedAddToSet", String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(UnsupportedAddToSet.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 
-    private interface UnsupportedPush {
-        @DbField("list")
-        @Push
-        StrictModeInserter unsupportedPush(String value1, String value2);
-    }
-
-    @Test
-    public void shouldReturnUnsupportedInsertCommandForPushAnnotationInLenientMode() throws Exception {
+@Test
+    public void shouldReturnUnsupportedInsertCommandForPushAnnotation() throws Exception {
         // given
-        Method method = UnsupportedPush.class.getMethod("unsupportedPush", String.class, String.class);
+        Method method = Model.class.getMethod("unsupportedPush", String.class, String.class);
 
         // when
-        InserterMapper mapper = new InserterMapper(UnsupportedPush.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 
-
-    private interface WrongGetter {
-        @DbField("wrongGetter")
-        String wrongGetter();
-    }
-
     @Test
-    public void shouldReturnUnsupportedInsertCommandForIllegalMethodInLenientMode() throws Exception {
+    public void shouldReturnUnsupportedInsertCommandForIllegalMethodModel() throws Exception {
         // given
-        Method method = WrongGetter.class.getMethod("wrongGetter");
+        Method method = Model.class.getMethod("wrongGetter");
 
         // when
-        InserterMapper mapper = new InserterMapper(WrongGetter.class);
+        InserterMapper mapper = new InserterMapper(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 
-    private interface StrictModeInserter {
-
-        @DbField("embedded")
-        @DbEmbeddedDocument
-        StrictModeInserter embedded(Consumer<Empty> consumer);
-
-        @DbField("embedded")
-        @DbEmbeddedDocument
-        StrictModeInserter embeddedVarArg(Consumer<Empty>... consumers);
-
-        @DbField("value")
-        StrictModeInserter value(String value);
-    }
 }

@@ -19,6 +19,13 @@ import static org.junit.Assert.fail;
 
 public class ReaderMapperTest {
 
+    private class NotInterface {
+        @Id
+        String getId() {
+            return null;
+        }
+    }
+
     @Test
     public void shouldThrowModelIsNotInterfaceExceptionIfReadIsNotInterface() {
         // given
@@ -35,12 +42,8 @@ public class ReaderMapperTest {
         fail();
     }
 
-    private class NotInterface {
-
-        @Id
-        String getId() {
-            return null;
-        }
+    private interface ModelWithUnknownField {
+        String getId();
     }
 
     @Test
@@ -49,18 +52,49 @@ public class ReaderMapperTest {
 
         try {
             // when
-            new ReaderMapper(UnknownFieldQuery.class);
+            new ReaderMapper(ModelWithUnknownField.class);
         } catch (UnknownFieldException ex) {
             // then
-            assertThat(ex.getMethod()).isEqualTo(UnknownFieldQuery.class.getMethod("getId"));
+            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownField.class.getMethod("getId"));
             return;
         }
 
         fail();
     }
 
-    private interface UnknownFieldQuery {
-        String getId();
+    private interface Model {
+
+        @Id
+        String id();
+
+        @DbField("boolean")
+        boolean primitiveBoolean();
+
+        @DbField("Boolean")
+        Boolean bigBoolean();
+
+        @DbField("set")
+        Set<String> set();
+
+        @DbField("basic")
+        String basic();
+
+        @DbField("embedded")
+        @DbEmbeddedDocument
+        Empty embedded();
+
+        @DbField("embeddedList")
+        @DbEmbeddedDocument
+        List<Empty> embeddedList();
+
+        @DbField("embeddedSet")
+        @DbEmbeddedDocument
+        Set<Empty> embeddedSet();
+    }
+
+    private interface ReaderWithArguments {
+        @DbField("Test")
+        String getTest(String arg);
     }
 
     @Test
@@ -74,11 +108,6 @@ public class ReaderMapperTest {
 
         //then
         assertThat(command).isInstanceOf(UnsupportedReadCommand.class);
-    }
-
-    private interface ReaderWithArguments {
-        @DbField("Test")
-        String getTest(String arg);
     }
 
 
@@ -184,35 +213,5 @@ public class ReaderMapperTest {
         // then
         ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
-    }
-
-    private interface Model {
-
-        @Id
-        String id();
-
-        @DbField("boolean")
-        boolean primitiveBoolean();
-
-        @DbField("Boolean")
-        Boolean bigBoolean();
-
-        @DbField("set")
-        Set<String> set();
-
-        @DbField("basic")
-        String basic();
-
-        @DbField("embedded")
-        @DbEmbeddedDocument
-        Empty embedded();
-
-        @DbField("embeddedList")
-        @DbEmbeddedDocument
-        List<Empty> embeddedList();
-
-        @DbField("embeddedSet")
-        @DbEmbeddedDocument
-        Set<Empty> embeddedSet();
     }
 }

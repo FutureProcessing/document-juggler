@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -14,11 +15,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransformersTest {
 
-    public static final String ID = new ObjectId().toHexString();
+    private final String ADDITIONAL_OPERATION = "ADDITIONAL_OPERATION";
+    private final String ADDITIONAL_FIELD = "ADDITIONAL_FIELD";
+    private final String ADDITIONAL_VALUE = "ADDITIONAL_VALUE";
+
     private CarsRepository carsRepository;
 
     @Mock
@@ -50,18 +55,38 @@ public class TransformersTest {
     public void shouldModifyDocumentBeforeInsert() {
         //given
         final String brand = "BMW";
-        final String otherKey = "otherKey";
-        final String otherValue = "otherValue";
 
         //when
         carsRepository.preInsert(dbObject ->
-                        dbObject.append(otherKey, otherValue)
+                        dbObject.append(ADDITIONAL_FIELD, ADDITIONAL_VALUE)
         );
         carsRepository.insert(car -> car.withBrand(brand));
 
         //then
-        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, brand).append(otherKey, otherValue);
+        DBObject expectedInsert = new BasicDBObject(CarsDBModel.Car.BRAND, brand).append(ADDITIONAL_FIELD, ADDITIONAL_VALUE);
         assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
+
+    @Test
+    public void shouldModifyDocumentBeforeUpdate() {
+        //given
+        final String brand = "BMW";
+
+        ArgumentCaptor<BasicDBObject> captor = ArgumentCaptor.forClass(BasicDBObject.class);
+        when(collection.update(any(), captor.capture())).thenReturn(writeResult);
+
+
+        //when
+        carsRepository.preUpdate(dbObject ->
+                        dbObject.append(ADDITIONAL_OPERATION, new BasicDBObject(ADDITIONAL_FIELD, ADDITIONAL_VALUE))
+        );
+        carsRepository.find().update(car -> car.withBrand(brand));
+
+        //then
+        DBObject expectedUpdate = new BasicDBObject("$set", new BasicDBObject(CarsDBModel.Car.BRAND, brand))
+                .append(ADDITIONAL_OPERATION, new BasicDBObject(ADDITIONAL_FIELD, ADDITIONAL_VALUE));
+        assertThat(captor.getValue()).isEqualTo(expectedUpdate);
+    }
+
 
 }

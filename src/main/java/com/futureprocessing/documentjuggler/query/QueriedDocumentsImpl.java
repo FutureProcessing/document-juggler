@@ -1,5 +1,6 @@
 package com.futureprocessing.documentjuggler.query;
 
+import com.futureprocessing.documentjuggler.DBObjectTransformer;
 import com.futureprocessing.documentjuggler.Operator;
 import com.futureprocessing.documentjuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.documentjuggler.exception.MissingPropertyException;
@@ -26,16 +27,18 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
+    private final DBObjectTransformer preUpdateTransformer;
 
     public QueriedDocumentsImpl(Operator<MODEL, ReaderMapper> readerOperator,
                                 Operator<MODEL, UpdaterMapper> updaterOperator,
                                 DBCollection dbCollection,
-                                DBObject query) {
+                                DBObject query, DBObjectTransformer preUpdateTransformer) {
         this.readerOperator = readerOperator;
         this.updaterOperator = updaterOperator;
 
         this.dbCollection = dbCollection;
         this.query = query;
+        this.preUpdateTransformer = preUpdateTransformer;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
         BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
 
-        if (dbObject == null){
+        if (dbObject == null) {
             return null;
         }
 
@@ -119,6 +122,11 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
         consumer.accept(updater);
 
         BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();
+
+        if (preUpdateTransformer != null) {
+            document = preUpdateTransformer.transform(document);
+        }
+
         if (document.isEmpty()) {
             throw new MissingPropertyException("No property to update specified");
         }
@@ -127,7 +135,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     }
 
     @Override
-    public RemoveResult remove(){
+    public RemoveResult remove() {
         WriteResult result = dbCollection.remove(query);
         return new RemoveResult(result);
     }

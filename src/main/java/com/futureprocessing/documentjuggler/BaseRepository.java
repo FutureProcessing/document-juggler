@@ -20,6 +20,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
     private final DBCollection dbCollection;
 
     private DBObjectTransformer preInsertTransformer;
+    private DBObjectTransformer preUpdateTransformer;
 
     public BaseRepository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
@@ -36,12 +37,12 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         querierConsumer.accept(querier);
 
         return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection,
-                QueryProxy.extract(querier).toDBObject());
+                QueryProxy.extract(querier).toDBObject(), preUpdateTransformer);
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null);
+        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null, preUpdateTransformer);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
         BasicDBObject document = InsertProxy.extract(inserter).getDocument();
 
-        if (preInsertTransformer != null){
+        if (preInsertTransformer != null) {
             document = preInsertTransformer.transform(document);
         }
 
@@ -61,5 +62,9 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     public void preInsert(DBObjectTransformer preInsertTransformer) {
         this.preInsertTransformer = preInsertTransformer;
+    }
+
+    public void preUpdate(DBObjectTransformer preUpdateTransformer) {
+        this.preUpdateTransformer = preUpdateTransformer;
     }
 }

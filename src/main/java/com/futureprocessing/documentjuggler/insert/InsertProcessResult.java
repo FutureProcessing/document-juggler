@@ -1,6 +1,7 @@
-package com.futureprocessing.documentjuggler;
+package com.futureprocessing.documentjuggler.insert;
 
 
+import com.futureprocessing.documentjuggler.DBObjectTransformer;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 

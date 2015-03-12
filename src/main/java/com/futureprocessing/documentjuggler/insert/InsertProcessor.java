@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.InsertProcessResult;
 import com.futureprocessing.documentjuggler.Operator;
 import com.mongodb.DBCollection;
 

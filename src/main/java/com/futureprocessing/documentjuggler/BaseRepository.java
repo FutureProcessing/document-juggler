@@ -2,13 +2,11 @@ package com.futureprocessing.documentjuggler;
 
 
 import com.futureprocessing.documentjuggler.insert.InsertProcessor;
-import com.futureprocessing.documentjuggler.insert.InsertProxy;
 import com.futureprocessing.documentjuggler.insert.InserterConsumer;
 import com.futureprocessing.documentjuggler.insert.InserterMapper;
 import com.futureprocessing.documentjuggler.query.*;
 import com.futureprocessing.documentjuggler.read.ReaderMapper;
 import com.futureprocessing.documentjuggler.update.UpdaterMapper;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
 public class BaseRepository<MODEL> implements Repository<MODEL> {
@@ -19,9 +17,6 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
     private final Operator<MODEL, UpdaterMapper> updaterOperator;
 
     private final DBCollection dbCollection;
-
-    private DBObjectTransformer preInsertTransformer;
-    private DBObjectTransformer preUpdateTransformer;
 
     private InsertProcessor<MODEL> insertProcessor;
 
@@ -42,28 +37,17 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         querierConsumer.accept(querier);
 
         return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection,
-                QueryProxy.extract(querier).toDBObject(), preUpdateTransformer);
+                QueryProxy.extract(querier).toDBObject());
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null, preUpdateTransformer);
+        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null);
     }
 
     @Override
     public String insert(InserterConsumer<MODEL> consumer) {
-        if(preInsertTransformer != null) {
-            // THIS IF will be removed;
-            return insertProcessor.process(consumer).transform(preInsertTransformer).execute();
-        }
         return insertProcessor.process(consumer).execute();
     }
 
-    public void preInsert(DBObjectTransformer preInsertTransformer) {
-        this.preInsertTransformer = preInsertTransformer;
-    }
-
-    public void preUpdate(DBObjectTransformer preUpdateTransformer) {
-        this.preUpdateTransformer = preUpdateTransformer;
-    }
 }

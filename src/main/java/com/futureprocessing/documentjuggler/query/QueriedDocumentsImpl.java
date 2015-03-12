@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.Operator;
 import com.futureprocessing.documentjuggler.exception.LimitAlreadyPresentException;
-import com.futureprocessing.documentjuggler.exception.MissingPropertyException;
 import com.futureprocessing.documentjuggler.exception.SkipAlreadyPresentException;
 import com.futureprocessing.documentjuggler.read.ReadProxy;
 import com.futureprocessing.documentjuggler.read.ReaderMapper;
@@ -113,7 +112,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     }
 
     @Override
-    public UpdateResult update(UpdaterConsumer<MODEL> consumer) {
+    public UpdateResult update(UpdatConsumer<MODEL> consumer) {
         BasicDBObject document = updateProcessor.process(consumer);
         WriteResult result = dbCollection.update(query, document);
         return new UpdateResult(result);

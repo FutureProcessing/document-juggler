@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler;
 
 
+import com.futureprocessing.documentjuggler.insert.InsertProcessor;
 import com.futureprocessing.documentjuggler.insert.InsertProxy;
 import com.futureprocessing.documentjuggler.insert.InserterConsumer;
 import com.futureprocessing.documentjuggler.insert.InserterMapper;
@@ -22,6 +23,8 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
     private DBObjectTransformer preInsertTransformer;
     private DBObjectTransformer preUpdateTransformer;
 
+    private InsertProcessor<MODEL> insertProcessor;
+
     public BaseRepository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
 
@@ -29,6 +32,8 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         this.querierOperator = new Operator<>(modelClass, new QuerierMapper(modelClass));
         this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass));
         this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass));
+
+        insertProcessor = new InsertProcessor<>(dbCollection, inserterOperator);
     }
 
     @Override
@@ -47,17 +52,11 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     @Override
     public String insert(InserterConsumer<MODEL> consumer) {
-        MODEL inserter = InsertProxy.create(inserterOperator.getRootClass(), inserterOperator.getMapper().get());
-        consumer.accept(inserter);
-
-        BasicDBObject document = InsertProxy.extract(inserter).getDocument();
-
-        if (preInsertTransformer != null) {
-            document = preInsertTransformer.transform(document);
+        if(preInsertTransformer != null) {
+            // THIS IF will be removed;
+            return insertProcessor.process(consumer).transform(preInsertTransformer).execute();
         }
-
-        dbCollection.insert(document);
-        return document.getObjectId("_id").toHexString();
+        return insertProcessor.process(consumer).execute();
     }
 
     public void preInsert(DBObjectTransformer preInsertTransformer) {

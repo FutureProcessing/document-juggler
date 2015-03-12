@@ -19,7 +19,6 @@ import static java.util.OptionalInt.of;
 public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
     private final Operator<MODEL, ReaderMapper> readerOperator;
-    private final Operator<MODEL, UpdaterMapper> updaterOperator;
 
     private final DBCollection dbCollection;
     private final DBObject query;
@@ -30,11 +29,9 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     private OptionalInt limit = empty();
 
     public QueriedDocumentsImpl(Operator<MODEL, ReaderMapper> readerOperator,
-                                Operator<MODEL, UpdaterMapper> updaterOperator,
                                 DBCollection dbCollection,
                                 DBObject query, UpdateProcessor<MODEL> updateProcessor) {
         this.readerOperator = readerOperator;
-        this.updaterOperator = updaterOperator;
 
         this.dbCollection = dbCollection;
         this.query = query;

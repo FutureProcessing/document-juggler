@@ -38,13 +38,13 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     @Override
     public QueriedDocuments<MODEL> find(QuerierConsumer<MODEL> querierConsumer) {
-        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection,
+        return new QueriedDocumentsImpl<>(readerOperator, dbCollection,
                 queryProcessor.process(querierConsumer), updateProcessor);
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null, updateProcessor);
+        return new QueriedDocumentsImpl<>(readerOperator, dbCollection, null, updateProcessor);
     }
 
     @Override

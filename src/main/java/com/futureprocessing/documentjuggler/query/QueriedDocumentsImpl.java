@@ -23,18 +23,22 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
     private final DBCollection dbCollection;
     private final DBObject query;
+
+    private final UpdateProcessor<MODEL> updateProcessor;
+
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
     public QueriedDocumentsImpl(Operator<MODEL, ReaderMapper> readerOperator,
                                 Operator<MODEL, UpdaterMapper> updaterOperator,
                                 DBCollection dbCollection,
-                                DBObject query) {
+                                DBObject query, UpdateProcessor<MODEL> updateProcessor) {
         this.readerOperator = readerOperator;
         this.updaterOperator = updaterOperator;
 
         this.dbCollection = dbCollection;
         this.query = query;
+        this.updateProcessor = updateProcessor;
     }
 
     @Override
@@ -113,8 +117,10 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
     @Override
     public UpdateResult update(UpdaterConsumer<MODEL> consumer) {
+        return updateProcessor.process(consumer).withQuery(query).execute();
 
-        MODEL updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
+
+        /*MODEL updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
         consumer.accept(updater);
 
         BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();
@@ -123,7 +129,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
             throw new MissingPropertyException("No property to update specified");
         }
         WriteResult result = dbCollection.update(query, document);
-        return new UpdateResult(result);
+        return new UpdateResult(result);*/
     }
 
     @Override

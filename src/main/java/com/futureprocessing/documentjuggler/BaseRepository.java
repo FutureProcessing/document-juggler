@@ -6,6 +6,7 @@ import com.futureprocessing.documentjuggler.insert.InserterConsumer;
 import com.futureprocessing.documentjuggler.insert.InserterMapper;
 import com.futureprocessing.documentjuggler.query.*;
 import com.futureprocessing.documentjuggler.read.ReaderMapper;
+import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.futureprocessing.documentjuggler.update.UpdaterMapper;
 import com.mongodb.DBCollection;
 
@@ -19,6 +20,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
     private final DBCollection dbCollection;
 
     private InsertProcessor<MODEL> insertProcessor;
+    private UpdateProcessor<MODEL> updateProcessor;
 
     public BaseRepository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
@@ -29,6 +31,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass));
 
         insertProcessor = new InsertProcessor<>(dbCollection, inserterOperator);
+        updateProcessor = new UpdateProcessor<>(dbCollection, updaterOperator);
     }
 
     @Override
@@ -37,12 +40,12 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         querierConsumer.accept(querier);
 
         return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection,
-                QueryProxy.extract(querier).toDBObject());
+                QueryProxy.extract(querier).toDBObject(), updateProcessor);
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null);
+        return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection, null, updateProcessor);
     }
 
     @Override

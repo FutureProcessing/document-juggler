@@ -114,19 +114,9 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
     @Override
     public UpdateResult update(UpdaterConsumer<MODEL> consumer) {
-        return updateProcessor.process(consumer).withQuery(query).execute();
-
-
-        /*MODEL updater = UpdateProxy.create(updaterOperator.getRootClass(), updaterOperator.getMapper().get(), new RootUpdateBuilder());
-        consumer.accept(updater);
-
-        BasicDBObject document = UpdateProxy.extract(updater).getUpdateDocument();
-
-        if (document.isEmpty()) {
-            throw new MissingPropertyException("No property to update specified");
-        }
+        BasicDBObject document = updateProcessor.process(consumer);
         WriteResult result = dbCollection.update(query, document);
-        return new UpdateResult(result);*/
+        return new UpdateResult(result);
     }
 
     @Override

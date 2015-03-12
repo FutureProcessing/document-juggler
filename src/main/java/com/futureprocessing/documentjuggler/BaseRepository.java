@@ -19,6 +19,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     private final DBCollection dbCollection;
 
+    private QueryProcessor<MODEL> queryProcessor;
     private InsertProcessor<MODEL> insertProcessor;
     private UpdateProcessor<MODEL> updateProcessor;
 
@@ -30,17 +31,15 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass));
         this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass));
 
+        queryProcessor = new QueryProcessor<>(dbCollection, querierOperator);
         insertProcessor = new InsertProcessor<>(dbCollection, inserterOperator);
         updateProcessor = new UpdateProcessor<>(dbCollection, updaterOperator);
     }
 
     @Override
     public QueriedDocuments<MODEL> find(QuerierConsumer<MODEL> querierConsumer) {
-        MODEL querier = QueryProxy.create(querierOperator.getRootClass(), querierOperator.getMapper().get());
-        querierConsumer.accept(querier);
-
         return new QueriedDocumentsImpl<>(readerOperator, updaterOperator, dbCollection,
-                QueryProxy.extract(querier).toDBObject(), updateProcessor);
+                queryProcessor.process(querierConsumer), updateProcessor);
     }
 
     @Override

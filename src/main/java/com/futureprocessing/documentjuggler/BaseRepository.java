@@ -7,17 +7,16 @@ import com.futureprocessing.documentjuggler.query.QueriedDocuments;
 import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
 import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
-import com.futureprocessing.documentjuggler.read.ReaderMapper;
+import com.futureprocessing.documentjuggler.read.ReadProcessor;
 import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
 public class BaseRepository<MODEL> implements Repository<MODEL> {
 
-    private final Operator<MODEL, ReaderMapper> readerOperator;
-
     private final DBCollection dbCollection;
 
+    private ReadProcessor<MODEL> readProcessor;
     private QueryProcessor<MODEL> queryProcessor;
     private InsertProcessor<MODEL> insertProcessor;
     private UpdateProcessor<MODEL> updateProcessor;
@@ -25,8 +24,7 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
     public BaseRepository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
 
-        this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass));
-
+        readProcessor = new ReadProcessor<>(modelClass, dbCollection);
         queryProcessor = new QueryProcessor<>(modelClass);
         insertProcessor = new InsertProcessor<>(modelClass);
         updateProcessor = new UpdateProcessor<>(modelClass);
@@ -34,13 +32,12 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     @Override
     public QueriedDocuments<MODEL> find(QueryConsumer<MODEL> consumer) {
-        return new QueriedDocumentsImpl<>(readerOperator, dbCollection,
-                queryProcessor.process(consumer), updateProcessor);
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(consumer), readProcessor, updateProcessor);
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(readerOperator, dbCollection, null, updateProcessor);
+        return new QueriedDocumentsImpl<>(dbCollection, null, readProcessor, updateProcessor);
     }
 
     @Override

@@ -1,96 +1,49 @@
 package com.futureprocessing.documentjuggler.query;
 
-import com.futureprocessing.documentjuggler.Operator;
 import com.futureprocessing.documentjuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.documentjuggler.exception.SkipAlreadyPresentException;
-import com.futureprocessing.documentjuggler.read.ReadProxy;
-import com.futureprocessing.documentjuggler.read.ReaderMapper;
-import com.futureprocessing.documentjuggler.update.*;
-import com.mongodb.*;
+import com.futureprocessing.documentjuggler.read.ReadProcessor;
+import com.futureprocessing.documentjuggler.update.RemoveResult;
+import com.futureprocessing.documentjuggler.update.UpdatConsumer;
+import com.futureprocessing.documentjuggler.update.UpdateProcessor;
+import com.futureprocessing.documentjuggler.update.UpdateResult;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
-import java.util.*;
+import java.util.List;
+import java.util.OptionalInt;
 
-import static java.util.Collections.addAll;
-import static java.util.Collections.unmodifiableSet;
 import static java.util.OptionalInt.empty;
 import static java.util.OptionalInt.of;
 
 public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
 
-    private final Operator<MODEL, ReaderMapper> readerOperator;
-
-    private final DBCollection dbCollection;
+    private final DBCollection collection;
     private final DBObject query;
-
+    private final ReadProcessor<MODEL> readProcessor;
     private final UpdateProcessor<MODEL> updateProcessor;
 
     private OptionalInt skip = empty();
     private OptionalInt limit = empty();
 
-    public QueriedDocumentsImpl(Operator<MODEL, ReaderMapper> readerOperator,
-                                DBCollection dbCollection,
-                                DBObject query, UpdateProcessor<MODEL> updateProcessor) {
-        this.readerOperator = readerOperator;
-
-        this.dbCollection = dbCollection;
+    public QueriedDocumentsImpl(DBCollection collection, DBObject query,
+                                ReadProcessor<MODEL> readProcessor, UpdateProcessor<MODEL> updateProcessor) {
+        this.collection = collection;
         this.query = query;
+        this.readProcessor = readProcessor;
         this.updateProcessor = updateProcessor;
     }
 
     @Override
     public MODEL first(String... fieldsToFetch) {
-        Set<String> fields = toSet(fieldsToFetch);
-        DBObject projection = getProjection(fields);
-
-        BasicDBObject dbObject = (BasicDBObject) dbCollection.findOne(query, projection);
-
-        if (dbObject == null) {
-            return null;
-        }
-
-        return createReadProxy(dbObject, fields);
-    }
-
-    private MODEL createReadProxy(DBObject dbObject, Set<String> fields) {
-        return ReadProxy.create(readerOperator.getRootClass(), readerOperator.getMapper().get(), dbObject, fields);
+        return readProcessor.processFirst(query, fieldsToFetch);
     }
 
     @Override
     public List<MODEL> all(String... fieldsToFetch) {
-        Set<String> fields = toSet(fieldsToFetch);
-        DBObject projection = getProjection(fields);
-
-        List<MODEL> list = new ArrayList<>();
-
-        try (DBCursor cursor = dbCollection.find(query, projection)) {
-            if (skip.isPresent()) {
-                cursor.skip(skip.getAsInt());
-            }
-            if (limit.isPresent()) {
-                cursor.limit(limit.getAsInt());
-            }
-            while (cursor.hasNext()) {
-                DBObject document = cursor.next();
-                list.add(createReadProxy(document, fields));
-            }
-        }
-
-        return list;
-    }
-
-    private Set<String> toSet(String... fields) {
-        Set<String> set = new HashSet<>();
-        addAll(set, fields);
-        return unmodifiableSet(set);
-    }
-
-    private DBObject getProjection(Set<String> fields) {
-        if (fields.isEmpty()) {
-            return null;
-        }
-        BasicDBObjectBuilder start = BasicDBObjectBuilder.start();
-        fields.forEach(field -> start.append(field, 1));
-        return start.get();
+        return readProcessor.processAll(query, skip, limit, fieldsToFetch);
     }
 
     @Override
@@ -114,13 +67,13 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     @Override
     public UpdateResult update(UpdatConsumer<MODEL> consumer) {
         BasicDBObject document = updateProcessor.process(consumer);
-        WriteResult result = dbCollection.update(query, document);
+        WriteResult result = collection.update(query, document);
         return new UpdateResult(result);
     }
 
     @Override
     public RemoveResult remove() {
-        WriteResult result = dbCollection.remove(query);
+        WriteResult result = collection.remove(query);
         return new RemoveResult(result);
     }
 }

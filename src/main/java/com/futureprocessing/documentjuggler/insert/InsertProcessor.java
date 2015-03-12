@@ -1,24 +1,22 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.Operator;
-import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
 
 public class InsertProcessor<MODEL> {
 
-    private final Operator<MODEL, InserterMapper> operator;
-    private final DBCollection collection;
+    private final Class<MODEL> modelClass;
+    private final InsertMapper mapper;
 
-    public InsertProcessor(DBCollection collection, Operator<MODEL, InserterMapper> operator) {
-        this.collection = collection;
-        this.operator = operator;
+    public InsertProcessor(Class<MODEL> modelClass) {
+        this.modelClass = modelClass;
+        this.mapper = new InsertMapper(modelClass);
     }
 
-    public InsertProcessResult process(InserterConsumer<MODEL> consumer) {
-        MODEL inserter = InsertProxy.create(operator.getRootClass(), operator.getMapper().get());
+    public BasicDBObject process(InsertConsumer<MODEL> consumer) {
+        MODEL inserter = InsertProxy.create(modelClass, mapper.get());
         consumer.accept(inserter);
 
-        return new InsertProcessResult(collection, InsertProxy.extract(inserter).getDocument());
+        return InsertProxy.extract(inserter).getDocument();
     }
-
 }

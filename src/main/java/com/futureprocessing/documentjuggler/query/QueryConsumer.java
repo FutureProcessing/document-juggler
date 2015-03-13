@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.query;
 
 @FunctionalInterface
-public interface QuerierConsumer<QUERY> {
+public interface QueryConsumer<QUERY> {
 
     void accept(QUERY query);
 }

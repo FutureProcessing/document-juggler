@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-public class QuerierMapperTest {
+public class QueryMapperTest {
 
     private class NotInterface {
         NotInterface withId(String id) {
@@ -28,7 +28,7 @@ public class QuerierMapperTest {
 
         try {
             // when
-            new QuerierMapper(NotInterface.class);
+            new QueryMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -55,7 +55,7 @@ public class QuerierMapperTest {
         Method method = Model.class.getMethod("id", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(Model.class);
+        QueryMapper mapper = new QueryMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -68,7 +68,7 @@ public class QuerierMapperTest {
         Method method = Model.class.getMethod("withString", String.class);
 
         // when
-        QuerierMapper mapper = new QuerierMapper(Model.class);
+        QueryMapper mapper = new QueryMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -81,7 +81,7 @@ public class QuerierMapperTest {
         Method method = Model.class.getMethod("getFieldA");
 
         // when
-        QuerierMapper mapper = new QuerierMapper(Model.class);
+        QueryMapper mapper = new QueryMapper(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);

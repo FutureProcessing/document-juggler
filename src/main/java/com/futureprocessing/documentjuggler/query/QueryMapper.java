@@ -11,9 +11,9 @@ import com.futureprocessing.documentjuggler.query.command.UnsupportedQueryComman
 
 import java.lang.reflect.Method;
 
-public class QuerierMapper extends Mapper<QueryCommand> {
+public class QueryMapper extends Mapper<QueryCommand> {
 
-    public QuerierMapper(Class clazz) {
+    public QueryMapper(Class clazz) {
         super(clazz);
     }
 

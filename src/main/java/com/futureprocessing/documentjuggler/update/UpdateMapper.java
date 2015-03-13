@@ -11,9 +11,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
-public class UpdaterMapper extends Mapper<UpdateCommand> {
+public class UpdateMapper extends Mapper<UpdateCommand> {
 
-    public UpdaterMapper(Class clazz) {
+    public UpdateMapper(Class clazz) {
         super(clazz);
     }
 

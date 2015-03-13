@@ -19,7 +19,7 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
     @BeforeClass
     public static void init() throws Exception {
         repo = new CarsRepository(db());
-        collection = client().getDB(DB_NAME).getCollection(CarsDBModel.Car.COLLECTION);
+        collection = db().getCollection(CarsDBModel.Car.COLLECTION);
     }
 
     @Test

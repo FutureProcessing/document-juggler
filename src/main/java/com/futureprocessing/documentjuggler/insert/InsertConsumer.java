@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.insert;
 
 @FunctionalInterface
-public interface InserterConsumer<INSERTER> {
+public interface InsertConsumer<INSERTER> {
 
     void accept(INSERTER inserter);
 }

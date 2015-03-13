@@ -9,11 +9,12 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public interface Car {
-    @Id
+    @ObjectId
+    @DbField(CarsDBModel.Car.ID)
     Car withId(String id);
 
+    @ObjectId
     @DbField(CarsDBModel.Car.ID)
-        //todo return ObjectId, use @Id for id as String
     String getId();
 
     @DbField(CarsDBModel.Car.BRAND)

@@ -1,7 +1,10 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.AddToSet;
+import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.annotation.Push;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.documentjuggler.helper.Empty;
@@ -18,7 +21,7 @@ public class InsertMapperTest {
 
 
     private class NotInterface {
-        @Id
+        @DbField("_id")
         String getId() {
             return null;
         }
@@ -138,7 +141,7 @@ public class InsertMapperTest {
         assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
     }
 
-@Test
+    @Test
     public void shouldReturnUnsupportedInsertCommandForPushAnnotation() throws Exception {
         // given
         Method method = Model.class.getMethod("unsupportedPush", String.class, String.class);

@@ -2,9 +2,8 @@ package com.futureprocessing.documentjuggler.read;
 
 
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Id;
 import com.futureprocessing.documentjuggler.commons.Mapper;
+import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.read.command.*;
 
 import java.lang.reflect.Method;
@@ -24,7 +23,7 @@ public final class ReaderMapper extends Mapper<ReadCommand> {
             return new UnsupportedReadCommand(method);
         }
 
-        String field = getFieldName(method);
+        String field = FieldNameExtractor.getFieldName(method);
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
             Class<?> returnType = method.getReturnType();
@@ -62,14 +61,6 @@ public final class ReaderMapper extends Mapper<ReadCommand> {
 
     private boolean hasCorrectParameters(Method method) {
         return method.getParameterCount() == 0;
-    }
-
-    private String getFieldName(Method method) {
-        if (method.isAnnotationPresent(Id.class)) {
-            return "_id";
-        }
-        DbField field = method.getAnnotation(DbField.class);
-        return field.value();
     }
 
     private boolean isSetReturnType(Method method) {

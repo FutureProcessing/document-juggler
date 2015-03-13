@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Id;
+import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
@@ -39,7 +39,8 @@ public class QueryMapperTest {
     }
 
     private interface Model {
-        @Id
+        @ObjectId
+        @DbField("_id")
         Model id(String id);
 
         @DbField("string")

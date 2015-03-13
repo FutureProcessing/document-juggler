@@ -2,7 +2,7 @@ package com.futureprocessing.documentjuggler.query;
 
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Id;
+import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
@@ -24,7 +24,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
             return new UnsupportedQueryCommand(method);
         }
 
-        if (method.isAnnotationPresent(Id.class)) {
+        if (method.isAnnotationPresent(ObjectId.class)) {
             return new IdQueryCommand();
         }
 
@@ -34,9 +34,9 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
     private boolean hasCorrectReturnType(Method method) {
         Class<?> returnType = method.getReturnType();
-        Class<?> clazz = method.getDeclaringClass();
+        Class<?> model = method.getDeclaringClass();
 
-        return returnType.equals(clazz) || returnType.equals(Void.TYPE);
+        return model.isAssignableFrom(returnType) || returnType.equals(Void.TYPE);
     }
 
     private boolean hasCorrectParameters(Method method) {

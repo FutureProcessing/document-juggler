@@ -5,7 +5,7 @@ import com.futureprocessing.documentjuggler.annotation.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.Push;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.commons.Metadata;
+import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.insert.command.*;
 
 import java.lang.reflect.GenericArrayType;
@@ -20,7 +20,7 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
     @Override
     protected InsertCommand getCommand(Method method) {
-        String field = Metadata.getFieldName(method);
+        String field = FieldNameExtractor.getFieldName(method);
 
         if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
             return new UnsupportedInsertCommand(method);

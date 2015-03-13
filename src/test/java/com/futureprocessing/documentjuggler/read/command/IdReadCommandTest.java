@@ -16,7 +16,7 @@ public class IdReadCommandTest {
     private static final String FIELD = "_id";
     private static final ObjectId VALUE = new ObjectId();
 
-    private ReadCommand command = new IdReadCommand();
+    private ReadCommand command = new IdReadCommand(FIELD);
 
     @Test
     public void shouldReadValueWhenNoProjectionSpecified() {

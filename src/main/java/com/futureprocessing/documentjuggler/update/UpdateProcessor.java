@@ -13,7 +13,7 @@ public class UpdateProcessor<MODEL> {
         this.mapper = new UpdateMapper(modelClass);
     }
 
-    public BasicDBObject process(UpdatConsumer<MODEL> consumer) {
+    public BasicDBObject process(UpdateConsumer<MODEL> consumer) {
         MODEL updater = UpdateProxy.create(modelClass, mapper.get(), new RootUpdateBuilder());
         consumer.accept(updater);
 

@@ -1,18 +1,10 @@
 package com.futureprocessing.documentjuggler.update;
 
-import com.mongodb.WriteResult;
+public interface UpdateResult {
 
-public class UpdateResult extends OperationResult {
+    void ensureOneUpdated();
 
-    public UpdateResult(WriteResult result) {
-        super(result);
-    }
+    void ensureUpdated(int expected);
 
-    public void ensureOneUpdated() {
-        ensureAffected(1);
-    }
-
-    public void ensureUpdated(int expected) {
-        ensureAffected(expected);
-    }
+    int getAffectedCount();
 }

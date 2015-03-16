@@ -8,7 +8,15 @@ import java.util.List;
 
 public class RootUpdateBuilder implements UpdateBuilder {
 
-    private final BasicDBObject document = new BasicDBObject();
+    private final BasicDBObject document;
+
+    public RootUpdateBuilder() {
+        this(new BasicDBObject());
+    }
+
+    public RootUpdateBuilder(BasicDBObject document) {
+        this.document = document;
+    }
 
     @Override
     public void set(String field, Object value) {

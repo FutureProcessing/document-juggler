@@ -1,8 +1,8 @@
 package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.update.RemoveResult;
+import com.futureprocessing.documentjuggler.update.UpdateConsumer;
 import com.futureprocessing.documentjuggler.update.UpdateResult;
-import com.futureprocessing.documentjuggler.update.UpdatConsumer;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public interface QueriedDocuments<MODEL> extends ReadQueriedDocuments<MODEL> {
     @Override
     ReadQueriedDocuments<MODEL> limit(int limit);
 
-    UpdateResult update(UpdatConsumer<MODEL> consumer);
+    UpdateResult update(UpdateConsumer<MODEL> consumer);
 
     RemoveResult remove();
 }

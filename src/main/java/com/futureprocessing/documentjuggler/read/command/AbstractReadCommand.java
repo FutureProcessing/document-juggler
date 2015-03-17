@@ -16,7 +16,7 @@ public abstract class AbstractReadCommand implements ReadCommand {
 
     @Override
     public final Object read(BasicDBObject document, Set<String> queriedFields) {
-        if (queriedFields.isEmpty() || queriedFields.contains(field)) {
+        if (queriedFields.isEmpty() || queriedFields.contains(field) || field.equals("_id")) {
             return readValue(document);
         }
 

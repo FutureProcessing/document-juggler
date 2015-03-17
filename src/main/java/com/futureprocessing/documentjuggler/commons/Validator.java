@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.commons;
 
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Id;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 
@@ -17,7 +16,7 @@ public final class Validator {
     }
 
     public static void validateField(Method method) {
-        if (!method.isAnnotationPresent(DbField.class) && !method.isAnnotationPresent(Id.class)) {
+        if (!method.isAnnotationPresent(DbField.class)) {
             throw new UnknownFieldException(method);
         }
     }

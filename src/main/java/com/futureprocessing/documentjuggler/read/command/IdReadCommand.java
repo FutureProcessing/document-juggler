@@ -5,10 +5,15 @@ import com.mongodb.BasicDBObject;
 
 import java.util.Set;
 
-public class IdReadCommand implements ReadCommand {
+public class IdReadCommand extends AbstractReadCommand {
+
+
+    public IdReadCommand(String field) {
+        super(field);
+    }
 
     @Override
-    public Object read(BasicDBObject document, Set<String> queriedFields) {
-        return document.getObjectId("_id").toHexString();
+    protected Object readValue(BasicDBObject document) {
+        return document.getObjectId(field).toHexString();
     }
 }

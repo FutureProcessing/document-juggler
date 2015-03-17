@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.update;
 
 import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.commons.Metadata;
+import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.update.command.*;
 
 import java.lang.reflect.GenericArrayType;
@@ -19,7 +19,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
 
     @Override
     protected UpdateCommand getCommand(Method method) {
-        String field = Metadata.getFieldName(method);
+        String field = FieldNameExtractor.getFieldName(method);
 
         if (!hasCorrectReturnType(method)) {
             return new UnsupportedUpdateCommand(method);

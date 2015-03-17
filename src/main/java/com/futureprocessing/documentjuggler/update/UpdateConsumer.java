@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.update;
 
 @FunctionalInterface
-public interface UpdatConsumer<UPDATER> {
+public interface UpdateConsumer<UPDATER> {
 
     void accept(UPDATER updater);
 }

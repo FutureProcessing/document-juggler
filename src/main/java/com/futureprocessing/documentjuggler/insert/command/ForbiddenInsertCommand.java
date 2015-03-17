@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.insert.command;
 
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenMethodException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
 import com.mongodb.BasicDBObject;
 
 import java.lang.reflect.Method;
@@ -18,6 +18,6 @@ public class ForbiddenInsertCommand implements InsertCommand {
 
     @Override
     public void insert(BasicDBObject document, Object[] args) {
-        throw new ForbiddenMethodException(method, INSERT);
+        throw new ForbiddenActionException(method, INSERT);
     }
 }

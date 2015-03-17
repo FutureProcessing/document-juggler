@@ -1,16 +1,18 @@
 package com.futureprocessing.documentjuggler.insert.command;
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenMethodException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
+import static com.futureprocessing.documentjuggler.Context.INSERT;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 
 public class ForbiddenInsertCommandTest {
 
     @Test
-    public void shouldThrowUnsupportedActionExceptionWhenInserting() throws NoSuchMethodException {
+    public void shouldThrowForbiddenActionExceptionWhenInserting() throws NoSuchMethodException {
         // given
         InsertCommand command = new ForbiddenInsertCommand(Object.class.getMethod("equals", Object.class));
         BasicDBObject document = new BasicDBObject();
@@ -18,8 +20,9 @@ public class ForbiddenInsertCommandTest {
         try {
             // when
             command.insert(document, new Object[]{});
-        } catch (ForbiddenMethodException ex) {
+        } catch (ForbiddenActionException ex) {
             // then
+            assertThat(ex.getContext()).isEqualTo(INSERT);
             return;
         }
 

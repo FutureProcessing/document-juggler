@@ -1,16 +1,15 @@
 package com.futureprocessing.documentjuggler.query;
 
 
-import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
+import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.QueryCommand;
-import com.futureprocessing.documentjuggler.query.command.UnsupportedQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.*;
 
 import java.lang.reflect.Method;
+
+import static com.futureprocessing.documentjuggler.Context.QUERY;
 
 public class QueryMapper extends Mapper<QueryCommand> {
 
@@ -23,6 +22,10 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
         if (!hasCorrectReturnType(method) || !hasCorrectParameters(method)) {
             return new UnsupportedQueryCommand(method);
+        }
+
+        if (ForbiddenChecker.isForbidden(method, QUERY)) {
+            return new ForbiddenQueryCommand(method);
         }
 
         final String field = FieldNameExtractor.getFieldName(method);

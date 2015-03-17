@@ -3,6 +3,7 @@ package com.futureprocessing.documentjuggler.read;
 
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
@@ -14,10 +15,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
+import static com.futureprocessing.documentjuggler.Context.READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-public class ReaderMapperTest {
+public class ReadMapperTest {
 
     private class NotInterface {
         @ObjectId
@@ -32,7 +34,7 @@ public class ReaderMapperTest {
 
         try {
             // when
-            new ReaderMapper(NotInterface.class);
+            new ReadMapper(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -52,7 +54,7 @@ public class ReaderMapperTest {
 
         try {
             // when
-            new ReaderMapper(ModelWithUnknownField.class);
+            new ReadMapper(ModelWithUnknownField.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownField.class.getMethod("getId"));
@@ -91,6 +93,10 @@ public class ReaderMapperTest {
         @DbField("embeddedSet")
         @DbEmbeddedDocument
         Set<Empty> embeddedSet();
+
+        @DbField("forbidden")
+        @Forbidden(READ)
+        String forbidden();
     }
 
     private interface ReaderWithArguments {
@@ -104,7 +110,7 @@ public class ReaderMapperTest {
         Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
 
         // when
-        ReaderMapper mapper = new ReaderMapper(ReaderWithArguments.class);
+        ReadMapper mapper = new ReadMapper(ReaderWithArguments.class);
         ReadCommand command = mapper.getCommand(method);
 
         //then
@@ -118,7 +124,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("id");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -131,7 +137,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("primitiveBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -144,7 +150,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("bigBoolean");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -157,7 +163,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("set");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -170,7 +176,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("basic");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -183,7 +189,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("embedded");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -196,7 +202,7 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("embeddedList");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -209,10 +215,23 @@ public class ReaderMapperTest {
         Method method = Model.class.getMethod("embeddedSet");
 
         // when
-        ReaderMapper mapper = new ReaderMapper(Model.class);
+        ReadMapper mapper = new ReadMapper(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(EmbeddedSetReadCommand.class);
+    }
+
+    @Test
+    public void shouldReturnForbiddenReadCommand() throws Exception {
+        // given
+        Method method = Model.class.getMethod("forbidden");
+
+        // when
+        ReadMapper mapper = new ReadMapper(Model.class);
+
+        // then
+        ReadCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ForbiddenReadCommand.class);
     }
 }

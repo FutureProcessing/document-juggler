@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
+@DbCollection(CarsDBModel.Car.COLLECTION)
 public interface Car {
     @ObjectId
     @DbField(CarsDBModel.Car.ID)
@@ -80,7 +81,7 @@ public interface Car {
     Car withOwners(List<String> owners);
 
     @DbField(CarsDBModel.Car.OWNERS)
-    Car withOwners(String...owners);
+    Car withOwners(String... owners);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     @AddToSet

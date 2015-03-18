@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CollectionAnnotationIntegrationTest extends BaseIntegrationTest {
+public class CollectionNameAnnotationIntegrationTest extends BaseIntegrationTest {
 
     private static final String COLLECTION = "Persons";
 

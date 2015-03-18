@@ -12,6 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.assertThat;
 import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.failExpectedException;
+import static com.futureprocessing.documentjuggler.commons.CollectionExtractor.getCollectionName;
+import static com.futureprocessing.documentjuggler.commons.CollectionExtractor.getDBCollection;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +37,7 @@ public class CollectionNameAnnotationTest {
         //given
 
         //when
-        String collectionName = CollectionExtractor.getCollectionName(ModelWithDBCollectionAnnotation.class);
+        String collectionName = getCollectionName(ModelWithDBCollectionAnnotation.class);
 
         //then
         assertThat(collectionName).isEqualTo(EXPECTED_COLLECTION);
@@ -47,7 +49,7 @@ public class CollectionNameAnnotationTest {
         BDDMockito.given(mockDB.getCollection(EXPECTED_COLLECTION)).willReturn(mockDBCollection);
 
         //when
-        DBCollection dbCollection = CollectionExtractor.getDBCollection(mockDB, ModelWithDBCollectionAnnotation.class);
+        DBCollection dbCollection = getDBCollection(mockDB, ModelWithDBCollectionAnnotation.class);
 
         //then
         assertThat(dbCollection).isNotNull().isSameAs(mockDBCollection);
@@ -63,7 +65,7 @@ public class CollectionNameAnnotationTest {
 
         //when
         try {
-            CollectionExtractor.getDBCollection(mockDB, ModelWithoutAnnotation.class);
+            getDBCollection(mockDB, ModelWithoutAnnotation.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(InvalidCollectionException.class)
                     .hasMessageContaining(CollectionName.class.getCanonicalName());

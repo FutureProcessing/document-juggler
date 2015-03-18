@@ -1,11 +1,9 @@
 package com.futureprocessing.documentjuggler.read;
 
 
-import com.futureprocessing.documentjuggler.Context;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
-import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.*;
 
@@ -15,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class ReadMapper extends Mapper<ReadCommand> {
@@ -31,7 +30,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
+        if (annotation(DbEmbeddedDocument.class).isPresent(method)) {
             Class<?> returnType = method.getReturnType();
 
             if (returnType.equals(List.class)) {
@@ -58,7 +57,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
             return new SetReadCommand(field);
         }
 
-        if (method.isAnnotationPresent(ObjectId.class)) {
+        if (annotation(ObjectId.class).isPresent(method)) {
             return new IdReadCommand(field);
         }
 

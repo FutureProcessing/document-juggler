@@ -1,11 +1,14 @@
 package com.futureprocessing.documentjuggler.commons;
 
 
+import com.futureprocessing.documentjuggler.annotation.AnnotationProcessor;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 
 import java.lang.reflect.Method;
+
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
 
 public final class Validator {
 
@@ -16,7 +19,7 @@ public final class Validator {
     }
 
     public static void validateField(Method method) {
-        if (!method.isAnnotationPresent(DbField.class)) {
+        if (!annotation(DbField.class).isPresent(method)) {
             throw new UnknownFieldException(method);
         }
     }

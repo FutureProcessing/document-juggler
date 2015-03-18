@@ -5,12 +5,13 @@ import com.futureprocessing.documentjuggler.annotation.Forbidden;
 
 import java.lang.reflect.Method;
 
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
 import static java.util.Arrays.binarySearch;
 
 public final class ForbiddenChecker {
 
     public static boolean isForbidden(Method method, Context context) {
-        Forbidden forbidden = method.getAnnotation(Forbidden.class);
+        Forbidden forbidden = annotation(Forbidden.class).getFrom(method);
 
         if (forbidden == null) {
             return false;

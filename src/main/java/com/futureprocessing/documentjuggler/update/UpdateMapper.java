@@ -12,6 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
@@ -28,13 +29,13 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new ForbiddenUpdateCommand(method);
         }
 
-        if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
+        if (annotation(DbEmbeddedDocument.class).isPresent(method)) {
             Class<?> type = method.isVarArgs() ? getEmbeddedListDocumentType(method) : getEmbeddedDocumentType(method);
             createMapping(type);
             return new EmbeddedUpdateCommand(field, type, this);
         }
 
-        if (method.isAnnotationPresent(AddToSet.class)) {
+        if (annotation(AddToSet.class).isPresent(method)) {
             if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
                 return new AddToSetCollectionUpdateCommand(field);
             }
@@ -47,7 +48,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new AddToSetSingleUpdateCommand(field);
         }
 
-        if (method.isAnnotationPresent(Push.class)) {
+        if (annotation(Push.class).isPresent(method)) {
             if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
                 return new PushCollectionUpdateCommand(field);
             }
@@ -60,7 +61,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new PushSingleUpdateCommand(field);
         }
 
-        if (method.isAnnotationPresent(Inc.class)) {
+        if (annotation(Inc.class).isPresent(method)) {
             return new IncrementUpdateCommand(field);
         }
 
@@ -71,11 +72,11 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         Class parameterClass = method.getParameterTypes()[0];
         if (parameterClass.equals(boolean.class) || parameterClass.equals(Boolean.class)) {
             return new BooleanUpdateCommand(field,
-                    method.isAnnotationPresent(UnsetIfNull.class),
-                    method.isAnnotationPresent(UnsetIfFalse.class));
+                    annotation(UnsetIfNull.class).isPresent(method),
+                    annotation(UnsetIfFalse.class).isPresent(method));
         }
 
-        return new BasicUpdateCommand(field, method.isAnnotationPresent(UnsetIfNull.class));
+        return new BasicUpdateCommand(field, annotation(UnsetIfNull.class).isPresent(method));
     }
 
     private boolean hasCorrectReturnType(Method method) {

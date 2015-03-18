@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import static com.futureprocessing.documentjuggler.Context.INSERT;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
@@ -25,11 +26,12 @@ public final class InsertMapper extends Mapper<InsertCommand> {
     protected InsertCommand getCommand(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (isForbidden(method, INSERT) || !hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+        if (isForbidden(method, INSERT) || !hasCorrectParameters(method)
+                || annotation(AddToSet.class).isPresent(method) || annotation(Push.class).isPresent(method)) {
             return new ForbiddenInsertCommand(method);
         }
 
-        if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
+        if (annotation(DbEmbeddedDocument.class).isPresent(method)) {
             if (method.isVarArgs()) {
                 Class<?> type = getEmbeddedListDocumentType(method);
                 createMapping(type);

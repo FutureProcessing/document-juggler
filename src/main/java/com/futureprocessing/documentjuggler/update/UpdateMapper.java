@@ -12,7 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.process;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
@@ -23,19 +23,20 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
 
     @Override
     protected UpdateCommand getCommand(Method method) {
+        AnnotationProcessor processor = process(method);
         String field = FieldNameExtractor.getFieldName(method);
 
         if (isForbidden(method, UPDATE) || !hasCorrectReturnType(method)) {
             return new ForbiddenUpdateCommand(method);
         }
 
-        if (annotation(DbEmbeddedDocument.class).isPresent(method)) {
+        if (processor.has(DbEmbeddedDocument.class)) {
             Class<?> type = method.isVarArgs() ? getEmbeddedListDocumentType(method) : getEmbeddedDocumentType(method);
             createMapping(type);
             return new EmbeddedUpdateCommand(field, type, this);
         }
 
-        if (annotation(AddToSet.class).isPresent(method)) {
+        if (processor.has(AddToSet.class)) {
             if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
                 return new AddToSetCollectionUpdateCommand(field);
             }
@@ -48,7 +49,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new AddToSetSingleUpdateCommand(field);
         }
 
-        if (annotation(Push.class).isPresent(method)) {
+        if (processor.has(Push.class)) {
             if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
                 return new PushCollectionUpdateCommand(field);
             }
@@ -61,7 +62,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
             return new PushSingleUpdateCommand(field);
         }
 
-        if (annotation(Inc.class).isPresent(method)) {
+        if (processor.has(Inc.class)) {
             return new IncrementUpdateCommand(field);
         }
 
@@ -72,11 +73,11 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
         Class parameterClass = method.getParameterTypes()[0];
         if (parameterClass.equals(boolean.class) || parameterClass.equals(Boolean.class)) {
             return new BooleanUpdateCommand(field,
-                    annotation(UnsetIfNull.class).isPresent(method),
-                    annotation(UnsetIfFalse.class).isPresent(method));
+                    processor.has(UnsetIfNull.class),
+                    processor.has(UnsetIfFalse.class));
         }
 
-        return new BasicUpdateCommand(field, annotation(UnsetIfNull.class).isPresent(method));
+        return new BasicUpdateCommand(field, processor.has(UnsetIfNull.class));
     }
 
     private boolean hasCorrectReturnType(Method method) {

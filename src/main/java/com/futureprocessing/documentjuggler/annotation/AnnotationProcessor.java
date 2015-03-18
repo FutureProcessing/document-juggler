@@ -1,35 +1,34 @@
 package com.futureprocessing.documentjuggler.annotation;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
 import java.lang.reflect.AnnotatedElement;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class AnnotationProcessor<A extends Annotation> {
+public final class AnnotationProcessor {
 
-    private final Class<A> annotationClass;
+    private final AnnotatedElement element;
 
-    public static <A extends  Annotation> AnnotationProcessor<A> annotation(Class<A> annotationClass) {
-        return new AnnotationProcessor<>(annotationClass);
+    public static AnnotationProcessor process(AnnotatedElement method) {
+        return new AnnotationProcessor(method);
     }
 
-    private AnnotationProcessor(Class<A> annotationClass) {
-        this.annotationClass = annotationClass;
+    private AnnotationProcessor(AnnotatedElement element) {
+        this.element = element;
     }
 
-    private A getFrom(AnnotatedElement element, Set<Annotation> checked) {
+    private <A extends Annotation> A get(Class<A> annotationClass, AnnotatedElement element, Set<Annotation> checked) {
         for (Annotation annotation : element.getAnnotations()) {
-            if(checked.contains(annotation)) {
+            if (checked.contains(annotation)) {
                 continue;
             }
 
-            if(annotation.annotationType() == annotationClass) {
+            if (annotation.annotationType() == annotationClass) {
                 return (A) annotation;
             }
 
             checked.add(annotation);
-            A result = getFrom(annotation.annotationType(), checked);
+            A result = get(annotationClass, annotation.annotationType(), checked);
             if (result != null) {
                 return result;
             }
@@ -37,11 +36,11 @@ public final class AnnotationProcessor<A extends Annotation> {
         return null;
     }
 
-    public A getFrom(AnnotatedElement element) {
-        return getFrom(element, new HashSet<>());
+    public <A extends Annotation> A get(Class<A> annotationClass) {
+        return get(annotationClass, element, new HashSet<>());
     }
 
-    public boolean isPresent(AnnotatedElement element) {
-        return getFrom(element) != null;
+    public <A extends Annotation> boolean has(Class<A> annotationClass) {
+        return get(annotationClass) != null;
     }
 }

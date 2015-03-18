@@ -4,12 +4,12 @@ import com.futureprocessing.documentjuggler.annotation.DbField;
 
 import java.lang.reflect.Method;
 
-import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.annotation;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.process;
 
 public abstract class FieldNameExtractor {
 
     public static String getFieldName(Method method) {
-        DbField field = annotation(DbField.class).getFrom(method);
+        DbField field = process(method).get(DbField.class);
         return field.value();
     }
 }

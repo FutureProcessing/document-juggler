@@ -25,11 +25,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
     @Override
     protected ReadCommand getCommand(Method method) {
-        if (!hasCorrectParameters(method)) {
-            return new UnsupportedReadCommand(method);
-        }
-
-        if(isForbidden(method, READ)) {
+        if (isForbidden(method, READ) || !hasCorrectParameters(method)) {
             return new ForbiddenReadCommand(method);
         }
 

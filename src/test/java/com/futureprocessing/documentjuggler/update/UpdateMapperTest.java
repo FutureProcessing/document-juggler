@@ -239,7 +239,7 @@ public class UpdateMapperTest {
     }
 
     @Test
-    public void shouldReturnUnsupportedUpdateCommand() throws Exception {
+    public void shouldReturnForbiddenUpdateCommandForGetter() throws Exception {
         // given
         Method method = Update.class.getMethod("getter");
         // when
@@ -247,7 +247,7 @@ public class UpdateMapperTest {
 
         // then
         UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedUpdateCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenUpdateCommand.class);
     }
 
     @Test

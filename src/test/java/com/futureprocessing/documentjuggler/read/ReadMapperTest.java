@@ -105,7 +105,7 @@ public class ReadMapperTest {
     }
 
     @Test
-    public void shouldReturnUnsupportedReadCommandWhenReadMethodHasArguments() throws Exception {
+    public void shouldReturnForbiddenReadCommandWhenReadMethodHasArguments() throws Exception {
         // given
         Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
 
@@ -114,7 +114,7 @@ public class ReadMapperTest {
         ReadCommand command = mapper.getCommand(method);
 
         //then
-        assertThat(command).isInstanceOf(UnsupportedReadCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenReadCommand.class);
     }
 
 

@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.query.command;
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import org.junit.Test;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
@@ -18,7 +18,7 @@ public class ForbiddenQueryCommandTest {
         try {
             // when
             command.query(null, new Object[]{});
-        } catch (ForbiddenActionException ex) {
+        } catch (ForbiddenOperationException ex) {
             // then
             assertThat(ex.getContext()).isEqualTo(QUERY);
             return;

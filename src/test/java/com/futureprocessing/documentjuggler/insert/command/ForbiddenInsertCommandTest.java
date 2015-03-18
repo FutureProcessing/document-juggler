@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.insert.command;
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class ForbiddenInsertCommandTest {
         try {
             // when
             command.insert(document, new Object[]{});
-        } catch (ForbiddenActionException ex) {
+        } catch (ForbiddenOperationException ex) {
             // then
             assertThat(ex.getContext()).isEqualTo(INSERT);
             return;

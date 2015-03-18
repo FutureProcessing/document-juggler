@@ -1,11 +1,8 @@
 package com.futureprocessing.documentjuggler.update.command;
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
-import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
-import com.futureprocessing.documentjuggler.read.command.ReadCommand;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import org.junit.Test;
 
-import static com.futureprocessing.documentjuggler.Context.READ;
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -21,7 +18,7 @@ public class ForbiddenUpdateCommandTest {
         try {
             // when
             command.update(null, null);
-        } catch (ForbiddenActionException ex) {
+        } catch (ForbiddenOperationException ex) {
             // then
             assertThat(ex.getContext()).isEqualTo(UPDATE);
             return;

@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.read.command;
 
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.mongodb.BasicDBObject;
 
 import java.lang.reflect.Method;
@@ -20,6 +20,6 @@ public class ForbiddenReadCommand implements ReadCommand {
 
     @Override
     public Object read(BasicDBObject document, Set<String> queriedFields) {
-        throw new ForbiddenActionException(method, READ);
+        throw new ForbiddenOperationException(method, READ);
     }
 }

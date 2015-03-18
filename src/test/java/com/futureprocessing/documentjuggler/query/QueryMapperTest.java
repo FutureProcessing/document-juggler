@@ -80,7 +80,7 @@ public class QueryMapperTest {
     }
 
     @Test
-    public void shouldReturnUnsupportedMethodCommand() throws NoSuchMethodException {
+    public void shouldReturnForbiddenQueryCommandForIllegalMethod() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("getFieldA");
 
@@ -89,11 +89,11 @@ public class QueryMapperTest {
 
         // then
         QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedQueryCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
     }
 
     @Test
-    public void shouldReturnForbiddenQueryCommand() throws NoSuchMethodException {
+    public void shouldReturnForbiddenQueryCommandWhenAnnotatedWithForbidden() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("forbidden", String.class);
 

@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.query.command;
 
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.mongodb.QueryBuilder;
 
 import java.lang.reflect.Method;
@@ -18,6 +18,6 @@ public class ForbiddenQueryCommand implements QueryCommand {
 
     @Override
     public void query(QueryBuilder builder, Object[] args) {
-        throw new ForbiddenActionException(method, QUERY);
+        throw new ForbiddenOperationException(method, QUERY);
     }
 }

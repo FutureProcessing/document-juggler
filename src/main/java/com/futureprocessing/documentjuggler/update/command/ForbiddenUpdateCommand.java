@@ -1,12 +1,11 @@
 package com.futureprocessing.documentjuggler.update.command;
 
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
 
 import java.lang.reflect.Method;
 
-import static com.futureprocessing.documentjuggler.Context.INSERT;
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
 
 public class ForbiddenUpdateCommand implements UpdateCommand {
@@ -19,6 +18,6 @@ public class ForbiddenUpdateCommand implements UpdateCommand {
 
     @Override
     public void update(UpdateBuilder updateBuilder, Object[] args) {
-        throw new ForbiddenActionException(method, UPDATE);
+        throw new ForbiddenOperationException(method, UPDATE);
     }
 }

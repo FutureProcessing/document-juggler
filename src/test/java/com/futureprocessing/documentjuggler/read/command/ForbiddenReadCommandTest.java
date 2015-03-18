@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.read.command;
 
-import com.futureprocessing.documentjuggler.exception.ForbiddenActionException;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import org.junit.Test;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
@@ -18,7 +18,7 @@ public class ForbiddenReadCommandTest {
         try {
             // when
             command.read(null, null);
-        } catch (ForbiddenActionException ex) {
+        } catch (ForbiddenOperationException ex) {
             // then
             assertThat(ex.getContext()).isEqualTo(READ);
             return;

@@ -25,11 +25,7 @@ public final class InsertMapper extends Mapper<InsertCommand> {
     protected InsertCommand getCommand(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
-            return new UnsupportedInsertCommand(method);
-        }
-
-        if (isForbidden(method, INSERT)) {
+        if (isForbidden(method, INSERT) || !hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
             return new ForbiddenInsertCommand(method);
         }
 

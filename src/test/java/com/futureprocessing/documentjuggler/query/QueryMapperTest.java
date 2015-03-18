@@ -1,16 +1,15 @@
 package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
-import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.QueryCommand;
-import com.futureprocessing.documentjuggler.query.command.UnsupportedQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.*;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
+import static com.futureprocessing.documentjuggler.Context.QUERY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
@@ -46,6 +45,10 @@ public class QueryMapperTest {
         @DbField("string")
         Model withString(String string);
 
+        @DbField("forbidden")
+        @Forbidden(QUERY)
+        Model forbidden(String value);
+
         @DbField("fieldA")
         String getFieldA();
     }
@@ -77,7 +80,7 @@ public class QueryMapperTest {
     }
 
     @Test
-    public void shouldReturnUnsupportedMethodCommand() throws NoSuchMethodException {
+    public void shouldReturnForbiddenQueryCommandForIllegalMethod() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("getFieldA");
 
@@ -86,7 +89,20 @@ public class QueryMapperTest {
 
         // then
         QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedQueryCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
+    }
+
+    @Test
+    public void shouldReturnForbiddenQueryCommandWhenAnnotatedWithForbidden() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("forbidden", String.class);
+
+        // when
+        QueryMapper mapper = new QueryMapper(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
     }
 
 

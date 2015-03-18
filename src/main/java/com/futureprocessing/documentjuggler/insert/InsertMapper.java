@@ -4,13 +4,16 @@ package com.futureprocessing.documentjuggler.insert;
 import com.futureprocessing.documentjuggler.annotation.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.Push;
-import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.insert.command.*;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+
+import static com.futureprocessing.documentjuggler.Context.INSERT;
+import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
 
@@ -22,8 +25,8 @@ public final class InsertMapper extends Mapper<InsertCommand> {
     protected InsertCommand getCommand(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (!hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
-            return new UnsupportedInsertCommand(method);
+        if (isForbidden(method, INSERT) || !hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+            return new ForbiddenInsertCommand(method);
         }
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {

@@ -2,14 +2,17 @@ package com.futureprocessing.documentjuggler.update;
 
 
 import com.futureprocessing.documentjuggler.annotation.*;
-import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.update.command.*;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+
+import static com.futureprocessing.documentjuggler.Context.UPDATE;
+import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
@@ -21,8 +24,8 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
     protected UpdateCommand getCommand(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (!hasCorrectReturnType(method)) {
-            return new UnsupportedUpdateCommand(method);
+        if (isForbidden(method, UPDATE) || !hasCorrectReturnType(method)) {
+            return new ForbiddenUpdateCommand(method);
         }
 
         if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {

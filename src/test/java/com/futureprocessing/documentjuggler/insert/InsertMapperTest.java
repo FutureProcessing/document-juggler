@@ -1,10 +1,8 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.annotation.AddToSet;
-import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Push;
+import com.futureprocessing.documentjuggler.Context;
+import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.documentjuggler.helper.Empty;
@@ -15,6 +13,7 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
+import static com.futureprocessing.documentjuggler.Context.INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InsertMapperTest {
@@ -86,6 +85,10 @@ public class InsertMapperTest {
 
         @DbField("wrongGetter")
         String wrongGetter();
+
+        @DbField("forbidden")
+        @Forbidden(INSERT)
+        Model forbidden(String test);
     }
 
     @Test
@@ -129,7 +132,7 @@ public class InsertMapperTest {
 
 
     @Test
-    public void shouldReturnUnsupportedInsertCommandForAddToSetAnnotation() throws Exception {
+    public void shouldReturnForbiddenInsertCommandForAddToSetAnnotation() throws Exception {
         // given
         Method method = Model.class.getMethod("unsupportedAddToSet", String.class);
 
@@ -138,11 +141,11 @@ public class InsertMapperTest {
 
         // then
         InsertCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
     }
 
     @Test
-    public void shouldReturnUnsupportedInsertCommandForPushAnnotation() throws Exception {
+    public void shouldReturnForbiddenInsertCommandForPushAnnotation() throws Exception {
         // given
         Method method = Model.class.getMethod("unsupportedPush", String.class, String.class);
 
@@ -151,11 +154,11 @@ public class InsertMapperTest {
 
         // then
         InsertCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
     }
 
     @Test
-    public void shouldReturnUnsupportedInsertCommandForIllegalMethodModel() throws Exception {
+    public void shouldReturnForbiddenInsertCommandForIllegalMethodModel() throws Exception {
         // given
         Method method = Model.class.getMethod("wrongGetter");
 
@@ -164,7 +167,20 @@ public class InsertMapperTest {
 
         // then
         InsertCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedInsertCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
+    }
+
+    @Test
+    public void shouldReturnForbiddenInsertCommandForForbiddenMethodModel() throws Exception {
+        // given
+        Method method = Model.class.getMethod("forbidden", String.class);
+
+        // when
+        InsertMapper mapper = new InsertMapper(Model.class);
+
+        // then
+        InsertCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
     }
 
 }

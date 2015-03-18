@@ -10,13 +10,13 @@ import static java.util.Collections.unmodifiableSet;
 public class ReadProcessor<MODEL> {
 
     private final Class<MODEL> modelClass;
-    private final ReaderMapper mapper;
+    private final ReadMapper mapper;
     private final DBCollection collection;
 
     public ReadProcessor(Class<MODEL> modelClass, DBCollection collection) {
         this.modelClass = modelClass;
         this.collection = collection;
-        this.mapper = new ReaderMapper(modelClass);
+        this.mapper = new ReadMapper(modelClass);
     }
 
     public MODEL processFirst(DBObject query, String... fieldsToFetch) {

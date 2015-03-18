@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.update;
 
 
+import com.futureprocessing.documentjuggler.Context;
 import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.helper.Empty;
 import com.futureprocessing.documentjuggler.update.command.*;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.futureprocessing.documentjuggler.Context.UPDATE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateMapperTest {
@@ -237,7 +239,7 @@ public class UpdateMapperTest {
     }
 
     @Test
-    public void shouldReturnUnsupportedUpdateCommand() throws Exception {
+    public void shouldReturnForbiddenUpdateCommandForGetter() throws Exception {
         // given
         Method method = Update.class.getMethod("getter");
         // when
@@ -245,7 +247,19 @@ public class UpdateMapperTest {
 
         // then
         UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsupportedUpdateCommand.class);
+        assertThat(command).isInstanceOf(ForbiddenUpdateCommand.class);
+    }
+
+    @Test
+    public void shouldReturnForbiddenUpdateCommand() throws Exception {
+        // given
+        Method method = Update.class.getMethod("forbidden", String.class);
+        // when
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // then
+        UpdateCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ForbiddenUpdateCommand.class);
     }
 
     private interface Update {
@@ -318,5 +332,10 @@ public class UpdateMapperTest {
 
         @DbField("getter")
         String getter();
+
+
+        @DbField("forbidden")
+        @Forbidden(UPDATE)
+        Update forbidden(String value);
     }
 }

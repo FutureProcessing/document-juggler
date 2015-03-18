@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@DbCollection(CarsDBModel.Car.COLLECTION)
+@CollectionName(CarsDBModel.Car.COLLECTION)
 public interface Car {
     @ObjectId
     @DbField(CarsDBModel.Car.ID)

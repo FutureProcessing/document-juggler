@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.commons;
 
-import com.futureprocessing.documentjuggler.annotation.DbCollection;
+import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.exception.validation.InvalidCollectionException;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -12,10 +12,10 @@ public abstract class CollectionExtractor {
     }
 
     static String getCollectionName(Class model) {
-        if (model.isAnnotationPresent(DbCollection.class)) {
-            DbCollection annotation = (DbCollection) model.getAnnotation(DbCollection.class);
+        if (model.isAnnotationPresent(CollectionName.class)) {
+            CollectionName annotation = (CollectionName) model.getAnnotation(CollectionName.class);
             return annotation.value();
         }
-        throw new InvalidCollectionException("Unknown DBCollection, " + DbCollection.class.getName() + " annotation was not found.");
+        throw new InvalidCollectionException("Unknown DBCollection, " + CollectionName.class.getName() + " annotation was not found.");
     }
 }

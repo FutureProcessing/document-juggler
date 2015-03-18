@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.commons;
 
-import com.futureprocessing.documentjuggler.annotation.DbCollection;
+import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.exception.validation.InvalidCollectionException;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -15,7 +15,7 @@ import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class DbCollectionAnnotationTest {
+public class CollectionNameAnnotationTest {
 
     private static final String EXPECTED_COLLECTION = "CollectionName";
 
@@ -25,7 +25,7 @@ public class DbCollectionAnnotationTest {
     @Mock
     DBCollection mockDBCollection;
 
-    @DbCollection(EXPECTED_COLLECTION)
+    @CollectionName(EXPECTED_COLLECTION)
     interface ModelWithDBCollectionAnnotation {
 
     }
@@ -66,7 +66,7 @@ public class DbCollectionAnnotationTest {
             CollectionExtractor.getDBCollection(mockDB, ModelWithoutAnnotation.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(InvalidCollectionException.class)
-                    .hasMessageContaining(DbCollection.class.getCanonicalName());
+                    .hasMessageContaining(CollectionName.class.getCanonicalName());
             return;
         }
         failExpectedException();

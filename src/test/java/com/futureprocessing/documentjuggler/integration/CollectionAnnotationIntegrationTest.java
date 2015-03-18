@@ -1,11 +1,10 @@
 package com.futureprocessing.documentjuggler.integration;
 
 import com.futureprocessing.documentjuggler.BaseRepository;
-import com.futureprocessing.documentjuggler.annotation.DbCollection;
+import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +13,7 @@ public class CollectionAnnotationIntegrationTest extends BaseIntegrationTest {
 
     private static final String COLLECTION = "Persons";
 
-    @DbCollection(COLLECTION)
+    @CollectionName(COLLECTION)
     interface PersonModel {
 
         @ObjectId

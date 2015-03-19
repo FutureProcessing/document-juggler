@@ -64,7 +64,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     @Override
     public UpdateResult update(UpdateConsumer<MODEL> consumer) {
         BasicDBObject document = updateProcessor.process(consumer);
-        WriteResult result = collection.update(query, document);
+        WriteResult result = collection.update(query, document, false, true);
         return new BaseUpdateResult(result);
     }
 

@@ -14,6 +14,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 
+import java.util.Optional;
+
 public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     private final DBCollection dbCollection;
@@ -38,12 +40,12 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
 
     @Override
     public QueriedDocuments<MODEL> find(QueryConsumer<MODEL> consumer) {
-        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(consumer), readProcessor, updateProcessor);
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(Optional.ofNullable(consumer)), readProcessor, updateProcessor);
     }
 
     @Override
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocumentsImpl<>(dbCollection, null, readProcessor, updateProcessor);
+        return find(null);
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationProcessor.process;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class QueryMapper extends Mapper<QueryCommand> {
@@ -30,7 +30,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
         final String field = FieldNameExtractor.getFieldName(method);
 
-        if (process(method).has(ObjectId.class)) {
+        if (process(method).isPresent(ObjectId.class)) {
             return new IdQueryCommand(field);
         }
 

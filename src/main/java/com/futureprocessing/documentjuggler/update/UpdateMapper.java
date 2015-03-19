@@ -24,7 +24,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
     protected UpdateCommand getCommand(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (isForbidden(method, UPDATE) || !hasCorrectReturnType(method)) {
+        if (isForbidden(method, UPDATE) || !hasCorrectReturnType(method) || field.equals("_id")) {
             return new ForbiddenUpdateCommand(method);
         }
 

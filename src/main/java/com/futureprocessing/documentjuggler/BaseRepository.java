@@ -4,10 +4,7 @@ package com.futureprocessing.documentjuggler;
 import com.futureprocessing.documentjuggler.commons.CollectionExtractor;
 import com.futureprocessing.documentjuggler.insert.InsertConsumer;
 import com.futureprocessing.documentjuggler.insert.InsertProcessor;
-import com.futureprocessing.documentjuggler.query.QueriedDocuments;
-import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
-import com.futureprocessing.documentjuggler.query.QueryConsumer;
-import com.futureprocessing.documentjuggler.query.QueryProcessor;
+import com.futureprocessing.documentjuggler.query.*;
 import com.futureprocessing.documentjuggler.read.ReadProcessor;
 import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
@@ -43,9 +40,13 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(Optional.ofNullable(consumer)), readProcessor, updateProcessor);
     }
 
+    public QueriedDocuments<MODEL> find(QueryExpression<MODEL> expression) {
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(expression), readProcessor, updateProcessor);
+    }
+
     @Override
     public QueriedDocuments<MODEL> find() {
-        return find(null);
+        return find((QueryConsumer<MODEL>)null);
     }
 
     @Override

@@ -26,4 +26,8 @@ public class QueryProcessor<MODEL> {
         return QueryProxy.extract(querier).toDBObject();
     }
 
+    public DBObject process(QueryExpression<MODEL> expression) {
+        return expression.evaluate(this);
+    }
+
 }

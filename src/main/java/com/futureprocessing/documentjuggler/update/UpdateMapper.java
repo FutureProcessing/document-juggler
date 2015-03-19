@@ -12,7 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class UpdateMapper extends Mapper<UpdateCommand> {
@@ -23,7 +23,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
 
     @Override
     protected UpdateCommand getCommand(Method method) {
-        AnnotationReader annotationReader = process(method);
+        AnnotationReader annotationReader = from(method);
         String field = FieldNameExtractor.getFieldName(method);
 
         if (isForbidden(method, UPDATE) || !hasCorrectReturnType(method)) {

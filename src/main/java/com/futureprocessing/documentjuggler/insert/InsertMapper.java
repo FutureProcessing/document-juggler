@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import static com.futureprocessing.documentjuggler.Context.INSERT;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
@@ -25,7 +25,7 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
     @Override
     protected InsertCommand getCommand(Method method) {
-        AnnotationReader annotationReader = process(method);
+        AnnotationReader annotationReader = from(method);
         String field = FieldNameExtractor.getFieldName(method);
 
         if (isForbidden(method, INSERT) || !hasCorrectParameters(method)

@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.query;
 
 
+import com.futureprocessing.documentjuggler.query.expression.QueryExpression;
 import com.mongodb.DBObject;
 
 import java.util.Optional;

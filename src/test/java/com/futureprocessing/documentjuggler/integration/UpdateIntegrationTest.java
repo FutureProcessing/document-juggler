@@ -49,6 +49,29 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
     public void shouldSetCorrectValue() {
         //given
         String brand = "Honda";
+        String model = "HR-V";
+
+        String id = repo.insert(car -> car
+                .withBrand(brand)
+                .withModel(null));
+
+        //when
+        repo.find(car -> car.withId(id))
+                .update(car -> car.withModel(model))
+                .ensureOneUpdated();
+
+        //then
+        BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
+
+        assertThat(document.get(BRAND)).isEqualTo(brand);
+        assertThat(document.containsField(MODEL)).isTrue();
+        assertThat(document.get(MODEL)).isEqualTo(model);
+    }
+
+    @Test
+    public void shouldUpdateMultipleValue() {
+        //given
+        String brand = "Honda";
         String modelHRV = "HR-V";
 
         String modelAccord = "Accord";

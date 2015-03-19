@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.integration;
 
-import com.futureprocessing.documentjuggler.BaseRepository;
+import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.model.DefaultModel;
@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultModelIntegrationTest extends BaseIntegrationTest {
 
-    BaseRepository<Document> repository = new BaseRepository<>(db(), Document.class);
+    Repository<Document> repository = new Repository<>(db(), Document.class);
 
     @CollectionName("docs")
     private interface Document extends DefaultModel<Document> {

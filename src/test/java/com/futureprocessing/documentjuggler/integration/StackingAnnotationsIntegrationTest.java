@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.integration;
 
 
-import com.futureprocessing.documentjuggler.BaseRepository;
+import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class StackingAnnotationsIntegrationTest extends BaseIntegrationTest {
 
-    private static BaseRepository<Model> repo;
+    private static Repository<Model> repo;
 
     @DbField("custom")
     @Forbidden(UPDATE)
@@ -50,7 +50,7 @@ public class StackingAnnotationsIntegrationTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void init() {
-        repo = new BaseRepository<>(db(), Model.class);
+        repo = new Repository<>(db(), Model.class);
     }
 
     @Test

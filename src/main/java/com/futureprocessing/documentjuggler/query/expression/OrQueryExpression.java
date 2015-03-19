@@ -10,7 +10,7 @@ import java.util.Optional;
 import static com.mongodb.QueryBuilder.start;
 
 
-public class OrQueryExpression<MODEL> implements QueryExpression<MODEL> {
+public class OrQueryExpression<MODEL> extends QueryExpression<MODEL> {
 
     private final List<QueryConsumer<MODEL>> consumers;
 

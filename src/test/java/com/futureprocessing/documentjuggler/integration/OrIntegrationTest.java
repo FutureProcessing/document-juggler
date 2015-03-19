@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.futureprocessing.documentjuggler.query.QueryUtils.or;
+import static com.futureprocessing.documentjuggler.query.expression.QueryExpression.or;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.extractProperty;
 

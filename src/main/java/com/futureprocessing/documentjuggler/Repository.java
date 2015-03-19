@@ -41,7 +41,7 @@ public class Repository<MODEL> {
         return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(Optional.ofNullable(consumer)), readProcessor, updateProcessor);
     }
 
-    public QueriedDocuments<MODEL> find(OrQueryExpression<MODEL> expression) {
+    public QueriedDocuments<MODEL> find(QueryExpression<MODEL> expression) {
         return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(expression), readProcessor, updateProcessor);
     }
 

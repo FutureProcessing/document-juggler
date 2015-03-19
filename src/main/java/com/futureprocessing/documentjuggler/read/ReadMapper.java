@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class ReadMapper extends Mapper<ReadCommand> {
@@ -25,7 +25,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
     @Override
     protected ReadCommand getCommand(Method method) {
-        AnnotationReader annotationReader = process(method);
+        AnnotationReader annotationReader = from(method);
         if (isForbidden(method, READ) || !hasCorrectParameters(method)) {
             return new ForbiddenReadCommand(method);
         }

@@ -2,6 +2,7 @@ package com.futureprocessing.documentjuggler.insert;
 
 
 import com.futureprocessing.documentjuggler.annotation.AddToSet;
+import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.Push;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
@@ -13,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import static com.futureprocessing.documentjuggler.Context.INSERT;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public final class InsertMapper extends Mapper<InsertCommand> {
@@ -23,13 +25,15 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
     @Override
     protected InsertCommand getCommand(Method method) {
+        AnnotationReader annotationReader = process(method);
         String field = FieldNameExtractor.getFieldName(method);
 
-        if (isForbidden(method, INSERT) || !hasCorrectParameters(method) || method.isAnnotationPresent(AddToSet.class) || method.isAnnotationPresent(Push.class)) {
+        if (isForbidden(method, INSERT) || !hasCorrectParameters(method)
+                || annotationReader.isPresent(AddToSet.class) || annotationReader.isPresent(Push.class)) {
             return new ForbiddenInsertCommand(method);
         }
 
-        if (method.isAnnotationPresent(DbEmbeddedDocument.class)) {
+        if (annotationReader.isPresent(DbEmbeddedDocument.class)) {
             if (method.isVarArgs()) {
                 Class<?> type = getEmbeddedListDocumentType(method);
                 createMapping(type);

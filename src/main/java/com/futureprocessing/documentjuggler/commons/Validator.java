@@ -7,6 +7,8 @@ import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldExc
 
 import java.lang.reflect.Method;
 
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.process;
+
 public final class Validator {
 
     public static void validateInterface(Class<?> model) {
@@ -16,7 +18,7 @@ public final class Validator {
     }
 
     public static void validateField(Method method) {
-        if (!method.isAnnotationPresent(DbField.class)) {
+        if (!process(method).isPresent(DbField.class)) {
             throw new UnknownFieldException(method);
         }
     }

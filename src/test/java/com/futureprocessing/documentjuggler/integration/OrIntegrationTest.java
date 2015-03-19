@@ -2,8 +2,6 @@ package com.futureprocessing.documentjuggler.integration;
 
 import com.futureprocessing.documentjuggler.example.cars.CarsRepository;
 import com.futureprocessing.documentjuggler.example.cars.model.Car;
-import com.futureprocessing.documentjuggler.query.QueryUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,7 +11,7 @@ import static com.futureprocessing.documentjuggler.query.QueryUtils.or;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.extractProperty;
 
-public class OrIntegrationTest extends BaseIntegrationTest{
+public class OrIntegrationTest extends BaseIntegrationTest {
 
     private static CarsRepository repo;
 

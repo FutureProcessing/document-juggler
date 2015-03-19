@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.integration;
 
-import com.futureprocessing.documentjuggler.BaseRepository;
+import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
@@ -30,7 +30,7 @@ public class CollectionNameAnnotationIntegrationTest extends BaseIntegrationTest
     @Test
     public void shouldInsertDocumentInCorrectCollection() {
         //given
-        BaseRepository<PersonModel> repository = new BaseRepository<>(db(), PersonModel.class);
+        Repository<PersonModel> repository = new Repository<>(db(), PersonModel.class);
 
         //when
         repository.insert(p -> p.withSurname("Kowalski"));

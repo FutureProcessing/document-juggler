@@ -38,7 +38,6 @@ public class UpdateTest {
     public void before() {
         given(db.getCollection(any())).willReturn(collection);
         given(collection.update(any(), any())).willReturn(writeResult);
-        given(writeResult.getN()).willReturn(1);
 
         carsRepository = new CarsRepository(db);
     }
@@ -54,18 +53,6 @@ public class UpdateTest {
         verify(db).getCollection(eq(CarsDBModel.Car.COLLECTION));
     }
 
-
-    @Test
-    public void shouldReturnUpdateResult() {
-        //given
-
-        //when
-        UpdateResult result = carsRepository.find(car -> car.withId(ID))
-                .update(car -> car.withModel("Corsa"));
-
-        //then
-        assertThat(result.getAffectedCount()).isEqualTo(1);
-    }
 
     @Test
     public void shouldThrowInvalidNumberOfDocumentsAffectedException() {

@@ -7,7 +7,7 @@ public abstract class OperationResult {
     private final int affectedCount;
 
     public OperationResult(WriteResult result) {
-        affectedCount = result.getN();
+        affectedCount = result != null ? result.getN() : 0;
     }
 
     public int getAffectedCount() {

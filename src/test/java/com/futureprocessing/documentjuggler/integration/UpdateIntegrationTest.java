@@ -49,22 +49,33 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
     public void shouldSetCorrectValue() {
         //given
         String brand = "Honda";
-        String model = "HR-V";
+        String modelHRV = "HR-V";
 
-        String id = repo.insert(car -> car
+        String modelAccord = "Accord";
+
+        String idHRV = repo.insert(car -> car
                 .withBrand(brand)
-                .withModel(null));
+                .withModel(modelHRV));
+
+        String idAccord = repo.insert(car -> car
+                .withBrand(brand)
+                .withModel(modelAccord));
 
         //when
-        repo.find(car -> car.withId(id))
-                .update(car -> car.withModel(model))
-                .ensureOneUpdated();
+        repo.find(car -> car.withBrand(brand))
+                .update(car -> car.withBrand(brand))
+                .ensureUpdated(2);
 
         //then
-        BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));
+        BasicDBObject documentHRV = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(idHRV)));
+        BasicDBObject documentAccord = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(idAccord)));
 
-        assertThat(document.get(BRAND)).isEqualTo(brand);
-        assertThat(document.containsField(MODEL)).isTrue();
-        assertThat(document.get(MODEL)).isEqualTo(model);
+        assertThat(documentHRV.get(BRAND)).isEqualTo(brand);
+        assertThat(documentHRV.containsField(MODEL)).isTrue();
+        assertThat(documentHRV.get(MODEL)).isEqualTo(modelHRV);
+
+        assertThat(documentAccord.get(BRAND)).isEqualTo(brand);
+        assertThat(documentAccord.containsField(MODEL)).isTrue();
+        assertThat(documentAccord.get(MODEL)).isEqualTo(modelAccord);
     }
 }

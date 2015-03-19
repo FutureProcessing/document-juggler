@@ -251,6 +251,19 @@ public class UpdateMapperTest {
     }
 
     @Test
+    public void shouldReturnForbiddenUpdateCommandForUpdatingIDField() throws Exception {
+        // given
+        Method method = Update.class.getMethod("updateId", String.class);
+        UpdateMapper mapper = new UpdateMapper(Update.class);
+
+        // when
+        UpdateCommand command = mapper.get(method);
+
+        // then
+        assertThat(command).isInstanceOf(ForbiddenUpdateCommand.class);
+    }
+
+    @Test
     public void shouldReturnForbiddenUpdateCommand() throws Exception {
         // given
         Method method = Update.class.getMethod("forbidden", String.class);
@@ -333,9 +346,11 @@ public class UpdateMapperTest {
         @DbField("getter")
         String getter();
 
-
         @DbField("forbidden")
         @Forbidden(UPDATE)
         Update forbidden(String value);
+
+        @DbField("_id")
+        Update updateId(String id);
     }
 }

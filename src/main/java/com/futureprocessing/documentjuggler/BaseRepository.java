@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler;
 
 
+import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.commons.CollectionExtractor;
 import com.futureprocessing.documentjuggler.insert.InsertConsumer;
 import com.futureprocessing.documentjuggler.insert.InsertProcessor;
@@ -53,7 +54,10 @@ public class BaseRepository<MODEL> implements Repository<MODEL> {
         BasicDBObject document = insertProcessor.process(consumer);
 
         dbCollection.insert(document);
-        return document.getObjectId("_id").toHexString();
+        if (document.get("_id") instanceof org.bson.types.ObjectId) {
+            return document.getObjectId("_id").toHexString();
+        }
+        return document.get("_id").toString();
     }
 
 }

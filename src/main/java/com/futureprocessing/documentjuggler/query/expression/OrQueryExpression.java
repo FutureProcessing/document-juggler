@@ -4,25 +4,30 @@ import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
 import com.mongodb.DBObject;
 
-import java.util.List;
-import java.util.Optional;
-
 import static com.mongodb.QueryBuilder.start;
 
 
-public class OrQueryExpression<MODEL> extends QueryExpression<MODEL> {
+public final class OrQueryExpression<MODEL> extends QueryExpression<MODEL> {
 
-    private final List<QueryConsumer<MODEL>> consumers;
+    protected OrQueryExpression(QueryConsumer<MODEL> consumer1, QueryConsumer<MODEL> consumer2) {
+        super(consumer1, consumer2);
+    }
 
-    public OrQueryExpression(List<QueryConsumer<MODEL>> consumers) {
-        this.consumers = consumers;
+    protected OrQueryExpression(QueryConsumer<MODEL> consumer, QueryExpression<MODEL> expression) {
+        super(consumer, expression);
+    }
+
+    protected OrQueryExpression(QueryExpression<MODEL> expression, QueryConsumer<MODEL> consumer) {
+        super(expression, consumer);
+    }
+
+    protected OrQueryExpression(QueryExpression<MODEL> expression1, QueryExpression<MODEL> expression2) {
+        super(expression1, expression2);
     }
 
     @Override
     public DBObject evaluate(QueryProcessor<MODEL> processor) {
-        return start().or(consumers.stream()
-                .map(consumers -> processor.process(Optional.of(consumers)))
-                .toArray(size -> new DBObject[size])).get();
+        return start().or(evaluateComponents(processor)).get();
     }
 }
 

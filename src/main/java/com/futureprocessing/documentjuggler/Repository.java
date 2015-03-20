@@ -4,16 +4,16 @@ package com.futureprocessing.documentjuggler;
 import com.futureprocessing.documentjuggler.commons.CollectionExtractor;
 import com.futureprocessing.documentjuggler.insert.InsertConsumer;
 import com.futureprocessing.documentjuggler.insert.InsertProcessor;
-import com.futureprocessing.documentjuggler.query.*;
-import com.futureprocessing.documentjuggler.query.expression.OrQueryExpression;
+import com.futureprocessing.documentjuggler.query.QueriedDocuments;
+import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
+import com.futureprocessing.documentjuggler.query.QueryConsumer;
+import com.futureprocessing.documentjuggler.query.QueryProcessor;
 import com.futureprocessing.documentjuggler.query.expression.QueryExpression;
 import com.futureprocessing.documentjuggler.read.ReadProcessor;
 import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-
-import java.util.Optional;
 
 public class Repository<MODEL> {
 
@@ -38,7 +38,7 @@ public class Repository<MODEL> {
     }
 
     public QueriedDocuments<MODEL> find(QueryConsumer<MODEL> consumer) {
-        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(Optional.ofNullable(consumer)), readProcessor, updateProcessor);
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(consumer), readProcessor, updateProcessor);
     }
 
     public QueriedDocuments<MODEL> find(QueryExpression<MODEL> expression) {

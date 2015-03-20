@@ -28,7 +28,7 @@ public class QueryProcessorTest {
         //given
 
         //when
-        DBObject query = queryProcessor.process(Optional.empty());
+        DBObject query = queryProcessor.process((QueryConsumer<Model>)null);
 
         //then
         assertThat(query).isNull();
@@ -39,7 +39,7 @@ public class QueryProcessorTest {
         //given
 
         //when
-        DBObject query = queryProcessor.process(Optional.of(m -> m.withField("VALUE")));
+        DBObject query = queryProcessor.process(m -> m.withField("VALUE"));
 
         //then
         assertThat(query.get("field")).isEqualTo("VALUE");

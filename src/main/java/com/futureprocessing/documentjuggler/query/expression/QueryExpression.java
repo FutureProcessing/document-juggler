@@ -5,8 +5,6 @@ import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
 import com.mongodb.DBObject;
 
-import java.util.Optional;
-
 public class QueryExpression<MODEL> {
 
     private final QueryConsumer<MODEL> consumer1;
@@ -80,7 +78,7 @@ public class QueryExpression<MODEL> {
     }
 
     private DBObject toDbObject(QueryConsumer<MODEL> consumer, QueryExpression<MODEL> expression, QueryProcessor<MODEL> processor) {
-        return expression == null ? processor.process(Optional.of(consumer)) : expression.evaluate(processor);
+        return expression == null ? processor.process(consumer) : expression.evaluate(processor);
     }
 
     protected DBObject[] evaluateComponents(QueryProcessor<MODEL> processor) {

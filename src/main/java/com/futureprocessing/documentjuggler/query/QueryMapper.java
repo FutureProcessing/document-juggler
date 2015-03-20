@@ -4,11 +4,15 @@ package com.futureprocessing.documentjuggler.query;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.query.command.*;
+import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 
 import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isForbidden;
 
 public class QueryMapper extends Mapper<QueryCommand> {
@@ -26,7 +30,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
         final String field = FieldNameExtractor.getFieldName(method);
 
-        if (method.isAnnotationPresent(ObjectId.class)) {
+        if (from(method).isPresent(ObjectId.class)) {
             return new IdQueryCommand(field);
         }
 

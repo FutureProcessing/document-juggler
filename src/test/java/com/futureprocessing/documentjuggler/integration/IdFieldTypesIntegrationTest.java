@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.integration;
 
-import com.futureprocessing.documentjuggler.BaseRepository;
+import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.ObjectId;
@@ -59,7 +59,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     @Test
     public void shouldInsertDocumentWithDefaultDocumentId() {
         //given
-        BaseRepository<Person> repository = new BaseRepository<>(db(), Person.class);
+        Repository<Person> repository = new Repository<>(db(), Person.class);
         String ID = new org.bson.types.ObjectId().toHexString();
 
         //when
@@ -74,7 +74,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     @Test
     public void shouldInsertDocumentWithStringDocumentId() {
         //given
-        BaseRepository<PersonWithStringIdModel> repository = new BaseRepository<>(db(), PersonWithStringIdModel.class);
+        Repository<PersonWithStringIdModel> repository = new Repository<>(db(), PersonWithStringIdModel.class);
         String ID = "personID";
 
         //when
@@ -89,7 +89,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     @Test
     public void shouldInsertDocumentWithObjectIdDocumentId() {
         //given
-        BaseRepository<PersonWithObjectIdIdModel> repository = new BaseRepository<>(db(), PersonWithObjectIdIdModel.class);
+        Repository<PersonWithObjectIdIdModel> repository = new Repository<>(db(), PersonWithObjectIdIdModel.class);
         org.bson.types.ObjectId ID = new org.bson.types.ObjectId();
 
         //when

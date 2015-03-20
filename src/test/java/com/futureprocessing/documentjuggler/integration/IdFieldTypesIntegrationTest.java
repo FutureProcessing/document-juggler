@@ -21,7 +21,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     interface Person {
         @ObjectId
         @DbField("_id")
-        Person withId(org.bson.types.ObjectId id);
+        Person withId(String id);
 
         @DbField("_id")
         String getId();
@@ -56,19 +56,18 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
         PersonWithObjectIdIdModel withSurname(String surname);
     }
 
-
     @Test
     public void shouldInsertDocumentWithDefaultDocumentId() {
         //given
         BaseRepository<Person> repository = new BaseRepository<>(db(), Person.class);
-        org.bson.types.ObjectId ID = new org.bson.types.ObjectId();
+        String ID = new org.bson.types.ObjectId().toHexString();
 
         //when
         repository.insert(p -> p.withId(ID).withSurname(SURNAME));
 
         //then
         BasicDBObject fromDb = (BasicDBObject) db().getCollection(COLLECTION).findOne();
-        assertThat(fromDb.getString("_id")).isEqualTo(ID.toHexString());
+        assertThat(fromDb.getString("_id")).isEqualTo(ID);
         assertThat(fromDb.getString("surname")).isEqualTo(SURNAME);
     }
 

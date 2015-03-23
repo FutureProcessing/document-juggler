@@ -8,13 +8,12 @@ import com.futureprocessing.documentjuggler.query.QueriedDocuments;
 import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
 import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
+import com.futureprocessing.documentjuggler.query.expression.QueryExpression;
 import com.futureprocessing.documentjuggler.read.ReadProcessor;
 import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-
-import java.util.Optional;
 
 public class Repository<MODEL> {
 
@@ -39,15 +38,20 @@ public class Repository<MODEL> {
     }
 
     public QueriedDocuments<MODEL> find(QueryConsumer<MODEL> consumer) {
-        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(Optional.ofNullable(consumer)), readProcessor, updateProcessor);
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(consumer), readProcessor, updateProcessor);
+    }
+
+    public QueriedDocuments<MODEL> find(QueryExpression<MODEL> expression) {
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(expression), readProcessor, updateProcessor);
     }
 
     public QueriedDocuments<MODEL> find() {
-        return find(null);
+        return find((QueryConsumer<MODEL>) null);
     }
 
     public String insert(InsertConsumer<MODEL> consumer) {
         BasicDBObject document = insertProcessor.process(consumer);
+
 
         dbCollection.insert(document);
         return document.getObjectId("_id").toHexString();

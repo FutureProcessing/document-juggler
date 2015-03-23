@@ -1,10 +1,7 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.annotation.AddToSet;
-import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
-import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.documentjuggler.annotation.Push;
+import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.insert.command.*;
@@ -43,6 +40,10 @@ public final class InsertMapper extends Mapper<InsertCommand> {
             Class<?> type = getEmbeddedDocumentType(method);
             createMapping(type);
             return new EmbeddedInsertCommand(field, type, this);
+        }
+
+        if (annotationReader.isPresent(AsObjectId.class)){
+            return new IdInsertCommand(field);
         }
 
         return new BasicInsertCommand(field);

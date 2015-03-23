@@ -13,6 +13,7 @@ import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import org.bson.types.ObjectId;
 
 import java.util.Optional;
 
@@ -50,7 +51,7 @@ public class Repository<MODEL> {
         BasicDBObject document = insertProcessor.process(consumer);
 
         dbCollection.insert(document);
-        if (document.get("_id") instanceof org.bson.types.ObjectId) {
+        if (document.get("_id") instanceof ObjectId) {
             return document.getObjectId("_id").toHexString();
         }
         return document.get("_id").toString();

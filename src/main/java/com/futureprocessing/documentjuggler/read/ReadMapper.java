@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.read;
 
 import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.documentjuggler.annotation.ObjectId;
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.*;
@@ -59,7 +59,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
             return new SetReadCommand(field);
         }
 
-        if (annotationReader.isPresent(ObjectId.class)) {
+        if (annotationReader.isPresent(AsObjectId.class)) {
             return new IdReadCommand(field);
         }
 

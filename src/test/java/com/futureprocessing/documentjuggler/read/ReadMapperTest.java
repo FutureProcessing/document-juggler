@@ -4,7 +4,7 @@ package com.futureprocessing.documentjuggler.read;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.ObjectId;
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.documentjuggler.helper.Empty;
@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 public class ReadMapperTest {
 
     private class NotInterface {
-        @ObjectId
+        @AsObjectId
         String getId() {
             return null;
         }
@@ -66,7 +66,7 @@ public class ReadMapperTest {
 
     private interface Model {
 
-        @ObjectId
+        @AsObjectId
         @DbField("_id")
         String id();
 

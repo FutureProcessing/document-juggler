@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.query;
 
 
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
@@ -28,7 +29,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
         final String field = FieldNameExtractor.getFieldName(method);
 
-        if (reader.isPresent(ObjectId.class)) {
+        if (reader.isPresent(AsObjectId.class)) {
             return new IdQueryCommand(field);
         }
 

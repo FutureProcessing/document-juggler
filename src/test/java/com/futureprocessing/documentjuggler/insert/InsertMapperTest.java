@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.insert;
 
 
-import com.futureprocessing.documentjuggler.Context;
 import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
@@ -179,6 +178,44 @@ public class InsertMapperTest {
         InsertMapper mapper = new InsertMapper(Model.class);
 
         // then
+        InsertCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
+    }
+
+    interface ModelWithIdAsObjectId {
+        @AsObjectId
+        @DbField("_id")
+        ModelWithIdAsObjectId withId(String id);
+    }
+
+    @Test
+    public void shouldReturnIdInsertCommand() throws NoSuchMethodException {
+        //given
+        Method method = ModelWithIdAsObjectId.class.getMethod("withId", String.class);
+
+        //when
+        InsertMapper mapper = new InsertMapper(ModelWithIdAsObjectId.class);
+
+        //then
+        InsertCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(IdInsertCommand.class);
+    }
+
+    interface ModelWithWrongIdMapping {
+        @AsObjectId
+        @DbField("_id")
+        ModelWithIdAsObjectId withId(Double id);
+    }
+
+    @Test
+    public void shouldReturnForbiddenInsertCommandForWrongIdMapping() throws NoSuchMethodException {
+        //given
+        Method method = ModelWithWrongIdMapping.class.getMethod("withId", Double.class);
+
+        //when
+        InsertMapper mapper = new InsertMapper(ModelWithWrongIdMapping.class);
+
+        //then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
     }

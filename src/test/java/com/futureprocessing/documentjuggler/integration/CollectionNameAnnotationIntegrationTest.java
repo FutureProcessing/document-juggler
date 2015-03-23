@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.integration;
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.ObjectId;
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class CollectionNameAnnotationIntegrationTest extends BaseIntegrationTest
     @CollectionName(COLLECTION)
     interface PersonModel {
 
-        @ObjectId
+        @AsObjectId
         @DbField("_id")
         PersonModel withId(String id);
 

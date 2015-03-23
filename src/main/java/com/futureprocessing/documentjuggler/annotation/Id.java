@@ -9,7 +9,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @DbField("_id")
-@ObjectId
+@AsObjectId
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
 public @interface Id {

@@ -14,6 +14,7 @@ import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import org.bson.types.ObjectId;
 
 public class Repository<MODEL> {
 
@@ -54,6 +55,9 @@ public class Repository<MODEL> {
 
 
         dbCollection.insert(document);
-        return document.getObjectId("_id").toHexString();
+        if (document.get("_id") instanceof ObjectId) {
+            return document.getObjectId("_id").toHexString();
+        }
+        return document.get("_id").toString();
     }
 }

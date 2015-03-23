@@ -10,11 +10,11 @@ import java.util.function.Consumer;
 
 @CollectionName(CarsDBModel.Car.COLLECTION)
 public interface Car {
-    @ObjectId
+    @AsObjectId
     @DbField(CarsDBModel.Car.ID)
     Car withId(String id);
 
-    @ObjectId
+    @AsObjectId
     @DbField(CarsDBModel.Car.ID)
     String getId();
 

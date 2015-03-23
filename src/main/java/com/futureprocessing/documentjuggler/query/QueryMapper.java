@@ -2,12 +2,10 @@ package com.futureprocessing.documentjuggler.query;
 
 
 import com.futureprocessing.documentjuggler.annotation.AsObjectId;
+import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.query.command.BasicQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
-import com.futureprocessing.documentjuggler.query.command.QueryCommand;
+import com.futureprocessing.documentjuggler.query.command.*;
 
 import java.lang.reflect.Method;
 
@@ -23,6 +21,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
     @Override
     protected QueryCommand getCommand(Method method) {
+        AnnotationReader reader = from(method);
 
         if (isForbidden(method, QUERY) || !hasCorrectReturnType(method) || !hasCorrectParameters(method)) {
             return new ForbiddenQueryCommand(method);
@@ -30,8 +29,24 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
         final String field = FieldNameExtractor.getFieldName(method);
 
-        if (from(method).isPresent(AsObjectId.class)) {
+        if (reader.isPresent(AsObjectId.class)) {
             return new IdQueryCommand(field);
+        }
+
+        if (reader.isPresent(GreaterThan.class)) {
+            return new GreaterThanQueryCommand(field);
+        }
+
+        if (reader.isPresent(GreaterThanEqual.class)) {
+            return new GreaterThanEqualQueryCommand(field);
+        }
+
+        if (reader.isPresent(LessThan.class)) {
+            return new LessThanQueryCommand(field);
+        }
+
+        if (reader.isPresent(LessThanEqual.class)) {
+            return new LessThanEqualQueryCommand(field);
         }
 
         return new BasicQueryCommand(field);

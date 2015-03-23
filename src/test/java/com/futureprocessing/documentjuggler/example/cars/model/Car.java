@@ -103,4 +103,19 @@ public interface Car {
     @DbEmbeddedDocument()
     Car withRoofLuggage(Consumer<Luggage>... consumers);
 
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @GreaterThan
+    Car withSideNumberGreaterThan(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @GreaterThanEqual
+    Car withSideNumberGreaterThanEqual(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @LessThan
+    Car withSideNumberLessThan(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @LessThanEqual
+    Car withSideNumberLessThanEqual(int i);
 }

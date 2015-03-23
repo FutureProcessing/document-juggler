@@ -43,6 +43,10 @@ public final class InsertMapper extends Mapper<InsertCommand> {
         }
 
         if (annotationReader.isPresent(AsObjectId.class)){
+             if(!method.getParameterTypes()[0].equals(String.class)){
+                return new ForbiddenInsertCommand(method);
+            }
+
             return new IdInsertCommand(field);
         }
 

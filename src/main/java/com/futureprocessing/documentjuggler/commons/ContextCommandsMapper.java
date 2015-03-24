@@ -14,7 +14,7 @@ public class ContextCommandsMapper {
         if (readContext != null) {
 
             try {
-                Method commandProviderMethod = contextClass.getMethod("commandProvider");
+                Method commandProviderMethod = contextClass.getMethod("value");
                 Class<? extends CommandProvider<COMMAND_TYPE>> commandClass = (Class<? extends CommandProvider<COMMAND_TYPE>>) commandProviderMethod.invoke(readContext);
 
                 CommandProvider<COMMAND_TYPE> commandProvider = commandClass.newInstance();

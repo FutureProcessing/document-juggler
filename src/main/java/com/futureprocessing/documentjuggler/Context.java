@@ -1,17 +1,17 @@
 package com.futureprocessing.documentjuggler;
 
 
-import com.futureprocessing.documentjuggler.annotation.internal.InsertContext;
-import com.futureprocessing.documentjuggler.annotation.internal.QueryContext;
-import com.futureprocessing.documentjuggler.annotation.internal.ReadContext;
-import com.futureprocessing.documentjuggler.annotation.internal.UpdateContext;
+import com.futureprocessing.documentjuggler.annotation.internal.InsertCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.ReadCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.UpdateCommandProvider;
 
 public enum Context {
 
-    INSERT(InsertContext.class),
-    QUERY(QueryContext.class),
-    READ(ReadContext.class),
-    UPDATE(UpdateContext.class);
+    INSERT(InsertCommandProvider.class),
+    QUERY(QueryCommandProvider.class),
+    READ(ReadCommandProvider.class),
+    UPDATE(UpdateCommandProvider.class);
 
     private Class contextAnnotationClass;
 

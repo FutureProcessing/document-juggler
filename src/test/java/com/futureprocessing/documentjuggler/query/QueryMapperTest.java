@@ -4,6 +4,7 @@ import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.internal.NotEquals;
 import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.query.command.*;
@@ -83,6 +84,10 @@ public class QueryMapperTest {
         @DbField("notIn")
         @NotIn
         Model notIn(Object value);
+
+        @DbField("notEquals")
+        @NotEquals
+        Model notEquals(Object value);
     }
 
     @Test
@@ -200,6 +205,19 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ExistsQueryCommand.class);
+    }
+
+    @Test
+    public void shouldReturnNotEqualsQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("notEquals", Object.class);
+
+        // when
+        QueryMapper mapper = QueryMapper.map(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(NotEqualsQueryCommand.class);
     }
 
     @Test

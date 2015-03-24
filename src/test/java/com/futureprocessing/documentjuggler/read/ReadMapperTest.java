@@ -111,7 +111,7 @@ public class ReadMapperTest {
 
         // when
         ReadMapper mapper = ReadMapper.map(ReaderWithArguments.class);
-        ReadCommand command = mapper.getCommand(method);
+        ReadCommand command = mapper.get(method);
 
         //then
         assertThat(command).isInstanceOf(ForbiddenReadCommand.class);

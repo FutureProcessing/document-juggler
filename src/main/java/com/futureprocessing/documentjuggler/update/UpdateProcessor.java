@@ -10,7 +10,7 @@ public class UpdateProcessor<MODEL> {
 
     public UpdateProcessor(Class<MODEL> modelClass) {
         this.modelClass = modelClass;
-        this.mapper = new UpdateMapper(modelClass);
+        this.mapper = UpdateMapper.map(modelClass);
     }
 
     public BasicDBObject process(UpdateConsumer<MODEL> consumer) {

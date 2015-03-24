@@ -2,16 +2,14 @@ package com.futureprocessing.documentjuggler.read;
 
 
 import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
-import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
-import com.futureprocessing.documentjuggler.annotation.AsObjectId;
+import com.futureprocessing.documentjuggler.annotation.internal.ReadContext;
+import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.read.command.*;
+import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
+import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Set;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
@@ -19,63 +17,39 @@ import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isFo
 
 public final class ReadMapper extends Mapper<ReadCommand> {
 
-    public ReadMapper(Class clazz) {
-        super(clazz);
+    public static <MODEL> ReadMapper map(Class<MODEL> modelClass) {
+        ReadMapper mapper = new ReadMapper(modelClass);
+        mapper.createMapping(modelClass);
+        return mapper;
+    }
+
+    private ReadMapper(Class clazz) {
+        super(clazz, new DefaultReadCommandProvider());
     }
 
     @Override
     protected ReadCommand getCommand(Method method) {
-        AnnotationReader annotationReader = from(method);
         if (isForbidden(method, READ) || !hasCorrectParameters(method)) {
             return new ForbiddenReadCommand(method);
         }
 
-        String field = FieldNameExtractor.getFieldName(method);
+        ReadContext readContext = from(method).read(ReadContext.class);
+        if (readContext != null) {
+            Class<? extends CommandProvider<ReadCommand>> commandClass = readContext.commandProvider();
 
-        if (annotationReader.isPresent(DbEmbeddedDocument.class)) {
-            Class<?> returnType = method.getReturnType();
-
-            if (returnType.equals(List.class)) {
-                Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-                createMapping(embeddedType);
-                return new EmbeddedListReadCommand(field, embeddedType, this);
+            try {
+                CommandProvider<ReadCommand> commandProvider = commandClass.newInstance();
+                return commandProvider.getCommand(method, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            if (returnType.equals(Set.class)) {
-                Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-                createMapping(embeddedType);
-                return new EmbeddedSetReadCommand(field, embeddedType, this);
-            }
-
-            createMapping(returnType);
-            return new EmbeddedReadCommand(field, method.getReturnType(), this);
         }
 
-        if (isBooleanReturnType(method)) {
-            return new BooleanReadCommand(field);
-        }
+        return getDefaultCommand(method);
 
-        if (isSetReturnType(method)) {
-            return new SetReadCommand(field);
-        }
-
-        if (annotationReader.isPresent(AsObjectId.class)) {
-            return new IdReadCommand(field);
-        }
-
-        return new BasicReadCommand(field);
     }
 
     private boolean hasCorrectParameters(Method method) {
         return method.getParameterCount() == 0;
     }
-
-    private boolean isSetReturnType(Method method) {
-        return Set.class.isAssignableFrom(method.getReturnType());
-    }
-
-    private boolean isBooleanReturnType(Method method) {
-        return method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class);
-    }
-
 }

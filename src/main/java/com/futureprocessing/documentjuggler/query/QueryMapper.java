@@ -3,9 +3,14 @@ package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.internal.QueryContext;
+import com.futureprocessing.documentjuggler.annotation.internal.UpdateContext;
+import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.query.command.*;
+import com.futureprocessing.documentjuggler.query.command.providers.DefaultQueryCommandProvider;
+import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 
 import java.lang.reflect.Method;
 
@@ -15,8 +20,14 @@ import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isFo
 
 public class QueryMapper extends Mapper<QueryCommand> {
 
-    public QueryMapper(Class clazz) {
-        super(clazz);
+    public static <MODEL> QueryMapper map(Class<MODEL> modelClass) {
+        QueryMapper mapper = new QueryMapper(modelClass);
+        mapper.createMapping(modelClass);
+        return mapper;
+    }
+
+    private QueryMapper(Class clazz) {
+        super(clazz, new DefaultQueryCommandProvider());
     }
 
     @Override
@@ -27,37 +38,19 @@ public class QueryMapper extends Mapper<QueryCommand> {
             return new ForbiddenQueryCommand(method);
         }
 
-        final String field = FieldNameExtractor.getFieldName(method);
+        QueryContext context = from(method).read(QueryContext.class);
+        if (context != null) {
+            Class<? extends CommandProvider<QueryCommand>> commandClass = context.commandProvider();
 
-        if (reader.isPresent(AsObjectId.class)) {
-            return new IdQueryCommand(field);
+            try {
+                CommandProvider<QueryCommand> commandProvider = commandClass.newInstance();
+                return commandProvider.getCommand(method, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        if (reader.isPresent(GreaterThan.class)) {
-            return new GreaterThanQueryCommand(field);
-        }
-
-        if (reader.isPresent(GreaterThanEqual.class)) {
-            return new GreaterThanEqualQueryCommand(field);
-        }
-
-        if (reader.isPresent(LessThan.class)) {
-            return new LessThanQueryCommand(field);
-        }
-
-        if (reader.isPresent(LessThanEqual.class)) {
-            return new LessThanEqualQueryCommand(field);
-        }
-
-        if (reader.isPresent(Exists.class)) {
-            return new ExistsQueryCommand(field);
-        }
-
-        if (reader.isPresent(In.class)) {
-            return new InQueryCommand(field);
-        }
-
-        return new BasicQueryCommand(field);
+        return getDefaultCommand(method);
     }
 
     private boolean hasCorrectReturnType(Method method) {

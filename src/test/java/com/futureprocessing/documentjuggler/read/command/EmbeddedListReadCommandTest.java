@@ -21,7 +21,7 @@ public class EmbeddedListReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
-    private static final ReadMapper mapper = new ReadMapper(EMBEDDED_TYPE);
+    private static final ReadMapper mapper = ReadMapper.map(EMBEDDED_TYPE);
 
     private ReadCommand command = new EmbeddedListReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

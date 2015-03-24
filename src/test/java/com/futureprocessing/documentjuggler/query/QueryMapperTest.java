@@ -30,7 +30,7 @@ public class QueryMapperTest {
 
         try {
             // when
-            new QueryMapper(NotInterface.class);
+            QueryMapper.map(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -86,7 +86,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("id", String.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -99,7 +99,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("withString", String.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -112,7 +112,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("greater", int.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -125,7 +125,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("greaterEqual", int.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -138,7 +138,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("less", int.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -151,7 +151,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("lessEqual", int.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -164,7 +164,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("in", Object.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -177,7 +177,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("exists", boolean.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -190,7 +190,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("getFieldA");
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);
@@ -203,7 +203,7 @@ public class QueryMapperTest {
         Method method = Model.class.getMethod("forbidden", String.class);
 
         // when
-        QueryMapper mapper = new QueryMapper(Model.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
 
         // then
         QueryCommand command = mapper.get(method);

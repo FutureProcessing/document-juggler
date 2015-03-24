@@ -17,7 +17,7 @@ public class EmbeddedVarArgInsertCommandTest {
     private static final String VALUE1 = "SomeValue";
     private static final String VALUE2 = "SomeValue";
 
-    private InsertMapper mapper = new InsertMapper(Insert.class);
+    private InsertMapper mapper = InsertMapper.map(Insert.class);
     private InsertCommand command = new EmbeddedVarArgInsertCommand(FIELD, Insert.class, mapper);
 
     @Test

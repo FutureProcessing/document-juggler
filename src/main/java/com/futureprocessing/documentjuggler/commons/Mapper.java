@@ -14,9 +14,10 @@ public abstract class Mapper<COMMAND_TYPE> {
 
     private final Set<Class> mappedClasses = new HashSet<>();
     private final Map<Method, COMMAND_TYPE> mappings = new HashMap<>();
+    private final CommandProvider<COMMAND_TYPE> defaultCommandProvider;
 
-    protected Mapper(Class clazz) {
-        createMapping(clazz);
+    protected Mapper(Class clazz, CommandProvider<COMMAND_TYPE> defaultCommandProvider) {
+        this.defaultCommandProvider = defaultCommandProvider;
     }
 
     public final Map<Method, COMMAND_TYPE> get() {
@@ -27,7 +28,7 @@ public abstract class Mapper<COMMAND_TYPE> {
         return mappings.get(method);
     }
 
-    protected void createMapping(Class<?> clazz) {
+    public void createMapping(Class<?> clazz) {
         if (!mappedClasses.contains(clazz)) {
             validateInterface(clazz);
 
@@ -41,5 +42,9 @@ public abstract class Mapper<COMMAND_TYPE> {
     }
 
     protected abstract COMMAND_TYPE getCommand(Method method);
+
+    protected COMMAND_TYPE getDefaultCommand(Method method){
+        return defaultCommandProvider.getCommand(method, this);
+    }
 
 }

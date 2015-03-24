@@ -16,7 +16,8 @@ import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isFo
 public class QueryMapper extends Mapper<QueryCommand> {
 
     public QueryMapper(Class clazz) {
-        super(clazz);
+        super(clazz, null);
+        createMapping(clazz);
     }
 
     @Override

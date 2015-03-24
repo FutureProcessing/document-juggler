@@ -1,5 +1,8 @@
 package com.futureprocessing.documentjuggler.annotation;
 
+import com.futureprocessing.documentjuggler.annotation.internal.ReadContext;
+import com.futureprocessing.documentjuggler.annotation.internal.UpdateContext;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

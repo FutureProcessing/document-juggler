@@ -16,7 +16,7 @@ public class ReadProcessor<MODEL> {
     public ReadProcessor(Class<MODEL> modelClass, DBCollection collection) {
         this.modelClass = modelClass;
         this.collection = collection;
-        this.mapper = new ReadMapper(modelClass);
+        this.mapper = ReadMapper.map(modelClass);
     }
 
     public MODEL processFirst(DBObject query, String... fieldsToFetch) {

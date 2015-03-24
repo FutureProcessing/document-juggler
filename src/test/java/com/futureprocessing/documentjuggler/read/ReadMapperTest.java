@@ -34,7 +34,7 @@ public class ReadMapperTest {
 
         try {
             // when
-            new ReadMapper(NotInterface.class);
+            ReadMapper.map(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -54,7 +54,7 @@ public class ReadMapperTest {
 
         try {
             // when
-            new ReadMapper(ModelWithUnknownField.class);
+            ReadMapper.map(ModelWithUnknownField.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownField.class.getMethod("getId"));
@@ -110,7 +110,7 @@ public class ReadMapperTest {
         Method method = ReaderWithArguments.class.getMethod("getTest", String.class);
 
         // when
-        ReadMapper mapper = new ReadMapper(ReaderWithArguments.class);
+        ReadMapper mapper = ReadMapper.map(ReaderWithArguments.class);
         ReadCommand command = mapper.getCommand(method);
 
         //then
@@ -124,7 +124,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("id");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -137,7 +137,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("primitiveBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -150,7 +150,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("bigBoolean");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -163,7 +163,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("set");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -176,7 +176,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("basic");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -189,7 +189,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("embedded");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -202,7 +202,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("embeddedList");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -215,7 +215,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("embeddedSet");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);
@@ -228,7 +228,7 @@ public class ReadMapperTest {
         Method method = Model.class.getMethod("forbidden");
 
         // when
-        ReadMapper mapper = new ReadMapper(Model.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
 
         // then
         ReadCommand command = mapper.get(method);

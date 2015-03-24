@@ -18,7 +18,8 @@ import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isFo
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
     public UpdateMapper(Class clazz) {
-        super(clazz);
+        super(clazz, null);
+        createMapping(clazz);
     }
 
     @Override

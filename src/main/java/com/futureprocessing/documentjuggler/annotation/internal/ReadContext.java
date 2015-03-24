@@ -13,7 +13,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ANNOTATION_TYPE)
 public @interface ReadContext {
 
-    ReturnType[] returns();
-
     Class<? extends ReadCommand> command();
 }

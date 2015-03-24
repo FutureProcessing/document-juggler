@@ -17,7 +17,8 @@ import static com.futureprocessing.documentjuggler.commons.ForbiddenChecker.isFo
 public final class InsertMapper extends Mapper<InsertCommand> {
 
     public InsertMapper(Class clazz) {
-        super(clazz);
+        super(clazz, null);
+        createMapping(clazz);
     }
 
     @Override

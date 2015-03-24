@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
         command = IdQueryCommand.class
 )
 @InsertContext(
-        command = IdInsertCommand.class
+        commandProvider = IdInsertCommand.Provider.class
 )
 public @interface AsObjectId {
 

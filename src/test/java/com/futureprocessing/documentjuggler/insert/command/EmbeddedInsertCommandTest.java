@@ -15,7 +15,7 @@ public class EmbeddedInsertCommandTest {
     private static final String EMBEDDED_FIELD = "embeddedField";
     private static final String VALUE = "SomeValue";
 
-    private InsertMapper mapper = new InsertMapper(Insert.class);
+    private InsertMapper mapper = InsertMapper.map(Insert.class);
     private InsertCommand command = new EmbeddedInsertCommand(FIELD, Insert.class, mapper);
 
     @Test

@@ -10,7 +10,7 @@ public class InsertProcessor<MODEL> {
 
     public InsertProcessor(Class<MODEL> modelClass) {
         this.modelClass = modelClass;
-        this.mapper = new InsertMapper(modelClass);
+        this.mapper = InsertMapper.map(modelClass);
     }
 
     public BasicDBObject process(InsertConsumer<MODEL> consumer) {

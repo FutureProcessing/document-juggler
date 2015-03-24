@@ -11,7 +11,6 @@ import java.util.Set;
 
 public class IdReadCommand extends AbstractReadCommand {
 
-
     public IdReadCommand(String field) {
         super(field);
     }

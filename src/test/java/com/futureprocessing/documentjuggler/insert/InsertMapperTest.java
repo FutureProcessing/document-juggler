@@ -31,7 +31,7 @@ public class InsertMapperTest {
 
         try {
             // when
-            new InsertMapper(NotInterface.class);
+            InsertMapper.map(NotInterface.class);
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
@@ -51,7 +51,7 @@ public class InsertMapperTest {
 
         try {
             // when
-            new InsertMapper(ModelWithUnknownQuery.class);
+            InsertMapper.map(ModelWithUnknownQuery.class);
         } catch (UnknownFieldException ex) {
             // then
             assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownQuery.class.getMethod("getId"));
@@ -96,7 +96,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("embedded", Consumer.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -109,7 +109,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("embeddedVarArg", Consumer[].class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -122,7 +122,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("value", String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -136,7 +136,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("unsupportedAddToSet", String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -149,7 +149,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("unsupportedPush", String.class, String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -162,7 +162,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("wrongGetter");
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -175,7 +175,7 @@ public class InsertMapperTest {
         Method method = Model.class.getMethod("forbidden", String.class);
 
         // when
-        InsertMapper mapper = new InsertMapper(Model.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
 
         // then
         InsertCommand command = mapper.get(method);
@@ -194,7 +194,7 @@ public class InsertMapperTest {
         Method method = ModelWithIdAsObjectId.class.getMethod("withId", String.class);
 
         //when
-        InsertMapper mapper = new InsertMapper(ModelWithIdAsObjectId.class);
+        InsertMapper mapper = InsertMapper.map(ModelWithIdAsObjectId.class);
 
         //then
         InsertCommand command = mapper.get(method);
@@ -213,7 +213,7 @@ public class InsertMapperTest {
         Method method = ModelWithWrongIdMapping.class.getMethod("withId", Double.class);
 
         //when
-        InsertMapper mapper = new InsertMapper(ModelWithWrongIdMapping.class);
+        InsertMapper mapper = InsertMapper.map(ModelWithWrongIdMapping.class);
 
         //then
         InsertCommand command = mapper.get(method);

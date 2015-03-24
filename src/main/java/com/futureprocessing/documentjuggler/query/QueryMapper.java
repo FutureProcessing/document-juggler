@@ -14,12 +14,12 @@ import static com.futureprocessing.documentjuggler.Context.QUERY;
 public class QueryMapper extends Mapper<QueryCommand> {
 
     public static <MODEL> QueryMapper map(Class<MODEL> modelClass) {
-        QueryMapper mapper = new QueryMapper(modelClass);
+        QueryMapper mapper = new QueryMapper();
         mapper.createMapping(modelClass);
         return mapper;
     }
 
-    private QueryMapper(Class clazz) {
+    private QueryMapper() {
         super(QUERY, new DefaultQueryCommandProvider(), new ForbiddenQueryCommand.Provider());
     }
 

@@ -15,12 +15,12 @@ import static com.futureprocessing.documentjuggler.Context.UPDATE;
 public class UpdateMapper extends Mapper<UpdateCommand> {
 
     public static <MODEL> UpdateMapper map(Class<MODEL> modelClass) {
-        UpdateMapper mapper = new UpdateMapper(modelClass);
+        UpdateMapper mapper = new UpdateMapper();
         mapper.createMapping(modelClass);
         return mapper;
     }
 
-    private UpdateMapper(Class clazz) {
+    private UpdateMapper() {
         super(UPDATE, new DefaultUpdateCommandProvider(), new ForbiddenUpdateCommand.Provider());
     }
 

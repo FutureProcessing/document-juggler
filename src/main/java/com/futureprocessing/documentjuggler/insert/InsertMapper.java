@@ -13,13 +13,13 @@ import static com.futureprocessing.documentjuggler.Context.INSERT;
 public final class InsertMapper extends Mapper<InsertCommand> {
 
     public static <MODEL> InsertMapper map(Class<MODEL> modelClass) {
-        InsertMapper mapper = new InsertMapper(modelClass);
+        InsertMapper mapper = new InsertMapper();
         mapper.createMapping(modelClass);
         return mapper;
     }
 
 
-    private InsertMapper(Class clazz) {
+    private InsertMapper() {
         super(INSERT, new DefaultInsertCommandProvider(), new ForbiddenInsertCommand.Provider());
     }
 

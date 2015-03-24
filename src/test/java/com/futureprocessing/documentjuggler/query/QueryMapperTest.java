@@ -9,6 +9,8 @@ import com.futureprocessing.documentjuggler.query.command.*;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Objects;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +70,10 @@ public class QueryMapperTest {
         @DbField("lessEqual")
         @LessThanEqual
         Model lessEqual(int value);
+
+        @DbField("in")
+        @In
+        Model in(Object value);
     }
 
     @Test
@@ -146,6 +152,19 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(LessThanEqualQueryCommand.class);
+    }
+
+    @Test
+    public void shouldReturnInQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("in", Object.class);
+
+        // when
+        QueryMapper mapper = new QueryMapper(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(InQueryCommand.class);
     }
 
     @Test

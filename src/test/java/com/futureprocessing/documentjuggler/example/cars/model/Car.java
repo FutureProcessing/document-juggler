@@ -118,4 +118,12 @@ public interface Car {
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @LessThanEqual
     Car withSideNumberLessThanEqual(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @In
+    Car withSideNumberIn(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @In
+    Car withOwnersIn(List i);
 }

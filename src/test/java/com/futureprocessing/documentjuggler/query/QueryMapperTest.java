@@ -4,6 +4,7 @@ import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.query.command.*;
 import org.junit.Test;
@@ -78,6 +79,10 @@ public class QueryMapperTest {
         @DbField("in")
         @In
         Model in(Object value);
+
+        @DbField("notIn")
+        @NotIn
+        Model notIn(Object value);
     }
 
     @Test
@@ -169,6 +174,19 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(InQueryCommand.class);
+    }
+
+    @Test
+    public void shouldReturnNotInQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("notIn", Object.class);
+
+        // when
+        QueryMapper mapper = QueryMapper.map(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(NotInQueryCommand.class);
     }
 
     @Test

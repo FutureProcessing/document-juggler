@@ -119,6 +119,10 @@ public interface Car {
     @LessThanEqual
     Car withSideNumberLessThanEqual(int i);
 
+    @DbField(CarsDBModel.Car.OWNERS)
+    @Exists
+    Car withOwnersExists(boolean i);
+
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @In
     Car withSideNumberIn(Object i);

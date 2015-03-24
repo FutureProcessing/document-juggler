@@ -71,6 +71,10 @@ public class QueryMapperTest {
         @LessThanEqual
         Model lessEqual(int value);
 
+        @DbField("exists")
+        @Exists
+        Model exists(boolean value);
+
         @DbField("in")
         @In
         Model in(Object value);
@@ -168,6 +172,19 @@ public class QueryMapperTest {
     }
 
     @Test
+    public void shouldReturnExistsQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("exists", boolean.class);
+
+        // when
+        QueryMapper mapper = new QueryMapper(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ExistsQueryCommand.class);
+    }
+
+    @Test
     public void shouldReturnForbiddenQueryCommandForIllegalMethod() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("getFieldA");
@@ -192,6 +209,4 @@ public class QueryMapperTest {
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
     }
-
-
 }

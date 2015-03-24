@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
 @ReadContext(
-        command = IdReadCommand.class
+        commandProvider = IdReadCommand.Provider.class
 )
 @QueryContext(
         command = IdQueryCommand.class

@@ -2,16 +2,14 @@ package com.futureprocessing.documentjuggler.read;
 
 
 import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
-import com.futureprocessing.documentjuggler.annotation.AsObjectId;
-import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.documentjuggler.annotation.internal.ReadContext;
+import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.read.command.*;
+import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
+import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Set;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
@@ -35,19 +33,20 @@ public final class ReadMapper extends Mapper<ReadCommand> {
             return new ForbiddenReadCommand(method);
         }
 
-        AnnotationReader annotationReader = from(method);
+        ReadContext readContext = from(method).read(ReadContext.class);
+        if (readContext != null) {
+            Class<? extends CommandProvider<ReadCommand>> commandClass = readContext.commandProvider();
 
-        String field = FieldNameExtractor.getFieldName(method);
-
-        if (annotationReader.isPresent(DbEmbeddedDocument.class)) {
-            return new EmbeddedReadCommandProvider().getCommand(method, this);
-        }
-
-        if (annotationReader.isPresent(AsObjectId.class)) {
-            return new IdReadCommand(field);
+            try {
+                CommandProvider<ReadCommand> commandProvider = commandClass.newInstance();
+                return commandProvider.getCommand(method, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return getDefaultCommand(method);
+
     }
 
     private boolean hasCorrectParameters(Method method) {

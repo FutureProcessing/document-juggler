@@ -19,17 +19,12 @@ public final class ReadMapper extends Mapper<ReadCommand> {
     }
 
     private ReadMapper(Class clazz) {
-        super(READ, new DefaultReadCommandProvider());
+        super(READ, new DefaultReadCommandProvider(), new ForbiddenReadCommand.Provider());
     }
 
     @Override
-    protected ReadCommand getForbidden(Method method) {
-        if (ForbiddenChecker.isForbidden(method, READ) || !hasCorrectParameters(method)) {
-            return new ForbiddenReadCommand(method);
-        }
-
-        return null;
-
+    protected boolean isForbidden(Method method) {
+        return ForbiddenChecker.isForbidden(method, READ) || !hasCorrectParameters(method);
     }
 
     private boolean hasCorrectParameters(Method method) {

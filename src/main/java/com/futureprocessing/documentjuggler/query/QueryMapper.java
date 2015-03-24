@@ -1,16 +1,15 @@
 package com.futureprocessing.documentjuggler.query;
 
 
-import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.query.command.*;
+import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.command.providers.DefaultQueryCommandProvider;
 
 import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
-import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 
 public class QueryMapper extends Mapper<QueryCommand> {
 
@@ -21,17 +20,12 @@ public class QueryMapper extends Mapper<QueryCommand> {
     }
 
     private QueryMapper(Class clazz) {
-        super(QUERY, new DefaultQueryCommandProvider());
+        super(QUERY, new DefaultQueryCommandProvider(), new ForbiddenQueryCommand.Provider());
     }
 
     @Override
-    protected QueryCommand getForbidden(Method method) {
-
-        if (ForbiddenChecker.isForbidden(method, QUERY) || !hasCorrectReturnType(method) || !hasCorrectParameters(method)) {
-            return new ForbiddenQueryCommand(method);
-        }
-
-        return null;
+    protected boolean isForbidden(Method method) {
+        return ForbiddenChecker.isForbidden(method, QUERY) || !hasCorrectReturnType(method) || !hasCorrectParameters(method);
     }
 
     private boolean hasCorrectReturnType(Method method) {

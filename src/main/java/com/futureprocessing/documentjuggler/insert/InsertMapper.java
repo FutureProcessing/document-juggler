@@ -3,7 +3,8 @@ package com.futureprocessing.documentjuggler.insert;
 
 import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.insert.command.*;
+import com.futureprocessing.documentjuggler.insert.command.ForbiddenInsertCommand;
+import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
 
 import java.lang.reflect.Method;
 
@@ -19,17 +20,12 @@ public final class InsertMapper extends Mapper<InsertCommand> {
 
 
     private InsertMapper(Class clazz) {
-        super(INSERT, new DefaultInsertCommandProvider());
+        super(INSERT, new DefaultInsertCommandProvider(), new ForbiddenInsertCommand.Provider());
     }
 
     @Override
-    protected InsertCommand getForbidden(Method method) {
-
-        if (ForbiddenChecker.isForbidden(method, INSERT) || !hasParameters(method)) {
-            return new ForbiddenInsertCommand(method);
-        }
-
-        return null;
+    protected boolean isForbidden(Method method) {
+        return ForbiddenChecker.isForbidden(method, INSERT) || !hasParameters(method);
     }
 
     private boolean hasParameters(Method method) {

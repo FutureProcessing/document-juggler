@@ -49,6 +49,10 @@ public class QueryMapper extends Mapper<QueryCommand> {
             return new LessThanEqualQueryCommand(field);
         }
 
+        if (reader.isPresent(Exists.class)) {
+            return new ExistsQueryCommand(field);
+        }
+
         return new BasicQueryCommand(field);
     }
 

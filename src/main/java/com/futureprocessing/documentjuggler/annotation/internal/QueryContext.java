@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.annotation.internal;
 
 
+import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 
 import java.lang.annotation.Retention;
@@ -13,5 +14,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ANNOTATION_TYPE)
 public @interface QueryContext {
 
-    Class<? extends QueryCommand> command();
+    Class<? extends CommandProvider<QueryCommand>> commandProvider();
 }

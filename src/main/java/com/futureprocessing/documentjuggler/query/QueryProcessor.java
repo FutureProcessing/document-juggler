@@ -11,7 +11,7 @@ public class QueryProcessor<MODEL> {
 
     public QueryProcessor(Class<MODEL> modelClass) {
         this.modelClass = modelClass;
-        this.mapper = new QueryMapper(modelClass);
+        this.mapper = QueryMapper.map(modelClass);
     }
 
     public DBObject process(QueryConsumer<MODEL> consumer) {

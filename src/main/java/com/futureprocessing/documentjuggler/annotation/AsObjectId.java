@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
         commandProvider = IdReadCommand.Provider.class
 )
 @QueryContext(
-        command = IdQueryCommand.class
+        commandProvider = IdQueryCommand.Provider.class
 )
 @InsertContext(
         commandProvider = IdInsertCommand.Provider.class

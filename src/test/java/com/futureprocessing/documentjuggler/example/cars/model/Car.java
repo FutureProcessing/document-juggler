@@ -122,4 +122,12 @@ public interface Car {
     @DbField(CarsDBModel.Car.OWNERS)
     @Exists
     Car withOwnersExists(boolean i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @In
+    Car withSideNumberIn(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @In
+    Car withOwnersIn(List i);
 }

@@ -9,6 +9,8 @@ import com.futureprocessing.documentjuggler.query.command.*;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Objects;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +70,14 @@ public class QueryMapperTest {
         @DbField("lessEqual")
         @LessThanEqual
         Model lessEqual(int value);
+
+        @DbField("exists")
+        @Exists
+        Model exists(boolean value);
+
+        @DbField("in")
+        @In
+        Model in(Object value);
     }
 
     @Test
@@ -149,6 +159,32 @@ public class QueryMapperTest {
     }
 
     @Test
+    public void shouldReturnInQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("in", Object.class);
+
+        // when
+        QueryMapper mapper = new QueryMapper(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(InQueryCommand.class);
+    }
+
+    @Test
+    public void shouldReturnExistsQueryCommand() throws NoSuchMethodException {
+        // given
+        Method method = Model.class.getMethod("exists", boolean.class);
+
+        // when
+        QueryMapper mapper = new QueryMapper(Model.class);
+
+        // then
+        QueryCommand command = mapper.get(method);
+        assertThat(command).isInstanceOf(ExistsQueryCommand.class);
+    }
+
+    @Test
     public void shouldReturnForbiddenQueryCommandForIllegalMethod() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("getFieldA");
@@ -173,6 +209,4 @@ public class QueryMapperTest {
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
     }
-
-
 }

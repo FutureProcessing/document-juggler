@@ -3,12 +3,14 @@ package com.futureprocessing.documentjuggler.commons;
 
 import com.futureprocessing.documentjuggler.Context;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.Validator.validateField;
 import static com.futureprocessing.documentjuggler.commons.Validator.validateInterface;
 
@@ -49,21 +51,42 @@ public abstract class Mapper<COMMAND_TYPE> {
 
     private COMMAND_TYPE getCommand(Method method) {
 
-        if(isForbidden(method)) {
+        if (isForbidden(method)) {
             return forbiddenCommandProvider.getCommand(method, this);
         }
 
-        COMMAND_TYPE command = ContextCommandsMapper.getCommand(method, this, context.getContextAnnotationClass());
-        if (command != null){
+        COMMAND_TYPE command = getAnnotationBasedCommand(method);
+        if (command != null) {
             return command;
         }
 
         return getDefaultCommand(method);
     }
 
+    @SuppressWarnings("unchecked")
+    public COMMAND_TYPE getAnnotationBasedCommand(Method method) {
+
+        Class contextClass = context.getContextAnnotationClass();
+        Annotation readContext = from(method).read(contextClass);
+        if (readContext != null) {
+
+            try {
+                Method commandProviderMethod = contextClass.getMethod("value");
+                Class<? extends CommandProvider<COMMAND_TYPE>> commandClass = (Class<? extends CommandProvider<COMMAND_TYPE>>) commandProviderMethod.invoke(readContext);
+
+                CommandProvider<COMMAND_TYPE> commandProvider = commandClass.newInstance();
+                return commandProvider.getCommand(method, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return null;
+    }
+
     protected abstract boolean isForbidden(Method method);
 
-    protected COMMAND_TYPE getDefaultCommand(Method method){
+    private COMMAND_TYPE getDefaultCommand(Method method) {
         return defaultCommandProvider.getCommand(method, this);
     }
 

@@ -17,7 +17,7 @@ public class EmbeddedUpdateCommandTest {
     private static final String EMBEDDED_FIELD = "eField";
     private static final String VALUE = "SomeValue";
 
-    private UpdateMapper mapper = new UpdateMapper(Update.class);
+    private UpdateMapper mapper = UpdateMapper.map(Update.class);
     private UpdateCommand command = new EmbeddedUpdateCommand(FIELD, Update.class, mapper);
 
     @Test

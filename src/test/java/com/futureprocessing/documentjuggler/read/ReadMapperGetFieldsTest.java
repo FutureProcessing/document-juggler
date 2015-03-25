@@ -147,4 +147,29 @@ public class ReadMapperGetFieldsTest {
         assertThat(fieldNames).containsOnly("fieldA", "firstLevel.fieldB", "firstLevel.mostEmbedded.fieldC");
     }
 
+    private interface ModelWithTwoSameEmbeddedDocuments {
+        @DbField("fieldA")
+        String getFieldA();
+
+        @DbEmbeddedDocument
+        @DbField("firstEmbedded")
+        EmbeddedModel getEmbeddedModelA();
+
+        @DbEmbeddedDocument
+        @DbField("secondEmbedded")
+        EmbeddedModel getEmbeddedModelB();
+    }
+
+    @Test
+    public void shouldReturnAllReadFieldsFromAllEmbeddedDocuments() {
+        //given
+        ReadMapper mapper = ReadMapper.map(ModelWithTwoSameEmbeddedDocuments.class);
+
+        //when
+        Set<String> fieldNames = mapper.getSupportedFields();
+
+        //then
+        assertThat(fieldNames).containsOnly("fieldA", "firstEmbedded.fieldC", "firstEmbedded.fieldD",
+                "secondEmbedded.fieldC", "secondEmbedded.fieldD");
+    }
 }

@@ -13,7 +13,6 @@ import static com.futureprocessing.documentjuggler.commons.Validator.validateFie
 import static com.futureprocessing.documentjuggler.commons.Validator.validateInterface;
 
 public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYPE> {
-    private final Set<Class> mappedClasses = new HashSet<>();
     private final Map<Method, COMMAND_TYPE> mappings = new HashMap<>();
     private final Context context;
     private final CommandProvider<COMMAND_TYPE> defaultCommandProvider;
@@ -40,15 +39,11 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
 
     @Override
     public void createMapping(Class<?> clazz) {
-        if (!mappedClasses.contains(clazz)) {
-            validateInterface(clazz);
+        validateInterface(clazz);
 
-            for (Method method : clazz.getMethods()) {
-                validateField(method);
-                mappings.put(method, getCommand(method));
-            }
-
-            mappedClasses.add(clazz);
+        for (Method method : clazz.getMethods()) {
+            validateField(method);
+            mappings.put(method, getCommand(method));
         }
     }
 
@@ -83,7 +78,7 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         List<String> fieldHierarchy = new ArrayList<>(embeddedFields);
         fieldHierarchy.add(fieldName);
 
-        fieldName  = fieldHierarchy.stream().collect(Collectors.joining("."));
+        fieldName = fieldHierarchy.stream().collect(Collectors.joining("."));
 
         supportedFields.add(fieldName);
     }

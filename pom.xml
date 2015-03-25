@@ -7,7 +7,45 @@
 
     <artifactId>document-juggler</artifactId>
     <groupId>com.future-processing.document-juggler</groupId>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
+
+    <name>Document Juggler</name>
+    <description>Fluent Java API for accesing MongoDB using Java 8 lambdas</description>
+    <url>https://github.com/FutureProcessing/document-juggler</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://raw.githubusercontent.com/FutureProcessing/document-juggler/master/LICENCE.md</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Bartosz Niziołek</name>
+            <email>exys666@gmail.com</email>
+            <organization>Future Processing Sp. z o.o.</organization>
+            <organizationUrl>http://www.future-processing.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Szymon Sobocik</name>
+            <email>szymonsobocik@gmail.com</email>
+            <organization>Future Processing Sp. z o.o.</organization>
+            <organizationUrl>http://www.future-processing.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Paweł Ćmiel</name>
+            <email>pcmiel@future-processing.com</email>
+            <organization>Future Processing Sp. z o.o.</organization>
+            <organizationUrl>http://www.future-processing.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:FutureProcessing/document-juggler.git</connection>
+        <developerConnection>scm:git:git@github.com:FutureProcessing/document-juggler.git</developerConnection>
+        <url>git@github.com:FutureProcessing/document-juggler.git</url>
+    </scm>
 
     <properties>
         <java.version>1.8</java.version>

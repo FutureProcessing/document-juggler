@@ -12,16 +12,32 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.extractProperty;
 
-public class InIntegrationTest extends BaseIntegrationTest {
+public class InAndNotInIntegrationTest extends BaseIntegrationTest {
 
     private static final String OWNER1 = "Kowalsky";
     private static final String OWNER2 = "O'Connel";
     private static final String OWNER3 = "Smith";
     private static CarsRepository repo;
+    private static List owners;
+    private static List<String> ownersCar1;
+    private static List<String> ownersCar3;
 
     @BeforeClass
     public static void init() {
         repo = new CarsRepository(db());
+
+        owners = new ArrayList<>();
+        ownersCar1 = new ArrayList<>();
+        ownersCar3 = new ArrayList<>();
+
+        ownersCar1.add(OWNER1);
+        ownersCar1.add(OWNER2);
+
+        ownersCar3.add(OWNER3);
+        ownersCar3.add(OWNER2);
+
+        owners.add(ownersCar1);
+        owners.add(ownersCar3);
     }
 
     @Before
@@ -46,23 +62,35 @@ public class InIntegrationTest extends BaseIntegrationTest {
     @Test
     public void shouldFindInList() {
         // given
-        List owners = new ArrayList<>();
-        List<String> ownersCar1 = new ArrayList<>();
-        List<String> ownersCar3 = new ArrayList<>();
-
-        ownersCar1.add(OWNER1);
-        ownersCar1.add(OWNER2);
-
-        ownersCar3.add(OWNER3);
-        ownersCar3.add(OWNER2);
-
-        owners.add(ownersCar1);
-        owners.add(ownersCar3);
 
         // when
         List<Car> cars = repo.find(car -> car.withOwnersIn(owners)).all();
 
         // then
         assertThat(extractProperty("owners").from(cars)).contains(ownersCar1, ownersCar3);
+    }
+
+    @Test
+    public void shouldFindIfNotInArray() {
+        // given
+        int[] sideNumbers = new int[]{2, 3};
+
+        // when
+        List<Car> cars = repo.find(car -> car.withSideNumberNotIn(sideNumbers)).all();
+
+        // then
+        assertThat(extractProperty("sideNumber").from(cars)).containsOnly(1);
+    }
+
+    @Test
+    public void shouldFindIfNotInList() {
+        // given
+
+        // when
+        List<Car> cars = repo.find(car -> car.withOwnersNotIn(owners)).all();
+
+        // then
+        assertThat(extractProperty("owners").from(cars)).doesNotContain(ownersCar1, ownersCar3);
+        assertThat(cars.size()).isEqualTo(1);
     }
 }

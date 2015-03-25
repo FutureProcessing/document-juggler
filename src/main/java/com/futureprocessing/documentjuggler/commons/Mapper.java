@@ -5,10 +5,7 @@ import com.futureprocessing.documentjuggler.Context;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.Validator.validateField;
@@ -55,16 +52,16 @@ public abstract class Mapper<COMMAND_TYPE> {
             return forbiddenCommandProvider.getCommand(method, this);
         }
 
-        COMMAND_TYPE command = getAnnotationBasedCommand(method);
-        if (command != null) {
-            return command;
+        Optional<COMMAND_TYPE> command = getAnnotationBasedCommand(method);
+        if (command.isPresent()) {
+            return command.get();
         }
 
         return getDefaultCommand(method);
     }
 
     @SuppressWarnings("unchecked")
-    public COMMAND_TYPE getAnnotationBasedCommand(Method method) {
+    private Optional<COMMAND_TYPE> getAnnotationBasedCommand(Method method) {
 
         Class contextClass = context.getContextAnnotationClass();
         Annotation readContext = from(method).read(contextClass);
@@ -75,13 +72,13 @@ public abstract class Mapper<COMMAND_TYPE> {
                 Class<? extends CommandProvider<COMMAND_TYPE>> commandClass = (Class<? extends CommandProvider<COMMAND_TYPE>>) commandProviderMethod.invoke(readContext);
 
                 CommandProvider<COMMAND_TYPE> commandProvider = commandClass.newInstance();
-                return commandProvider.getCommand(method, this);
+                return Optional.of(commandProvider.getCommand(method, this));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     protected abstract boolean isForbidden(Method method);

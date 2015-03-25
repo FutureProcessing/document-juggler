@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.read.command;
 
 import com.futureprocessing.documentjuggler.example.cars.model.Luggage;
 import com.futureprocessing.documentjuggler.exception.FieldNotLoadedException;
-import com.futureprocessing.documentjuggler.read.ReaderMapper;
+import com.futureprocessing.documentjuggler.read.ReadMapper;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class EmbeddedSetReadCommandTest {
 
     private static final String FIELD = "testField";
     private static final Class<?> EMBEDDED_TYPE = Luggage.class;
-    private static final ReaderMapper mapper = new ReaderMapper(EMBEDDED_TYPE);
+    private static final ReadMapper mapper = ReadMapper.map(EMBEDDED_TYPE);
 
     private ReadCommand command = new EmbeddedSetReadCommand(FIELD, EMBEDDED_TYPE, mapper);
 

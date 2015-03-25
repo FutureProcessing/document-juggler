@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.update.command;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.update.RootUpdateBuilder;
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
-import com.futureprocessing.documentjuggler.update.UpdaterMapper;
+import com.futureprocessing.documentjuggler.update.UpdateMapper;
 import com.mongodb.BasicDBObject;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class EmbeddedUpdateCommandTest {
     private static final String EMBEDDED_FIELD = "eField";
     private static final String VALUE = "SomeValue";
 
-    private UpdaterMapper mapper = new UpdaterMapper(Update.class);
+    private UpdateMapper mapper = UpdateMapper.map(Update.class);
     private UpdateCommand command = new EmbeddedUpdateCommand(FIELD, Update.class, mapper);
 
     @Test

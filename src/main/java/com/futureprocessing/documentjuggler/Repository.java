@@ -1,55 +1,63 @@
 package com.futureprocessing.documentjuggler;
 
 
-import com.futureprocessing.documentjuggler.insert.InsertProxy;
-import com.futureprocessing.documentjuggler.insert.InserterConsumer;
-import com.futureprocessing.documentjuggler.insert.InserterMapper;
+import com.futureprocessing.documentjuggler.commons.CollectionExtractor;
+import com.futureprocessing.documentjuggler.insert.InsertConsumer;
+import com.futureprocessing.documentjuggler.insert.InsertProcessor;
 import com.futureprocessing.documentjuggler.query.QueriedDocuments;
-import com.futureprocessing.documentjuggler.query.QuerierConsumer;
-import com.futureprocessing.documentjuggler.query.QuerierMapper;
-import com.futureprocessing.documentjuggler.query.QueryProxy;
-import com.futureprocessing.documentjuggler.read.ReaderMapper;
-import com.futureprocessing.documentjuggler.update.UpdaterMapper;
+import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
+import com.futureprocessing.documentjuggler.query.QueryConsumer;
+import com.futureprocessing.documentjuggler.query.QueryProcessor;
+import com.futureprocessing.documentjuggler.query.expression.QueryExpression;
+import com.futureprocessing.documentjuggler.read.ReadProcessor;
+import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import org.bson.types.ObjectId;
 
 public class Repository<MODEL> {
 
-    private final Operator<MODEL, InserterMapper> inserterOperator;
-    private final Operator<MODEL, QuerierMapper> querierOperator;
-    private final Operator<MODEL, ReaderMapper> readerOperator;
-    private final Operator<MODEL, UpdaterMapper> updaterOperator;
-
     private final DBCollection dbCollection;
+
+    private ReadProcessor<MODEL> readProcessor;
+    private QueryProcessor<MODEL> queryProcessor;
+    private InsertProcessor<MODEL> insertProcessor;
+    private UpdateProcessor<MODEL> updateProcessor;
+
+    public Repository(DB db, Class<MODEL> modelClass) {
+        this(CollectionExtractor.getDBCollection(db, modelClass), modelClass);
+    }
 
     public Repository(DBCollection dbCollection, Class<MODEL> modelClass) {
         this.dbCollection = dbCollection;
 
-        this.inserterOperator = new Operator<>(modelClass, new InserterMapper(modelClass));
-        this.querierOperator = new Operator<>(modelClass, new QuerierMapper(modelClass));
-        this.readerOperator = new Operator<>(modelClass, new ReaderMapper(modelClass));
-        this.updaterOperator = new Operator<>(modelClass, new UpdaterMapper(modelClass));
+        this.readProcessor = new ReadProcessor<>(modelClass, dbCollection);
+        this.queryProcessor = new QueryProcessor<>(modelClass);
+        this.insertProcessor = new InsertProcessor<>(modelClass);
+        this.updateProcessor = new UpdateProcessor<>(modelClass);
     }
 
-    public QueriedDocuments<MODEL> find(QuerierConsumer<MODEL> querierConsumer) {
-        MODEL querier = QueryProxy.create(querierOperator.getRootClass(), querierOperator.getMapper().get());
-        querierConsumer.accept(querier);
+    public QueriedDocuments<MODEL> find(QueryConsumer<MODEL> consumer) {
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(consumer), readProcessor, updateProcessor);
+    }
 
-        return new QueriedDocuments<>(readerOperator, updaterOperator, dbCollection,
-                QueryProxy.extract(querier).toDBObject());
+    public QueriedDocuments<MODEL> find(QueryExpression<MODEL> expression) {
+        return new QueriedDocumentsImpl<>(dbCollection, queryProcessor.process(expression), readProcessor, updateProcessor);
     }
 
     public QueriedDocuments<MODEL> find() {
-        return new QueriedDocuments<>(readerOperator, updaterOperator, dbCollection, null);
+        return find((QueryConsumer<MODEL>) null);
     }
 
-    public String insert(InserterConsumer<MODEL> consumer) {
-        MODEL inserter = InsertProxy.create(inserterOperator.getRootClass(), inserterOperator.getMapper().get());
-        consumer.accept(inserter);
+    public String insert(InsertConsumer<MODEL> consumer) {
+        BasicDBObject document = insertProcessor.process(consumer);
 
-        BasicDBObject document = InsertProxy.extract(inserter).getDocument();
+
         dbCollection.insert(document);
-        return document.getObjectId("_id").toHexString();
+        if (document.get("_id") instanceof ObjectId) {
+            return document.getObjectId("_id").toHexString();
+        }
+        return document.get("_id").toString();
     }
-
 }

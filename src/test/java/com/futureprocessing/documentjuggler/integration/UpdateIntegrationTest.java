@@ -19,7 +19,7 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
     @BeforeClass
     public static void init() throws Exception {
         repo = new CarsRepository(db());
-        collection = client().getDB(DB_NAME).getCollection(CarsDBModel.Car.COLLECTION);
+        collection = db().getCollection(CarsDBModel.Car.COLLECTION);
     }
 
     @Test
@@ -66,5 +66,39 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
         assertThat(document.get(BRAND)).isEqualTo(brand);
         assertThat(document.containsField(MODEL)).isTrue();
         assertThat(document.get(MODEL)).isEqualTo(model);
+    }
+
+    @Test
+    public void shouldUpdateMultipleValue() {
+        //given
+        String brand = "Honda";
+        String modelHRV = "HR-V";
+
+        String modelAccord = "Accord";
+
+        String idHRV = repo.insert(car -> car
+                .withBrand(brand)
+                .withModel(modelHRV));
+
+        String idAccord = repo.insert(car -> car
+                .withBrand(brand)
+                .withModel(modelAccord));
+
+        //when
+        repo.find(car -> car.withBrand(brand))
+                .update(car -> car.withBrand(brand))
+                .ensureUpdated(2);
+
+        //then
+        BasicDBObject documentHRV = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(idHRV)));
+        BasicDBObject documentAccord = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(idAccord)));
+
+        assertThat(documentHRV.get(BRAND)).isEqualTo(brand);
+        assertThat(documentHRV.containsField(MODEL)).isTrue();
+        assertThat(documentHRV.get(MODEL)).isEqualTo(modelHRV);
+
+        assertThat(documentAccord.get(BRAND)).isEqualTo(brand);
+        assertThat(documentAccord.containsField(MODEL)).isTrue();
+        assertThat(documentAccord.get(MODEL)).isEqualTo(modelAccord);
     }
 }

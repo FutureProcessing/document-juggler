@@ -37,7 +37,7 @@ public class UpdateTest {
     @Before
     public void before() {
         given(db.getCollection(any())).willReturn(collection);
-        given(collection.update(any(), any())).willReturn(writeResult);
+        given(collection.update(any(), any(), eq(false), eq(true))).willReturn(writeResult);
         given(writeResult.getN()).willReturn(1);
 
         carsRepository = new CarsRepository(db);

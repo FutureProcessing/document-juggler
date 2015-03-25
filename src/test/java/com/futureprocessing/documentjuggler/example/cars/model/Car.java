@@ -1,6 +1,8 @@
 package com.futureprocessing.documentjuggler.example.cars.model;
 
 import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.internal.NotEquals;
+import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 
 import java.util.Date;
@@ -8,12 +10,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
+@CollectionName(CarsDBModel.Car.COLLECTION)
 public interface Car {
-    @Id
+    @AsObjectId
+    @DbField(CarsDBModel.Car.ID)
     Car withId(String id);
 
+    @AsObjectId
     @DbField(CarsDBModel.Car.ID)
-        //todo return ObjectId, use @Id for id as String
     String getId();
 
     @DbField(CarsDBModel.Car.BRAND)
@@ -79,7 +83,7 @@ public interface Car {
     Car withOwners(List<String> owners);
 
     @DbField(CarsDBModel.Car.OWNERS)
-    Car withOwners(String...owners);
+    Car withOwners(String... owners);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     @AddToSet
@@ -101,4 +105,47 @@ public interface Car {
     @DbEmbeddedDocument()
     Car withRoofLuggage(Consumer<Luggage>... consumers);
 
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @GreaterThan
+    Car withSideNumberGreaterThan(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @GreaterThanEqual
+    Car withSideNumberGreaterThanEqual(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @LessThan
+    Car withSideNumberLessThan(int i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @LessThanEqual
+    Car withSideNumberLessThanEqual(int i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @Exists
+    Car withOwnersExists(boolean i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @In
+    Car withSideNumberIn(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @In
+    Car withOwnersIn(List i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @NotIn
+    Car withSideNumberNotIn(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @NotIn
+    Car withOwnersNotIn(List i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @NotEquals
+    Car withSideNumberNotEquals(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @NotEquals
+    Car withOwnersNotEquals(List i);
 }

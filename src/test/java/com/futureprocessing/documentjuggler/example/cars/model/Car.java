@@ -1,6 +1,8 @@
 package com.futureprocessing.documentjuggler.example.cars.model;
 
 import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.internal.NotEquals;
+import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 
 import java.util.Date;
@@ -130,4 +132,20 @@ public interface Car {
     @DbField(CarsDBModel.Car.OWNERS)
     @In
     Car withOwnersIn(List i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @NotIn
+    Car withSideNumberNotIn(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @NotIn
+    Car withOwnersNotIn(List i);
+
+    @DbField(CarsDBModel.Car.SIDE_NUMBER)
+    @NotEquals
+    Car withSideNumberNotEquals(Object i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    @NotEquals
+    Car withOwnersNotEquals(List i);
 }

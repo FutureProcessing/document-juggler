@@ -14,8 +14,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Forbidden({READ, INSERT, UPDATE})
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-@QueryCommandProvider(
-        value = GreaterThanQueryCommand.Provider.class
-)
+@QueryCommandProvider(GreaterThanQueryCommand.Provider.class)
 public @interface GreaterThan {
 }

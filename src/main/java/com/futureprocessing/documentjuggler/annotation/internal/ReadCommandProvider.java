@@ -2,7 +2,7 @@ package com.futureprocessing.documentjuggler.annotation.internal;
 
 
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
-import com.futureprocessing.documentjuggler.query.command.QueryCommand;
+import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(ANNOTATION_TYPE)
-public @interface QueryContext {
+public @interface ReadCommandProvider {
 
-    Class<? extends CommandProvider<QueryCommand>> commandProvider();
+    Class<? extends CommandProvider<ReadCommand>> value();
 }

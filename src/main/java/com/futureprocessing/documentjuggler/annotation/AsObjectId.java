@@ -1,8 +1,8 @@
 package com.futureprocessing.documentjuggler.annotation;
 
-import com.futureprocessing.documentjuggler.annotation.internal.InsertContext;
-import com.futureprocessing.documentjuggler.annotation.internal.QueryContext;
-import com.futureprocessing.documentjuggler.annotation.internal.ReadContext;
+import com.futureprocessing.documentjuggler.annotation.internal.InsertCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.ReadCommandProvider;
 import com.futureprocessing.documentjuggler.insert.command.IdInsertCommand;
 import com.futureprocessing.documentjuggler.query.command.IdQueryCommand;
 import com.futureprocessing.documentjuggler.read.command.IdReadCommand;
@@ -17,15 +17,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-@ReadContext(
-        commandProvider = IdReadCommand.Provider.class
-)
-@QueryContext(
-        commandProvider = IdQueryCommand.Provider.class
-)
-@InsertContext(
-        commandProvider = IdInsertCommand.Provider.class
-)
+@ReadCommandProvider(IdReadCommand.Provider.class)
+@QueryCommandProvider(IdQueryCommand.Provider.class)
+@InsertCommandProvider(IdInsertCommand.Provider.class)
 public @interface AsObjectId {
 
 }

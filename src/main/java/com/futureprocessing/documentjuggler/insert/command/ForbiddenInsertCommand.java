@@ -1,6 +1,8 @@
 package com.futureprocessing.documentjuggler.insert.command;
 
 
+import com.futureprocessing.documentjuggler.commons.CommandProvider;
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.mongodb.BasicDBObject;
 
@@ -19,5 +21,12 @@ public class ForbiddenInsertCommand implements InsertCommand {
     @Override
     public void insert(BasicDBObject document, Object[] args) {
         throw new ForbiddenOperationException(method, INSERT);
+    }
+
+    public static class Provider implements CommandProvider<InsertCommand> {
+        @Override
+        public InsertCommand getCommand(Method method, Mapper<InsertCommand> mapper) {
+            return new ForbiddenInsertCommand(method);
+        }
     }
 }

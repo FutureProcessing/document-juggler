@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.annotation;
 
-import com.futureprocessing.documentjuggler.annotation.internal.QueryContext;
+import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
 import com.futureprocessing.documentjuggler.query.command.LessThanEqualQueryCommand;
 
 import java.lang.annotation.Retention;
@@ -14,8 +14,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Forbidden({READ, INSERT, UPDATE})
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-@QueryContext(
-        commandProvider = LessThanEqualQueryCommand.Provider.class
-)
+@QueryCommandProvider(LessThanEqualQueryCommand.Provider.class)
 public @interface LessThanEqual {
 }

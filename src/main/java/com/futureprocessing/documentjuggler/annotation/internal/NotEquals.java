@@ -14,8 +14,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Forbidden({READ, INSERT, UPDATE})
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-@QueryContext(
-        commandProvider = NotEqualsQueryCommand.Provider.class
-)
+@QueryCommandProvider( NotEqualsQueryCommand.Provider.class)
 public @interface NotEquals {
 }

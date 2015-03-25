@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.annotation;
 
-import com.futureprocessing.documentjuggler.annotation.internal.UpdateContext;
+import com.futureprocessing.documentjuggler.annotation.internal.UpdateCommandProvider;
 import com.futureprocessing.documentjuggler.update.command.providers.PushCommandProvider;
 
 import java.lang.annotation.Retention;
@@ -16,8 +16,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
 @Forbidden({READ, INSERT, QUERY})
-@UpdateContext(
-        commandProvider = PushCommandProvider.class
-)
+@UpdateCommandProvider(PushCommandProvider.class)
 public @interface Push {
 }

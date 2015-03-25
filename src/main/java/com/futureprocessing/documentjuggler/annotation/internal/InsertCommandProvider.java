@@ -2,7 +2,7 @@ package com.futureprocessing.documentjuggler.annotation.internal;
 
 
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
-import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
+import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(ANNOTATION_TYPE)
-public @interface UpdateContext {
+public @interface InsertCommandProvider {
 
-    Class<? extends CommandProvider<UpdateCommand>> commandProvider();
+    Class<? extends CommandProvider<InsertCommand>> value();
 }

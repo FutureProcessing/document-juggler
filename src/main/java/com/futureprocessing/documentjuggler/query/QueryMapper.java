@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.query;
 
 
-import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
@@ -25,7 +24,7 @@ public class QueryMapper extends Mapper<QueryCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return ForbiddenChecker.isForbidden(method, QUERY) || !hasCorrectReturnType(method) || !hasCorrectParameters(method);
+        return !hasCorrectReturnType(method) || !hasCorrectParameters(method);
     }
 
     private boolean hasCorrectReturnType(Method method) {

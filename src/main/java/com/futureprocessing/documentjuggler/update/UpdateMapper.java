@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.update;
 
 
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
-import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
@@ -27,7 +26,7 @@ public class UpdateMapper extends Mapper<UpdateCommand> {
     @Override
     protected boolean isForbidden(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
-        return ForbiddenChecker.isForbidden(method, UPDATE) || !hasCorrectReturnType(method) || field.equals("_id");
+        return !hasCorrectReturnType(method) || field.equals("_id");
     }
 
     private boolean hasCorrectReturnType(Method method) {

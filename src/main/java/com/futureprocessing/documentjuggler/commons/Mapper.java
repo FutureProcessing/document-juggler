@@ -2,6 +2,7 @@ package com.futureprocessing.documentjuggler.commons;
 
 
 import com.futureprocessing.documentjuggler.Context;
+import com.futureprocessing.documentjuggler.annotation.Forbidden;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -48,7 +49,7 @@ public abstract class Mapper<COMMAND_TYPE> {
 
     private COMMAND_TYPE getCommand(Method method) {
 
-        if (isForbidden(method)) {
+        if (ForbiddenChecker.isForbidden(method, context) || isForbidden(method)) {
             return forbiddenCommandProvider.getCommand(method, this);
         }
 

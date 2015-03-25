@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.read;
 
 
-import com.futureprocessing.documentjuggler.commons.ForbiddenChecker;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
 import com.futureprocessing.documentjuggler.read.command.ReadCommand;
@@ -24,7 +23,7 @@ public final class ReadMapper extends Mapper<ReadCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return ForbiddenChecker.isForbidden(method, READ) || !hasCorrectParameters(method);
+        return !hasCorrectParameters(method);
     }
 
     private boolean hasCorrectParameters(Method method) {

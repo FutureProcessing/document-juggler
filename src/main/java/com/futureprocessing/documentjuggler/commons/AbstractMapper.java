@@ -6,6 +6,7 @@ import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
 import static com.futureprocessing.documentjuggler.commons.Validator.validateField;
@@ -18,12 +19,14 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
     private final CommandProvider<COMMAND_TYPE> defaultCommandProvider;
     private final CommandProvider<COMMAND_TYPE> forbiddenCommandProvider;
     private final Set<String> supportedFields;
+    private final List<String> embeddedFields;
 
     protected AbstractMapper(Context context, CommandProvider<COMMAND_TYPE> defaultCommandProvider, CommandProvider<COMMAND_TYPE> forbiddenCommandProvider) {
         this.context = context;
         this.defaultCommandProvider = defaultCommandProvider;
         this.forbiddenCommandProvider = forbiddenCommandProvider;
         this.supportedFields = new HashSet<>();
+        this.embeddedFields = new ArrayList<>();
     }
 
     @Override
@@ -37,34 +40,36 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
 
     @Override
     public void createMapping(Class<?> clazz) {
-        createMapping(Optional.empty(), clazz, this);
-    }
-
-    @Override
-    public void createMapping(Optional<String> field, Class<?> clazz, Mapper<COMMAND_TYPE> mapper) {
         if (!mappedClasses.contains(clazz)) {
             validateInterface(clazz);
 
             for (Method method : clazz.getMethods()) {
                 validateField(method);
-                mappings.put(method, getCommand(method, field, mapper));
+                mappings.put(method, getCommand(method));
             }
 
             mappedClasses.add(clazz);
         }
     }
 
-    private COMMAND_TYPE getCommand(Method method, Optional<String> field, Mapper<COMMAND_TYPE> mapper) {
+    @Override
+    public void createEmbeddedMapping(String field, Class<?> embeddedType) {
+        putEmbeddedField(field);
+        createMapping(embeddedType);
+        popEmbeddedField();
+    }
+
+    private COMMAND_TYPE getCommand(Method method) {
 
         if (ForbiddenChecker.isForbidden(method, context) || isForbidden(method)) {
             return forbiddenCommandProvider.getCommand(method, this);
         }
 
-        if (!from(method).isPresent(DbEmbeddedDocument.class)){
-            addToSupportedFields(method, field);
+        if (!from(method).isPresent(DbEmbeddedDocument.class)) {
+            addToSupportedFields(method);
         }
 
-        Optional<COMMAND_TYPE> command = getAnnotationBasedCommand(method, mapper);
+        Optional<COMMAND_TYPE> command = getAnnotationBasedCommand(method);
         if (command.isPresent()) {
             return command.get();
         }
@@ -72,18 +77,19 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         return getDefaultCommand(method);
     }
 
-    private void addToSupportedFields(Method method, Optional<String> embeddedField) {
+    private void addToSupportedFields(Method method) {
         String fieldName = FieldNameExtractor.getFieldName(method);
 
-        if (embeddedField.isPresent()) {
-            fieldName = embeddedField.get() + "." + fieldName;
-        }
+        List<String> fieldHierarchy = new ArrayList<>(embeddedFields);
+        fieldHierarchy.add(fieldName);
+
+        fieldName  = fieldHierarchy.stream().collect(Collectors.joining("."));
 
         supportedFields.add(fieldName);
     }
 
     @SuppressWarnings("unchecked")
-    private Optional<COMMAND_TYPE> getAnnotationBasedCommand(Method method, Mapper<COMMAND_TYPE> mapper) {
+    private Optional<COMMAND_TYPE> getAnnotationBasedCommand(Method method) {
 
         Class contextClass = context.getContextAnnotationClass();
         Annotation readContext = from(method).read(contextClass);
@@ -94,7 +100,7 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
                 Class<? extends CommandProvider<COMMAND_TYPE>> commandClass = (Class<? extends CommandProvider<COMMAND_TYPE>>) commandProviderMethod.invoke(readContext);
 
                 CommandProvider<COMMAND_TYPE> commandProvider = commandClass.newInstance();
-                return Optional.of(commandProvider.getCommand(method, mapper));
+                return Optional.of(commandProvider.getCommand(method, this));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -113,4 +119,13 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
     public Set<String> getSupportedFields() {
         return supportedFields;
     }
+
+    private void putEmbeddedField(String field) {
+        embeddedFields.add(field);
+    }
+
+    private void popEmbeddedField() {
+        embeddedFields.remove(embeddedFields.size() - 1);
+    }
+
 }

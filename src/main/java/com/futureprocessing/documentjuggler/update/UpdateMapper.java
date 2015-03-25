@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.update;
 
 
+import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
 
-public class UpdateMapper extends Mapper<UpdateCommand> {
+public class UpdateMapper extends AbstractMapper<UpdateCommand> {
 
     public static <MODEL> UpdateMapper map(Class<MODEL> modelClass) {
         UpdateMapper mapper = new UpdateMapper();

@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.read;
 
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
+import com.futureprocessing.documentjuggler.commons.EmbeddedMapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.EmbeddedListReadCommand;
@@ -20,19 +21,21 @@ public class EmbeddedReadCommandProvider implements CommandProvider<ReadCommand>
         String field = FieldNameExtractor.getFieldName(method);
         Class<?> returnType = method.getReturnType();
 
+        EmbeddedMapper<ReadCommand> embeddedMapper = EmbeddedMapper.wrap(field, mapper);
+
         if (returnType.equals(List.class)) {
             Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-            mapper.createMapping(embeddedType);
-            return new EmbeddedListReadCommand(field, embeddedType, mapper);
+            embeddedMapper.createMapping(embeddedType);
+            return new EmbeddedListReadCommand(field, embeddedType, embeddedMapper);
         }
 
         if (returnType.equals(Set.class)) {
             Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-            mapper.createMapping(embeddedType);
-            return new EmbeddedSetReadCommand(field, embeddedType, mapper);
+            embeddedMapper.createMapping(embeddedType);
+            return new EmbeddedSetReadCommand(field, embeddedType, embeddedMapper);
         }
 
-        mapper.createMapping(returnType);
-        return new EmbeddedReadCommand(field, method.getReturnType(), mapper);
+        embeddedMapper.createMapping(returnType);
+        return new EmbeddedReadCommand(field, method.getReturnType(), embeddedMapper);
     }
 }

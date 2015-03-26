@@ -1,8 +1,11 @@
 package com.futureprocessing.documentjuggler.integration;
 
 
+import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 import com.futureprocessing.documentjuggler.example.cars.CarsRepository;
 import com.futureprocessing.documentjuggler.example.cars.model.Car;
+import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -114,4 +117,22 @@ public class ReadIntegrationTest extends BaseIntegrationTest {
         //then
         assertThat(first).isNull();
     }
+
+    @Test
+    public void shouldFindDocumentWithDbObjectQuery() {
+        //given
+        final String carId = repo.insert(car -> car.withBrand("BMW").withModel("M3").withOwners("Szymon"));
+
+        //when
+        DBObject query = QueryBuilder.start(CarsDBModel.Car.MODEL).is("M3").get();
+        Car foundCar = repo.find(query).first();
+
+        //then
+        assertThat(foundCar.getId()).isEqualTo(carId);
+        assertThat(foundCar.getBrand()).isEqualTo("BMW");
+        assertThat(foundCar.getModel()).isEqualTo("M3");
+        assertThat(foundCar.getOwners()).containsExactly("Szymon");
+    }
+
+
 }

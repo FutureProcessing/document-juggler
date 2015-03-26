@@ -18,12 +18,12 @@ public class EmbeddedInsertCommandProvider implements CommandProvider<InsertComm
 
         if (method.isVarArgs()) {
             Class<?> type = getEmbeddedListDocumentType(method);
-            mapper.createMapping(type);
+            mapper.createEmbeddedMapping(field, type);
             return new EmbeddedVarArgInsertCommand(field, type, mapper);
         }
 
         Class<?> type = getEmbeddedDocumentType(method);
-        mapper.createMapping(type);
+        mapper.createEmbeddedMapping(field, type);
         return new EmbeddedInsertCommand(field, type, mapper);
     }
 

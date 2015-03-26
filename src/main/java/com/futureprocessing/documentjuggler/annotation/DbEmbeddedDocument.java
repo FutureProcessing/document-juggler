@@ -7,7 +7,7 @@ import com.futureprocessing.documentjuggler.annotation.internal.UpdateCommandPro
 import com.futureprocessing.documentjuggler.insert.EmbeddedInsertCommandProvider;
 import com.futureprocessing.documentjuggler.query.command.EmbeddedQueryCommand;
 import com.futureprocessing.documentjuggler.read.EmbeddedReadCommandProvider;
-import com.futureprocessing.documentjuggler.update.command.providers.EmbeddedUpdateCommandProvider;
+import com.futureprocessing.documentjuggler.update.command.EmbeddedUpdateCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ReadCommandProvider(EmbeddedReadCommandProvider.class)
 @QueryCommandProvider(EmbeddedQueryCommand.Provider.class)
 @InsertCommandProvider(EmbeddedInsertCommandProvider.class)
-@UpdateCommandProvider(EmbeddedUpdateCommandProvider.class)
+@UpdateCommandProvider(EmbeddedUpdateCommand.Provider.class)
 public @interface DbEmbeddedDocument {
 
 }

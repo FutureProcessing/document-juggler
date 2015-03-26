@@ -12,6 +12,7 @@ import com.futureprocessing.documentjuggler.update.UpdateProcessor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 
 import java.util.function.Consumer;
@@ -48,6 +49,10 @@ public class Repository<MODEL> {
 
     public QueriedDocuments<MODEL> find() {
         return find((Consumer<MODEL>) null);
+    }
+
+    public QueriedDocuments<MODEL> find(DBObject query) {
+        return new QueriedDocumentsImpl<>(dbCollection, query, readProcessor, updateProcessor);
     }
 
     public String insert(Consumer<MODEL> consumer) {

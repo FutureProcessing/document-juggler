@@ -3,6 +3,8 @@ package com.futureprocessing.documentjuggler.update;
 
 import com.mongodb.BasicDBObject;
 
+import java.util.function.Consumer;
+
 public class UpdateProcessor<MODEL> {
 
     private final Class<MODEL> modelClass;
@@ -13,7 +15,7 @@ public class UpdateProcessor<MODEL> {
         this.mapper = UpdateMapper.map(modelClass);
     }
 
-    public BasicDBObject process(UpdateConsumer<MODEL> consumer) {
+    public BasicDBObject process(Consumer<MODEL> consumer) {
         MODEL updater = UpdateProxy.create(modelClass, mapper.get(), new RootUpdateBuilder());
         consumer.accept(updater);
 

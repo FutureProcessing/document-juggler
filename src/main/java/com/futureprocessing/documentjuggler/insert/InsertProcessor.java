@@ -3,6 +3,8 @@ package com.futureprocessing.documentjuggler.insert;
 
 import com.mongodb.BasicDBObject;
 
+import java.util.function.Consumer;
+
 public class InsertProcessor<MODEL> {
 
     private final Class<MODEL> modelClass;
@@ -13,7 +15,7 @@ public class InsertProcessor<MODEL> {
         this.mapper = InsertMapper.map(modelClass);
     }
 
-    public BasicDBObject process(InsertConsumer<MODEL> consumer) {
+    public BasicDBObject process(Consumer<MODEL> consumer) {
         MODEL inserter = InsertProxy.create(modelClass, mapper.get());
         consumer.accept(inserter);
 

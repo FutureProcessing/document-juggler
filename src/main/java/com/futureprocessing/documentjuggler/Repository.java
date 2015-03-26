@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler;
 
 
 import com.futureprocessing.documentjuggler.commons.CollectionExtractor;
-import com.futureprocessing.documentjuggler.insert.InsertConsumer;
 import com.futureprocessing.documentjuggler.insert.InsertProcessor;
 import com.futureprocessing.documentjuggler.query.QueriedDocuments;
 import com.futureprocessing.documentjuggler.query.QueriedDocumentsImpl;
@@ -51,7 +50,7 @@ public class Repository<MODEL> {
         return find((Consumer<MODEL>) null);
     }
 
-    public String insert(InsertConsumer<MODEL> consumer) {
+    public String insert(Consumer<MODEL> consumer) {
         BasicDBObject document = insertProcessor.process(consumer);
 
 

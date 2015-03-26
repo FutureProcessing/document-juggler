@@ -3,9 +3,7 @@ package com.futureprocessing.documentjuggler.query.command;
 
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
-import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
 
 import java.lang.reflect.GenericArrayType;
@@ -20,7 +18,7 @@ public class EmbeddedQueryCommand implements QueryCommand {
     private final Method method;
     private final String field;
     private final Mapper<QueryCommand> mapper;
-    private  QueryProcessor processor;
+    private QueryProcessor processor;
     private final Class type;
 
     public EmbeddedQueryCommand(Method method, String field, Mapper<QueryCommand> mapper, Class type) {

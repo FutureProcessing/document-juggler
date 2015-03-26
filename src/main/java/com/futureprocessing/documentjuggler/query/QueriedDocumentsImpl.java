@@ -3,7 +3,10 @@ package com.futureprocessing.documentjuggler.query;
 import com.futureprocessing.documentjuggler.exception.LimitAlreadyPresentException;
 import com.futureprocessing.documentjuggler.exception.SkipAlreadyPresentException;
 import com.futureprocessing.documentjuggler.read.ReadProcessor;
-import com.futureprocessing.documentjuggler.update.*;
+import com.futureprocessing.documentjuggler.update.BaseUpdateResult;
+import com.futureprocessing.documentjuggler.update.RemoveResult;
+import com.futureprocessing.documentjuggler.update.UpdateProcessor;
+import com.futureprocessing.documentjuggler.update.UpdateResult;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -11,6 +14,7 @@ import com.mongodb.WriteResult;
 
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 
 import static java.util.OptionalInt.empty;
 import static java.util.OptionalInt.of;
@@ -62,7 +66,7 @@ public class QueriedDocumentsImpl<MODEL> implements QueriedDocuments<MODEL> {
     }
 
     @Override
-    public UpdateResult update(UpdateConsumer<MODEL> consumer) {
+    public UpdateResult update(Consumer<MODEL> consumer) {
         BasicDBObject document = updateProcessor.process(consumer);
         WriteResult result = collection.update(query, document, false, true);
         return new BaseUpdateResult(result);

@@ -1,23 +1,24 @@
 package com.futureprocessing.documentjuggler.query.expression;
 
-import com.futureprocessing.documentjuggler.query.QueryConsumer;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
 import com.mongodb.DBObject;
+
+import java.util.function.Consumer;
 
 import static com.mongodb.QueryBuilder.start;
 
 
 public final class OrQueryExpression<MODEL> extends QueryExpression<MODEL> {
 
-    protected OrQueryExpression(QueryConsumer<MODEL> consumer1, QueryConsumer<MODEL> consumer2) {
+    protected OrQueryExpression(Consumer<MODEL> consumer1, Consumer<MODEL> consumer2) {
         super(consumer1, consumer2);
     }
 
-    protected OrQueryExpression(QueryConsumer<MODEL> consumer, QueryExpression<MODEL> expression) {
+    protected OrQueryExpression(Consumer<MODEL> consumer, QueryExpression<MODEL> expression) {
         super(consumer, expression);
     }
 
-    protected OrQueryExpression(QueryExpression<MODEL> expression, QueryConsumer<MODEL> consumer) {
+    protected OrQueryExpression(QueryExpression<MODEL> expression, Consumer<MODEL> consumer) {
         super(expression, consumer);
     }
 

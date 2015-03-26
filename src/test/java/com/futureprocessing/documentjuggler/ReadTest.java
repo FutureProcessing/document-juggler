@@ -66,7 +66,6 @@ public class ReadTest {
         assertThat(entity.getBrand()).isEqualTo(brand);
     }
 
-
     @Test
     public void shouldQueryForObjectWithId() {
         // given

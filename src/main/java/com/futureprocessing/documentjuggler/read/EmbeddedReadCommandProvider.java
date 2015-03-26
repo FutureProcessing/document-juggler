@@ -18,21 +18,21 @@ public class EmbeddedReadCommandProvider implements CommandProvider<ReadCommand>
     public ReadCommand getCommand(Method method, Mapper<ReadCommand> mapper) {
 
         String field = FieldNameExtractor.getFieldName(method);
-        Class<?> returnType = method.getReturnType();
+        Class<?> embeddedType = method.getReturnType();
 
-        if (returnType.equals(List.class)) {
-            Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-            mapper.createMapping(embeddedType);
+        if (embeddedType.equals(List.class)) {
+            embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+            mapper.createEmbeddedMapping(field, embeddedType);
             return new EmbeddedListReadCommand(field, embeddedType, mapper);
         }
 
-        if (returnType.equals(Set.class)) {
-            Class embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
-            mapper.createMapping(embeddedType);
+        if (embeddedType.equals(Set.class)) {
+            embeddedType = (Class) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+            mapper.createEmbeddedMapping(field, embeddedType);
             return new EmbeddedSetReadCommand(field, embeddedType, mapper);
         }
 
-        mapper.createMapping(returnType);
+        mapper.createEmbeddedMapping(field, embeddedType);
         return new EmbeddedReadCommand(field, method.getReturnType(), mapper);
     }
 }

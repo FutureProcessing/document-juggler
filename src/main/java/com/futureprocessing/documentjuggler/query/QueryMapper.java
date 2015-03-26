@@ -1,7 +1,7 @@
 package com.futureprocessing.documentjuggler.query;
 
 
-import com.futureprocessing.documentjuggler.commons.Mapper;
+import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.command.providers.DefaultQueryCommandProvider;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
 
-public class QueryMapper extends Mapper<QueryCommand> {
+public class QueryMapper extends AbstractMapper<QueryCommand> {
 
     public static <MODEL> QueryMapper map(Class<MODEL> modelClass) {
         QueryMapper mapper = new QueryMapper();

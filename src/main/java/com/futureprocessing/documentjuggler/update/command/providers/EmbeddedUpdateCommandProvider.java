@@ -16,7 +16,7 @@ public class EmbeddedUpdateCommandProvider implements CommandProvider<UpdateComm
     @Override
     public UpdateCommand getCommand(Method method, Mapper<UpdateCommand> mapper) {
         Class<?> type = method.isVarArgs() ? getEmbeddedListDocumentType(method) : getEmbeddedDocumentType(method);
-        mapper.createMapping(type);
+        mapper.createEmbeddedMapping(getFieldName(method), type);
         return new EmbeddedUpdateCommand(getFieldName(method), type, mapper);
     }
 

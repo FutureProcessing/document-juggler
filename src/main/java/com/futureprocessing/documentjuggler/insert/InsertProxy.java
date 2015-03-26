@@ -1,11 +1,11 @@
 package com.futureprocessing.documentjuggler.insert;
 
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
 import com.mongodb.BasicDBObject;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 import static java.lang.reflect.Proxy.getInvocationHandler;
 import static java.lang.reflect.Proxy.newProxyInstance;
@@ -13,12 +13,12 @@ import static java.lang.reflect.Proxy.newProxyInstance;
 public class InsertProxy implements InvocationHandler {
 
     private final BasicDBObject document;
-    private final Map<Method, InsertCommand> insertCommands;
+    private final Mapper<InsertCommand> mapper;
 
     @SuppressWarnings("unchecked")
-    public static <INSERTER> INSERTER create(Class<INSERTER> inserterClass, Map<Method, InsertCommand> insertCommands) {
+    public static <INSERTER> INSERTER create(Class<INSERTER> inserterClass, Mapper<InsertCommand> mapper) {
         return (INSERTER) newProxyInstance(inserterClass.getClassLoader(), new Class[]{inserterClass},
-                                           new InsertProxy(insertCommands));
+                                           new InsertProxy(mapper));
     }
 
     public static InsertProxy extract(Object updater) {
@@ -26,14 +26,14 @@ public class InsertProxy implements InvocationHandler {
     }
 
 
-    private InsertProxy(Map<Method, InsertCommand> insertCommands) {
+    private InsertProxy(Mapper<InsertCommand> mapper) {
         this.document = new BasicDBObject();
-        this.insertCommands = insertCommands;
+        this.mapper = mapper;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        insertCommands.get(method).insert(document, args);
+        mapper.get(method).insert(document, args);
         return proxy;
     }
 

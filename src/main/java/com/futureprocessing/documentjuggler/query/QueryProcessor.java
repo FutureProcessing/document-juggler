@@ -28,7 +28,7 @@ public class QueryProcessor<MODEL> {
             return null;
         }
 
-        MODEL querier = QueryProxy.create(modelClass, mapper.get());
+        MODEL querier = QueryProxy.create(modelClass, mapper);
         consumer.accept(querier);
 
         return QueryProxy.extract(querier).toDBObject();

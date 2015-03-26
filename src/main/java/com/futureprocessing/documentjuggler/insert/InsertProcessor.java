@@ -16,7 +16,7 @@ public class InsertProcessor<MODEL> {
     }
 
     public BasicDBObject process(Consumer<MODEL> consumer) {
-        MODEL inserter = InsertProxy.create(modelClass, mapper.get());
+        MODEL inserter = InsertProxy.create(modelClass, mapper);
         consumer.accept(inserter);
 
         return InsertProxy.extract(inserter).getDocument();

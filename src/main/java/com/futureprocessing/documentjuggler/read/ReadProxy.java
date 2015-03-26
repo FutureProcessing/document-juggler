@@ -1,5 +1,6 @@
 package com.futureprocessing.documentjuggler.read;
 
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -17,21 +18,21 @@ public class ReadProxy implements InvocationHandler {
 
     private final BasicDBObject dbObject;
     private final Set<String> queriedFields;
-    private final Map<Method, ReadCommand> readCommands;
+    private final Mapper<ReadCommand> mapper;
     private final Map<Method, Object> cache = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static <READER> READER create(Class<READER> readerType, Map<Method, ReadCommand> readCommands,
+    public static <READER> READER create(Class<READER> readerType, Mapper<ReadCommand> mapper,
                                          DBObject dbObject, Set<String> fields) {
         return (READER) newProxyInstance(readerType.getClassLoader(), new Class[]{readerType},
-                                         new ReadProxy(readerType, readCommands, (BasicDBObject) dbObject, fields));
+                new ReadProxy(readerType, mapper, (BasicDBObject) dbObject, fields));
     }
 
-    private ReadProxy(Class readerType, Map<Method, ReadCommand> readCommands, BasicDBObject dbObject,
+    private ReadProxy(Class readerType, Mapper<ReadCommand> mapper, BasicDBObject dbObject,
                       Set<String> queriedFields) {
         this.dbObject = dbObject;
         this.queriedFields = queriedFields;
-        this.readCommands = readCommands;
+        this.mapper = mapper;
 
         if (dbObject == null) {
             throw new RuntimeException("Null dbObject");
@@ -48,7 +49,7 @@ public class ReadProxy implements InvocationHandler {
             return cache.get(method);
         }
 
-        Object value = readCommands.get(method).read(dbObject, queriedFields);
+        Object value = mapper.get(method).read(dbObject, queriedFields);
         cache.put(method, value);
         return value;
     }

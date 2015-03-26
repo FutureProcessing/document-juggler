@@ -1,6 +1,9 @@
 package com.futureprocessing.documentjuggler.read;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 import java.util.*;
 
@@ -57,7 +60,7 @@ public class ReadProcessor<MODEL> {
     }
 
     private MODEL createReadProxy(DBObject dbObject, Set<String> fields) {
-        return ReadProxy.create(modelClass, mapper.get(), dbObject, fields);
+        return ReadProxy.create(modelClass, mapper, dbObject, fields);
     }
 
     private Set<String> toSet(String... fields) {

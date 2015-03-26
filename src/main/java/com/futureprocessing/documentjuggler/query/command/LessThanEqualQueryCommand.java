@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.query.command;
 
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
-import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.mongodb.QueryBuilder;
 

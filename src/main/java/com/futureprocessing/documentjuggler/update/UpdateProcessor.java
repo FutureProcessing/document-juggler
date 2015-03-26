@@ -16,7 +16,7 @@ public class UpdateProcessor<MODEL> {
     }
 
     public BasicDBObject process(Consumer<MODEL> consumer) {
-        MODEL updater = UpdateProxy.create(modelClass, mapper.get(), new RootUpdateBuilder());
+        MODEL updater = UpdateProxy.create(modelClass, mapper, new RootUpdateBuilder());
         consumer.accept(updater);
 
         return UpdateProxy.extract(updater).getUpdateDocument();

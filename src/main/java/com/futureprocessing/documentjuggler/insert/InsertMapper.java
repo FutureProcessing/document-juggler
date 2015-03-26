@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.insert;
 
 
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
-import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.insert.command.ForbiddenInsertCommand;
 import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
 

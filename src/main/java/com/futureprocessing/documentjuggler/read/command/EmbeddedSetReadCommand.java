@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.read.command;
 
 
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.read.ReadMapper;
 import com.futureprocessing.documentjuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -31,7 +30,7 @@ public class EmbeddedSetReadCommand extends AbstractReadCommand {
         List list = (List) document.get(field);
 
         return list == null ? null : unmodifiableSet((Set<?>) list.stream()
-                .map(el -> ReadProxy.create(clazz, mapper.get(), (DBObject) el, unmodifiableSet(emptySet())))
+                .map(el -> ReadProxy.create(clazz, mapper, (DBObject) el, unmodifiableSet(emptySet())))
                 .collect(toSet()));
 
     }

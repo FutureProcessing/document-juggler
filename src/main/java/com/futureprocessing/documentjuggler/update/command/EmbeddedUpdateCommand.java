@@ -24,7 +24,7 @@ public class EmbeddedUpdateCommand extends AbstractUpdateCommand {
 
     @Override
     public void update(UpdateBuilder updateBuilder, Object[] args) {
-        Object embeddedProxy = UpdateProxy.create(clazz, mapper.get(), updateBuilder.embedded(field));
+        Object embeddedProxy = UpdateProxy.create(clazz, mapper, updateBuilder.embedded(field));
         Consumer embeddedDocumentModifier = (Consumer) args[0];
         embeddedDocumentModifier.accept(embeddedProxy);
     }

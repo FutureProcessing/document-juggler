@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.insert.command;
 
 
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.insert.InsertMapper;
 import com.futureprocessing.documentjuggler.insert.InsertProxy;
 import com.mongodb.BasicDBObject;
 
@@ -21,7 +20,7 @@ public class EmbeddedInsertCommand extends AbstractInsertCommand {
 
     @Override
     public void insert(BasicDBObject document, Object[] args) {
-        Object embedded = InsertProxy.create(embeddedType, mapper.get());
+        Object embedded = InsertProxy.create(embeddedType, mapper);
         Consumer consumer = (Consumer) args[0];
         consumer.accept(embedded);
 

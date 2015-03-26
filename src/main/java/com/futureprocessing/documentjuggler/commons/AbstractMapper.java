@@ -29,10 +29,6 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
     }
 
     @Override
-    public Map<Method, COMMAND_TYPE> get() {
-        return mappings;
-    }
-
     public COMMAND_TYPE get(Method method) {
         return mappings.get(method);
     }

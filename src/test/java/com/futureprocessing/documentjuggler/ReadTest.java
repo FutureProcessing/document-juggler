@@ -6,14 +6,13 @@ import com.futureprocessing.documentjuggler.example.cars.CarsRepository;
 import com.futureprocessing.documentjuggler.example.cars.model.Car;
 import com.futureprocessing.documentjuggler.example.cars.model.Engine;
 import com.futureprocessing.documentjuggler.example.cars.model.Luggage;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -27,6 +26,7 @@ import static com.futureprocessing.documentjuggler.example.cars.CarsDBModel.Car.
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -115,5 +115,22 @@ public class ReadTest {
         // then
         assertThat(luggage2).isSameAs(luggage1);
     }
+
+    @Test
+    public void shouldReadUsingDBObjectAsQuery(){
+        //given
+        final DBObject query = QueryBuilder.start(BRAND).is("BMW").and(CarsDBModel.Car.MODEL).is("M3").get();
+
+
+        //when
+        Car first = carsRepository.find(query).first();
+
+        //then
+        ArgumentCaptor<DBObject> queryCaptor = ArgumentCaptor.forClass(DBObject.class);
+        verify(collection).findOne(queryCaptor.capture(), any());
+
+        assertThat(queryCaptor.getValue()).isEqualTo(query);
+    }
+
 
 }

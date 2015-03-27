@@ -2,13 +2,10 @@ package com.futureprocessing.documentjuggler.read;
 
 
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
-import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
 import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.futureprocessing.documentjuggler.Context.READ;
 

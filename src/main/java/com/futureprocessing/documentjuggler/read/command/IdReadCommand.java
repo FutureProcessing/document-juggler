@@ -7,7 +7,6 @@ import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.mongodb.BasicDBObject;
 
 import java.lang.reflect.Method;
-import java.util.Set;
 
 public class IdReadCommand extends AbstractReadCommand {
 

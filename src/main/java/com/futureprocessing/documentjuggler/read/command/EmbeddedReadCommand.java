@@ -2,7 +2,6 @@ package com.futureprocessing.documentjuggler.read.command;
 
 
 import com.futureprocessing.documentjuggler.commons.Mapper;
-import com.futureprocessing.documentjuggler.read.ReadMapper;
 import com.futureprocessing.documentjuggler.read.ReadProxy;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -24,7 +23,6 @@ public class EmbeddedReadCommand extends AbstractReadCommand {
     @Override
     protected Object readValue(BasicDBObject document) {
         DBObject embedded = (DBObject) document.get(field);
-        return embedded != null ? ReadProxy.create(clazz, mapper.get(), embedded,
-                                                   unmodifiableSet(emptySet())) : null;
+        return embedded != null ? ReadProxy.create(clazz, mapper, embedded, unmodifiableSet(emptySet())) : null;
     }
 }

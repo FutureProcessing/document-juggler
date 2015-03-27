@@ -3,7 +3,6 @@ package com.futureprocessing.documentjuggler.update;
 
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
-import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.providers.DefaultUpdateCommandProvider;

@@ -47,7 +47,7 @@ public class EqualsTest {
         DBObject dbObject = new BasicDBObject();
 
         //when
-        MovieWithDefaultEqualsBehaviour movie = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject, emptySet());
+        MovieWithDefaultEqualsBehaviour movie = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject, emptySet());
 
         //then
         assertThat(movie.equals(movie)).isTrue();
@@ -60,8 +60,8 @@ public class EqualsTest {
         DBObject dbObject = new BasicDBObject("field", "value");
 
         //when
-        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject, emptySet());
-        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject, emptySet());
+        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject, emptySet());
+        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject, emptySet());
 
         //then
         assertThat(movie1.equals(movie2)).isTrue();
@@ -75,8 +75,8 @@ public class EqualsTest {
         DBObject dbObject2 = new BasicDBObject("field", "value");
 
         //when
-        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject1, emptySet());
-        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject2, emptySet());
+        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject1, emptySet());
+        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject2, emptySet());
 
         //then
         assertThat(dbObject1).isEqualTo(dbObject2);
@@ -91,8 +91,8 @@ public class EqualsTest {
         DBObject dbObject2 = new BasicDBObject("differentField", "differentValue");
 
         //when
-        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject1, emptySet());
-        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper.get(), dbObject2, emptySet());
+        MovieWithDefaultEqualsBehaviour movie1 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject1, emptySet());
+        MovieWithDefaultEqualsBehaviour movie2 = create(MovieWithDefaultEqualsBehaviour.class, mapper, dbObject2, emptySet());
 
         //then
         assertThat(movie1.equals(movie2)).isFalse();
@@ -125,8 +125,8 @@ public class EqualsTest {
         DBObject dbObject2 = new BasicDBObject("differentField", "differentValue");
 
         //when
-        ModelAlwaysEqual movie1 = create(ModelAlwaysEqual.class, mapper.get(), dbObject1, emptySet());
-        ModelAlwaysEqual movie2 = create(ModelAlwaysEqual.class, mapper.get(), dbObject2, emptySet());
+        ModelAlwaysEqual movie1 = create(ModelAlwaysEqual.class, mapper, dbObject1, emptySet());
+        ModelAlwaysEqual movie2 = create(ModelAlwaysEqual.class, mapper, dbObject2, emptySet());
 
         //then
         assertThat(movie1.equals(movie2)).isTrue();
@@ -141,7 +141,7 @@ public class EqualsTest {
     public static class TitleEquals implements EqualsProvider<MovieWithCustomEquals> {
         @Override
         public boolean areEqual(MovieWithCustomEquals model, Object obj) {
-            if (!isEqualClass(model, obj)){
+            if (!isEqualClass(model, obj)) {
                 return false;
             }
             MovieWithCustomEquals o = (MovieWithCustomEquals) obj;
@@ -158,8 +158,8 @@ public class EqualsTest {
         DBObject dbObject2 = new BasicDBObject("title", "Star Wars").append("director", "George Lucas");
 
         //when
-        MovieWithCustomEquals movie1 = create(MovieWithCustomEquals.class, mapper.get(), dbObject1, emptySet());
-        MovieWithCustomEquals movie2 = create(MovieWithCustomEquals.class, mapper.get(), dbObject2, emptySet());
+        MovieWithCustomEquals movie1 = create(MovieWithCustomEquals.class, mapper, dbObject1, emptySet());
+        MovieWithCustomEquals movie2 = create(MovieWithCustomEquals.class, mapper, dbObject2, emptySet());
 
         //then
         assertThat(movie1.equals(movie2)).isTrue();
@@ -174,8 +174,8 @@ public class EqualsTest {
         DBObject dbObject2 = new BasicDBObject("title", "Indiana Jones").append("director", "Lucas");
 
         //when
-        MovieWithCustomEquals movie1 = create(MovieWithCustomEquals.class, mapper.get(), dbObject1, emptySet());
-        MovieWithCustomEquals movie2 = create(MovieWithCustomEquals.class, mapper.get(), dbObject2, emptySet());
+        MovieWithCustomEquals movie1 = create(MovieWithCustomEquals.class, mapper, dbObject1, emptySet());
+        MovieWithCustomEquals movie2 = create(MovieWithCustomEquals.class, mapper, dbObject2, emptySet());
 
         //then
         assertThat(movie1.equals(movie2)).isFalse();

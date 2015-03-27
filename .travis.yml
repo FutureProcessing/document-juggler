@@ -1,7 +1,8 @@
 language: java
 jdk: oraclejdk8
 env:
-  - secure: "OUBY+Z4i2b/5zfCuPyx2kGnYEubx9i5bQNkM4RM/N6h4zlKEFx/Bf+6rQtg/4HS0n1/E2R2t6RKn5PKM/nRmzNsOJoPyqkuSOEjkx2a3K3Ep2zgQPaJj1t3PR8u2j4IevHVqUqFr1CA9BjoJVfjx3a7+UW/VbmB19CHXkaP/oZM="
-  - secure: "RYxhePs0XTXcCFjwDE1NnXuaEI4Qi9za/1pNoo9XHZtVgzGC6LeiGA6DNJIy/uDAAZa+ADE3JIiYSAOawQBPl1b1BWqVJU3cHL9LnndGsFbbOb9X+W8I1dk4LPgVp0m6YoBCMqWCxAUh32sirrXRsc2meS2ibNXEKyfvk24d9Nk="
+  global:
+    - secure: "OUBY+Z4i2b/5zfCuPyx2kGnYEubx9i5bQNkM4RM/N6h4zlKEFx/Bf+6rQtg/4HS0n1/E2R2t6RKn5PKM/nRmzNsOJoPyqkuSOEjkx2a3K3Ep2zgQPaJj1t3PR8u2j4IevHVqUqFr1CA9BjoJVfjx3a7+UW/VbmB19CHXkaP/oZM="
+    - secure: "RYxhePs0XTXcCFjwDE1NnXuaEI4Qi9za/1pNoo9XHZtVgzGC6LeiGA6DNJIy/uDAAZa+ADE3JIiYSAOawQBPl1b1BWqVJU3cHL9LnndGsFbbOb9X+W8I1dk4LPgVp0m6YoBCMqWCxAUh32sirrXRsc2meS2ibNXEKyfvk24d9Nk="
 script: mvn test verify
 after_success: ./deploy-snapshot.sh

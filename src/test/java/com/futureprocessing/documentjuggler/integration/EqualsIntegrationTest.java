@@ -6,7 +6,6 @@ import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Equals;
 import com.futureprocessing.documentjuggler.commons.EqualsProvider;
 import com.futureprocessing.documentjuggler.model.DefaultModel;
-import com.futureprocessing.documentjuggler.read.EqualsTest;
 import org.junit.Test;
 
 import java.util.Objects;

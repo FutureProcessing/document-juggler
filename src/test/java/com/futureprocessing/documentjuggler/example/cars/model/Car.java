@@ -2,6 +2,10 @@ package com.futureprocessing.documentjuggler.example.cars.model;
 
 import com.futureprocessing.documentjuggler.annotation.*;
 import com.futureprocessing.documentjuggler.annotation.query.*;
+import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
+import com.futureprocessing.documentjuggler.annotation.update.Inc;
+import com.futureprocessing.documentjuggler.annotation.update.Push;
+import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 
 import java.util.Date;

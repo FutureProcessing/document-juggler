@@ -1,8 +1,8 @@
 package com.futureprocessing.documentjuggler.query;
 
 
-import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.annotation.internal.MightBeNegated;
+import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.NotQueryCommand;

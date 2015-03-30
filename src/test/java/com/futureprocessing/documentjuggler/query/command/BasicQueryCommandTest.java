@@ -1,7 +1,5 @@
 package com.futureprocessing.documentjuggler.query.command;
 
-import com.futureprocessing.documentjuggler.insert.command.BasicInsertCommand;
-import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;

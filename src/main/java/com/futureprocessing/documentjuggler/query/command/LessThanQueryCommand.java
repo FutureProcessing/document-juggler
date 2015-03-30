@@ -24,7 +24,7 @@ public class LessThanQueryCommand implements QueryCommand {
         builder.and(field).is(operand);
     }
 
-    public static class Provider  implements CommandProvider<QueryCommand> {
+    public static class Provider implements CommandProvider<QueryCommand> {
         @Override
         public QueryCommand getCommand(Method method, Mapper<QueryCommand> mapper) {
             return new LessThanQueryCommand(getFieldName(method));

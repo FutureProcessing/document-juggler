@@ -52,7 +52,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void shouldReadIdSavedAsObjectId(){
+    public void shouldReadIdSavedAsObjectId() {
         //given
         Repository<Person> repository = new Repository<>(db(), Person.class);
         final String idAsString = new ObjectId().toHexString();
@@ -66,7 +66,7 @@ public class IdFieldTypesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void shouldReadObjectIdSavedAsObjectIdWithinTheSameModel(){
+    public void shouldReadObjectIdSavedAsObjectIdWithinTheSameModel() {
         //given
         Repository<Person> repository = new Repository<>(db(), Person.class);
         final ObjectId ID = new ObjectId();

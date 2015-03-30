@@ -1,9 +1,8 @@
 package com.futureprocessing.documentjuggler.read;
 
 
-import com.futureprocessing.documentjuggler.commons.Mapper;
-
 import com.futureprocessing.documentjuggler.commons.EqualsProvider;
+import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;

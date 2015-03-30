@@ -19,7 +19,7 @@ public class IdReadCommand extends AbstractReadCommand {
         return document.getObjectId(field).toHexString();
     }
 
-    public static class Provider implements CommandProvider<ReadCommand>{
+    public static class Provider implements CommandProvider<ReadCommand> {
         @Override
         public ReadCommand getCommand(Method method, Mapper<ReadCommand> mapper) {
             return new IdReadCommand(FieldNameExtractor.getFieldName(method));

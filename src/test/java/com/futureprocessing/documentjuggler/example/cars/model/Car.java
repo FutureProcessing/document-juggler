@@ -1,6 +1,9 @@
 package com.futureprocessing.documentjuggler.example.cars.model;
 
-import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
+import com.futureprocessing.documentjuggler.annotation.CollectionName;
+import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.*;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.update.Inc;

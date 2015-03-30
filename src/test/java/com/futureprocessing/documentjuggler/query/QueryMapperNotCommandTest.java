@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.query;
 
-import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.internal.MightBeNegated;
 import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
 import com.futureprocessing.documentjuggler.annotation.query.*;

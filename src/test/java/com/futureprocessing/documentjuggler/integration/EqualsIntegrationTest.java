@@ -101,14 +101,14 @@ public class EqualsIntegrationTest extends BaseIntegrationTest {
     }
 
     @Equals(TitleEquals.class)
-    private interface MovieWithCustomEquals extends MovieWithDefaultEquals{
+    private interface MovieWithCustomEquals extends MovieWithDefaultEquals {
 
     }
 
     public static class TitleEquals implements EqualsProvider<MovieWithCustomEquals> {
         @Override
         public boolean areEqual(MovieWithCustomEquals model, Object obj) {
-            if (!isEqualClass(model, obj)){
+            if (!isEqualClass(model, obj)) {
                 return false;
             }
             MovieWithCustomEquals o = (MovieWithCustomEquals) obj;

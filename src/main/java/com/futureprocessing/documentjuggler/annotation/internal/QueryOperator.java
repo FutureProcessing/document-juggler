@@ -5,9 +5,7 @@ import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static com.futureprocessing.documentjuggler.Context.INSERT;
-import static com.futureprocessing.documentjuggler.Context.READ;
-import static com.futureprocessing.documentjuggler.Context.UPDATE;
+import static com.futureprocessing.documentjuggler.Context.*;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

@@ -1,7 +1,9 @@
 package com.futureprocessing.documentjuggler.update;
 
 
-import com.futureprocessing.documentjuggler.annotation.*;
+import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.update.Inc;
 import com.futureprocessing.documentjuggler.annotation.update.Push;

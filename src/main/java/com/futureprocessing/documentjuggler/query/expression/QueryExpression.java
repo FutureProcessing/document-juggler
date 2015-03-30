@@ -46,6 +46,22 @@ public class QueryExpression<MODEL> {
         return new AndQueryExpression<>(expression1, expression2);
     }
 
+    public static <MODEL> NorQueryExpression<MODEL> nor(Consumer<MODEL> consumer1, Consumer<MODEL> consumer2) {
+        return new NorQueryExpression<>(consumer1, consumer2);
+    }
+
+    public static <MODEL> NorQueryExpression<MODEL> nor(QueryExpression<MODEL> expression, Consumer<MODEL> consumer) {
+        return new NorQueryExpression<>(expression, consumer);
+    }
+
+    public static <MODEL> NorQueryExpression<MODEL> nor(Consumer<MODEL> consumer, QueryExpression<MODEL> expression) {
+        return new NorQueryExpression<>(consumer, expression);
+    }
+
+    public static <MODEL> NorQueryExpression<MODEL> nor(QueryExpression<MODEL> expression1, QueryExpression<MODEL> expression2) {
+        return new NorQueryExpression<>(expression1, expression2);
+    }
+
     protected QueryExpression(Consumer<MODEL> consumer1, Consumer<MODEL> consumer2) {
         this.consumer1 = consumer1;
         this.consumer2 = consumer2;

@@ -1,8 +1,7 @@
 package com.futureprocessing.documentjuggler.example.cars.model;
 
 import com.futureprocessing.documentjuggler.annotation.*;
-import com.futureprocessing.documentjuggler.annotation.internal.NotEquals;
-import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
+import com.futureprocessing.documentjuggler.annotation.query.*;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 
 import java.util.Date;

@@ -1,18 +1,12 @@
 package com.futureprocessing.documentjuggler.query;
 
-import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.*;
-import com.futureprocessing.documentjuggler.annotation.internal.NotEquals;
-import com.futureprocessing.documentjuggler.annotation.internal.NotIn;
+import com.futureprocessing.documentjuggler.annotation.query.*;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.query.command.*;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Objects;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
 import static org.assertj.core.api.Assertions.assertThat;

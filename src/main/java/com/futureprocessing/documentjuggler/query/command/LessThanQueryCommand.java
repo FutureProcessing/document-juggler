@@ -19,6 +19,9 @@ public class LessThanQueryCommand implements QueryCommand {
     @Override
     public void query(QueryBuilder builder, Object[] args) {
         builder.and(field).lessThan(args[0]);
+        Object operand = builder.get().get(field);
+
+        builder.and(field).is(operand);
     }
 
     public static class Provider  implements CommandProvider<QueryCommand> {

@@ -1,10 +1,10 @@
 package com.futureprocessing.documentjuggler.read;
 
 
+import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.documentjuggler.helper.Empty;

@@ -23,7 +23,7 @@ public class IdQueryCommand implements QueryCommand {
         builder.and(field).is(new ObjectId((String) args[0]));
     }
 
-    public static class Provider implements CommandProvider<QueryCommand>{
+    public static class Provider implements CommandProvider<QueryCommand> {
         @Override
         public QueryCommand getCommand(Method method, Mapper<QueryCommand> mapper) {
             return new IdQueryCommand(getFieldName(method));

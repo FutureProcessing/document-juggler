@@ -19,7 +19,7 @@ public class UpdateProxy implements InvocationHandler {
     public static <UPDATER> UPDATER create(Class<UPDATER> updaterClass, Mapper<UpdateCommand> mapper,
                                            UpdateBuilder updateBuilder) {
         return (UPDATER) newProxyInstance(updaterClass.getClassLoader(), new Class[]{updaterClass},
-                                          new UpdateProxy(mapper, updateBuilder));
+                new UpdateProxy(mapper, updateBuilder));
     }
 
     public static UpdateProxy extract(Object updater) {

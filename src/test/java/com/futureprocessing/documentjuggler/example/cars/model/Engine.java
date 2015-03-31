@@ -2,7 +2,7 @@ package com.futureprocessing.documentjuggler.example.cars.model;
 
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Unset;
+import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 
 public interface Engine {

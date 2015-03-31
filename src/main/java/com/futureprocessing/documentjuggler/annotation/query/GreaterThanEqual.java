@@ -1,17 +1,17 @@
-package com.futureprocessing.documentjuggler.annotation;
+package com.futureprocessing.documentjuggler.annotation.query;
 
 import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
+import com.futureprocessing.documentjuggler.annotation.internal.ComparisonOperator;
 import com.futureprocessing.documentjuggler.query.command.GreaterThanEqualQueryCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static com.futureprocessing.documentjuggler.Context.*;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Forbidden({READ, INSERT, UPDATE})
+@ComparisonOperator
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
 @QueryCommandProvider(GreaterThanEqualQueryCommand.Provider.class)

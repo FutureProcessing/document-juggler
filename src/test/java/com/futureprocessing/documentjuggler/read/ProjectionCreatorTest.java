@@ -13,7 +13,6 @@ import java.util.Set;
 import static com.futureprocessing.documentjuggler.helper.Sets.asSet;
 import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectionCreatorTest {

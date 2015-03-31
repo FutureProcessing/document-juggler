@@ -1,4 +1,4 @@
-package com.futureprocessing.documentjuggler.annotation;
+package com.futureprocessing.documentjuggler.annotation.update;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

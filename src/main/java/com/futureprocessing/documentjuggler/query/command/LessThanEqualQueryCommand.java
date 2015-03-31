@@ -21,7 +21,7 @@ public class LessThanEqualQueryCommand implements QueryCommand {
         builder.and(field).lessThanEquals(args[0]);
     }
 
-    public static class Provider  implements CommandProvider<QueryCommand> {
+    public static class Provider implements CommandProvider<QueryCommand> {
         @Override
         public QueryCommand getCommand(Method method, Mapper<QueryCommand> mapper) {
             return new LessThanEqualQueryCommand(getFieldName(method));

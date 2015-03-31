@@ -6,7 +6,6 @@ import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Equals;
 import com.futureprocessing.documentjuggler.commons.EqualsProvider;
 import com.futureprocessing.documentjuggler.model.DefaultModel;
-import com.futureprocessing.documentjuggler.read.EqualsTest;
 import org.junit.Test;
 
 import java.util.Objects;
@@ -102,14 +101,14 @@ public class EqualsIntegrationTest extends BaseIntegrationTest {
     }
 
     @Equals(TitleEquals.class)
-    private interface MovieWithCustomEquals extends MovieWithDefaultEquals{
+    private interface MovieWithCustomEquals extends MovieWithDefaultEquals {
 
     }
 
     public static class TitleEquals implements EqualsProvider<MovieWithCustomEquals> {
         @Override
         public boolean areEqual(MovieWithCustomEquals model, Object obj) {
-            if (!isEqualClass(model, obj)){
+            if (!isEqualClass(model, obj)) {
                 return false;
             }
             MovieWithCustomEquals o = (MovieWithCustomEquals) obj;

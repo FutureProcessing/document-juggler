@@ -10,7 +10,7 @@ public class ForbiddenOperationException extends RuntimeException {
     private final Context context;
 
     public ForbiddenOperationException(Method method, Context context) {
-        super(String.format("Method %s is forbidden in %s", method.getName(), context));
+        super(String.format("Method %s is forbidden in %s context", method.getName(), context));
         this.method = method;
         this.context = context;
     }

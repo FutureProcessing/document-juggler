@@ -14,5 +14,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Forbidden({READ, INSERT, UPDATE})
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-public @interface QueryOperator {
+public @interface ComparisonOperator {
 }

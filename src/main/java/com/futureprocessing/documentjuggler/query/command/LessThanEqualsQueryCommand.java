@@ -8,23 +8,27 @@ import java.lang.reflect.Method;
 
 import static com.futureprocessing.documentjuggler.commons.FieldNameExtractor.getFieldName;
 
-public class GreaterThanEqualQueryCommand implements QueryCommand {
+public class LessThanEqualsQueryCommand implements QueryCommand {
 
     private final String field;
 
-    public GreaterThanEqualQueryCommand(String field) {
+    public LessThanEqualsQueryCommand(String field) {
         this.field = field;
+    }
+
+    public static void query(String field, QueryBuilder builder, Object value) {
+        builder.and(field).lessThanEquals(value);
     }
 
     @Override
     public void query(QueryBuilder builder, Object[] args) {
-        builder.and(field).greaterThanEquals(args[0]);
+        query(field, builder, args[0]);
     }
 
     public static class Provider implements CommandProvider<QueryCommand> {
         @Override
         public QueryCommand getCommand(Method method, Mapper<QueryCommand> mapper) {
-            return new GreaterThanEqualQueryCommand(getFieldName(method));
+            return new LessThanEqualsQueryCommand(getFieldName(method));
         }
     }
 }

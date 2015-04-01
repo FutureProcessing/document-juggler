@@ -64,16 +64,25 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
             return getForbidden(method);
         }
 
+        Optional<COMMAND_TYPE> command = getCommandBeforeAnnotationsReading(method);
+        if (command.isPresent()) {
+            return command.get();
+        }
+
         if (!from(method).isPresent(DbEmbeddedDocument.class)) {
             addToSupportedFields(method);
         }
 
-        Optional<COMMAND_TYPE> command = getAnnotationBasedCommand(method);
+        command = getAnnotationBasedCommand(method);
         if (command.isPresent()) {
             return command.get();
         }
 
         return getDefaultCommand(method);
+    }
+
+    protected Optional<COMMAND_TYPE> getCommandBeforeAnnotationsReading(Method method) {
+        return Optional.empty();
     }
 
     protected COMMAND_TYPE getForbidden(Method method) {

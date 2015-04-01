@@ -135,7 +135,7 @@ public class QueryMapperTest {
 
         // then
         QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(GreaterThanEqualQueryCommand.class);
+        assertThat(command).isInstanceOf(GreaterThanEqualsQueryCommand.class);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class QueryMapperTest {
 
         // then
         QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(LessThanEqualQueryCommand.class);
+        assertThat(command).isInstanceOf(LessThanEqualsQueryCommand.class);
     }
 
     @Test

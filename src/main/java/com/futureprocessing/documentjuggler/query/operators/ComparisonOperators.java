@@ -1,0 +1,63 @@
+package com.futureprocessing.documentjuggler.query.operators;
+
+import com.futureprocessing.documentjuggler.query.command.*;
+import com.mongodb.QueryBuilder;
+
+import java.util.Collection;
+
+public class ComparisonOperators<TYPE> {
+
+    private final String field;
+    private final QueryBuilder builder;
+
+    public ComparisonOperators(String field, QueryBuilder builder) {
+        this.field = field;
+        this.builder = builder;
+    }
+
+    public ComparisonOperators<TYPE> greaterThan(TYPE value) {
+        GreaterThanQueryCommand.query(field, builder, value);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> greaterThanEquals(TYPE value) {
+        GreaterThanEqualsQueryCommand.query(field, builder, value);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> lessThan(TYPE value) {
+        LessThanQueryCommand.query(field, builder, value);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> lessThanEquals(TYPE value) {
+        LessThanEqualsQueryCommand.query(field, builder, value);
+        return this;
+    }
+
+
+    public ComparisonOperators<TYPE> in(Collection<TYPE> collection) {
+        InQueryCommand.query(field, builder, collection);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> in(TYPE... args) {
+        InQueryCommand.query(field, builder, args);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> notIn(Collection<TYPE> collection) {
+        NotInQueryCommand.query(field, builder, collection);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> notIn(TYPE... args) {
+        NotInQueryCommand.query(field, builder, args);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> notEquals(TYPE value) {
+        NotEqualsQueryCommand.query(field, builder, value);
+        return this;
+    }
+}

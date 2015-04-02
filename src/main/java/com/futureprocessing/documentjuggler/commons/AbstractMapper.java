@@ -2,6 +2,7 @@ package com.futureprocessing.documentjuggler.commons;
 
 import com.futureprocessing.documentjuggler.Context;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -64,16 +65,25 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
             return getForbidden(method);
         }
 
+        Optional<COMMAND_TYPE> command = getCommandBeforeAnnotationsReading(method);
+        if (command.isPresent()) {
+            return command.get();
+        }
+
         if (!from(method).isPresent(DbEmbeddedDocument.class)) {
             addToSupportedFields(method);
         }
 
-        Optional<COMMAND_TYPE> command = getAnnotationBasedCommand(method);
+        command = getAnnotationBasedCommand(method);
         if (command.isPresent()) {
             return command.get();
         }
 
         return getDefaultCommand(method);
+    }
+
+    protected Optional<COMMAND_TYPE> getCommandBeforeAnnotationsReading(Method method) {
+        return Optional.empty();
     }
 
     protected COMMAND_TYPE getForbidden(Method method) {
@@ -131,4 +141,11 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         embeddedFields.remove(embeddedFields.size() - 1);
     }
 
+    protected boolean hasComparisonParameter(Method method) {
+        if (method.getParameterCount() == 0) {
+            return false;
+        }
+        Class<?> parameterType = method.getParameterTypes()[0];
+        return Comparison.class.isAssignableFrom(parameterType);
+    }
 }

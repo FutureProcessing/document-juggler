@@ -23,7 +23,7 @@ public class ReadMapper extends AbstractMapper<ReadCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return !hasCorrectParameters(method);
+        return !hasCorrectParameters(method) || hasComparisonParameter(method);
     }
 
     private boolean hasCorrectParameters(Method method) {

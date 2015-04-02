@@ -16,11 +16,14 @@ public class NotEqualsQueryCommand implements QueryCommand {
         this.field = field;
     }
 
-    @Override
-    public void query(QueryBuilder builder, Object[] args) {
-        builder.and(field).notEquals(args[0]);
+    public static void query(String field, QueryBuilder builder, Object value) {
+        builder.and(field).notEquals(value);
     }
 
+    @Override
+    public void query(QueryBuilder builder, Object[] args) {
+        query(field, builder, args[0]);
+    }
 
     public static class Provider implements CommandProvider<QueryCommand> {
         @Override

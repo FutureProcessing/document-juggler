@@ -134,7 +134,7 @@ public class QueryMapperNotCommandTest {
         assertThat(command).isInstanceOf(NotQueryCommand.class);
 
         QueryCommand innerCommand = getOperandCommand(command);
-        assertThat(innerCommand).isInstanceOf(GreaterThanEqualQueryCommand.class);
+        assertThat(innerCommand).isInstanceOf(GreaterThanEqualsQueryCommand.class);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class QueryMapperNotCommandTest {
         assertThat(command).isInstanceOf(NotQueryCommand.class);
 
         QueryCommand innerCommand = getOperandCommand(command);
-        assertThat(innerCommand).isInstanceOf(LessThanEqualQueryCommand.class);
+        assertThat(innerCommand).isInstanceOf(LessThanEqualsQueryCommand.class);
     }
 
 }

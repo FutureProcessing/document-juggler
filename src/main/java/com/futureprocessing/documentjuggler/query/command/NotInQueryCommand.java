@@ -16,9 +16,13 @@ public class NotInQueryCommand implements QueryCommand {
         this.field = field;
     }
 
+    public static void query(String field, QueryBuilder builder, Object value) {
+        builder.and(field).notIn(value);
+    }
+
     @Override
     public void query(QueryBuilder builder, Object[] args) {
-        builder.and(field).notIn(args[0]);
+        query(field, builder, args[0]);
     }
 
 

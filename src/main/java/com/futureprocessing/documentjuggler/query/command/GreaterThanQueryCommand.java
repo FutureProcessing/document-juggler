@@ -16,9 +16,13 @@ public class GreaterThanQueryCommand implements QueryCommand {
         this.field = field;
     }
 
+    public static void query(String field, QueryBuilder builder, Object value) {
+        builder.and(field).greaterThan(value);
+    }
+
     @Override
     public void query(QueryBuilder builder, Object[] args) {
-        builder.and(field).greaterThan(args[0]);
+        query(field, builder, args[0]);
     }
 
     public static class Provider implements CommandProvider<QueryCommand> {

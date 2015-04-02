@@ -4,12 +4,15 @@ package com.futureprocessing.documentjuggler.query;
 import com.futureprocessing.documentjuggler.annotation.internal.MightBeNegated;
 import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
+import com.futureprocessing.documentjuggler.query.command.ComparisonOperatorsCommand;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.NotQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.command.providers.DefaultQueryCommandProvider;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import static com.futureprocessing.documentjuggler.Context.QUERY;
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
@@ -52,5 +55,16 @@ public class QueryMapper extends AbstractMapper<QueryCommand> {
             return getForbidden(method);
         }
         return super.postProcessCommand(command, method);
+    }
+
+    @Override
+    protected Optional<QueryCommand> getCommandBeforeAnnotationsReading(Method method) {
+        Class<?> parameterType = method.getParameterTypes()[0];
+
+        if (Comparison.class.isAssignableFrom(parameterType)) {
+            return Optional.of(new ComparisonOperatorsCommand(getFieldName(method)));
+        }
+
+        return Optional.empty();
     }
 }

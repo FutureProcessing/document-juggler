@@ -11,6 +11,7 @@ import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.command.providers.DefaultQueryCommandProvider;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.futureprocessing.documentjuggler.update.operators.Update;
+import com.futureprocessing.documentjuggler.update.operators.UpdateArrays;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class QueryMapper extends AbstractMapper<QueryCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return !hasCorrectReturnType(method) || !hasCorrectParameters(method) || hasParameterOfType(method, Update.class);
+        return !hasCorrectReturnType(method) || !hasCorrectParameters(method) || hasParameterOfType(method, Update.class, UpdateArrays.class);
     }
 
     private boolean hasCorrectReturnType(Method method) {

@@ -5,10 +5,12 @@ import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
+import com.futureprocessing.documentjuggler.update.command.UpdateArraysOperatorsCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateOperatorsCommand;
 import com.futureprocessing.documentjuggler.update.command.providers.DefaultUpdateCommandProvider;
 import com.futureprocessing.documentjuggler.update.operators.Update;
+import com.futureprocessing.documentjuggler.update.operators.UpdateArrays;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -53,6 +55,10 @@ public class UpdateMapper extends AbstractMapper<UpdateCommand> {
 
             if (Update.class.isAssignableFrom(parameterType)) {
                 return Optional.of(new UpdateOperatorsCommand(getFieldName(method)));
+            }
+
+            if (UpdateArrays.class.isAssignableFrom(parameterType)){
+                return Optional.of(new UpdateArraysOperatorsCommand(getFieldName(method)));
             }
 
         }

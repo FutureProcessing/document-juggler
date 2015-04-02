@@ -1,8 +1,8 @@
 package com.futureprocessing.documentjuggler.update.command.providers;
 
 import com.futureprocessing.documentjuggler.annotation.AnnotationReader;
-import com.futureprocessing.documentjuggler.annotation.UnsetIfFalse;
-import com.futureprocessing.documentjuggler.annotation.UnsetIfNull;
+import com.futureprocessing.documentjuggler.annotation.update.UnsetIfFalse;
+import com.futureprocessing.documentjuggler.annotation.update.UnsetIfNull;
 import com.futureprocessing.documentjuggler.commons.CommandProvider;
 import com.futureprocessing.documentjuggler.commons.Mapper;
 import com.futureprocessing.documentjuggler.update.command.BasicUpdateCommand;

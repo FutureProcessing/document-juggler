@@ -5,5 +5,5 @@ SNAPSHOT=`mvn help:evaluate -Dexpression=project.version | grep -v '\[' | grep S
 echo "$TRAVIS_BRANCH"
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" -a "$TRAVIS_BRANCH" == "develop" -a ! -z "$SNAPSHOT" ]; then
-    mvn deploy -DskipTests=true --settings ./settings.xml
+    mvn deploy -DskipTests=true --settings ./settings.xml -B
 fi

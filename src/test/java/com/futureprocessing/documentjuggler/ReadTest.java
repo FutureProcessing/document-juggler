@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -26,7 +25,6 @@ import static com.futureprocessing.documentjuggler.example.cars.CarsDBModel.Car.
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -117,7 +115,7 @@ public class ReadTest {
     }
 
     @Test
-    public void shouldReadUsingDBObjectAsQuery(){
+    public void shouldReadUsingDBObjectAsQuery() {
         //given
         final DBObject query = QueryBuilder.start(BRAND).is("BMW").and(CarsDBModel.Car.MODEL).is("M3").get();
 

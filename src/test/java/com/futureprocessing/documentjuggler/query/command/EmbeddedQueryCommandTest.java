@@ -3,7 +3,7 @@ package com.futureprocessing.documentjuggler.query.command;
 
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.GreaterThan;
+import com.futureprocessing.documentjuggler.annotation.query.GreaterThan;
 import com.futureprocessing.documentjuggler.query.QueryMapper;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
 import com.mongodb.BasicDBObject;

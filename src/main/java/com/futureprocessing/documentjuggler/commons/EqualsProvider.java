@@ -23,7 +23,7 @@ public interface EqualsProvider<MODEL> {
         }
     }
 
-    class BaseEquals{
+    class BaseEquals {
         public static boolean isEqualClass(Object model, Object obj) {
             return obj != null && model.getClass() == obj.getClass();
         }

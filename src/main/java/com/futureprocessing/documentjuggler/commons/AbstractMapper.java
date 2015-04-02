@@ -39,8 +39,16 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
 
         for (Method method : clazz.getMethods()) {
             validateField(method);
-            mappings.put(method, getCommand(method));
+
+            COMMAND_TYPE command = getCommand(method);
+            command = postProcessCommand(command, method);
+
+            mappings.put(method, command);
         }
+    }
+
+    protected COMMAND_TYPE postProcessCommand(COMMAND_TYPE command, Method method) {
+        return command;
     }
 
     @Override
@@ -53,7 +61,7 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
     private COMMAND_TYPE getCommand(Method method) {
 
         if (ForbiddenChecker.isForbidden(method, context) || isForbidden(method)) {
-            return forbiddenCommandProvider.getCommand(method, this);
+            return getForbidden(method);
         }
 
         if (!from(method).isPresent(DbEmbeddedDocument.class)) {
@@ -66,6 +74,10 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         }
 
         return getDefaultCommand(method);
+    }
+
+    protected COMMAND_TYPE getForbidden(Method method) {
+        return forbiddenCommandProvider.getCommand(method, this);
     }
 
     private void addToSupportedFields(Method method) {

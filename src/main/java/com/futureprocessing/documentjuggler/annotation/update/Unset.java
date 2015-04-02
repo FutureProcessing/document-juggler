@@ -1,4 +1,7 @@
-package com.futureprocessing.documentjuggler.annotation;
+package com.futureprocessing.documentjuggler.annotation.update;
+
+import com.futureprocessing.documentjuggler.annotation.internal.UpdateCommandProvider;
+import com.futureprocessing.documentjuggler.update.command.UnsetCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -9,5 +12,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-public @interface UnsetIfNull {
+@UpdateCommandProvider(UnsetCommand.Provider.class)
+public @interface Unset {
 }

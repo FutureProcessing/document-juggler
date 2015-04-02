@@ -1,7 +1,8 @@
-package com.futureprocessing.documentjuggler.annotation.internal;
+package com.futureprocessing.documentjuggler.annotation.query;
 
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.query.command.NotInQueryCommand;
+import com.futureprocessing.documentjuggler.annotation.internal.QueryCommandProvider;
+import com.futureprocessing.documentjuggler.query.command.ExistsQueryCommand;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -14,6 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Forbidden({READ, INSERT, UPDATE})
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
-@QueryCommandProvider(NotInQueryCommand.Provider.class)
-public @interface NotIn {
+@QueryCommandProvider(ExistsQueryCommand.Provider.class)
+public @interface Exists {
 }

@@ -1,4 +1,4 @@
-package com.futureprocessing.documentjuggler.annotation;
+package com.futureprocessing.documentjuggler.annotation.update;
 
 import com.futureprocessing.documentjuggler.annotation.internal.UpdateCommandProvider;
 import com.futureprocessing.documentjuggler.update.command.IncrementUpdateCommand;

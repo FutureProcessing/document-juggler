@@ -5,7 +5,6 @@ import com.mongodb.DBObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +28,7 @@ public class QueryProcessorTest {
         //given
 
         //when
-        DBObject query = queryProcessor.process((Consumer<Model>)null);
+        DBObject query = queryProcessor.process((Consumer<Model>) null);
 
         //then
         assertThat(query).isNull();

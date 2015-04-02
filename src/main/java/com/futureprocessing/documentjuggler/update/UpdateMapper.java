@@ -3,6 +3,7 @@ package com.futureprocessing.documentjuggler.update;
 
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateOperatorsCommand;
@@ -30,7 +31,7 @@ public class UpdateMapper extends AbstractMapper<UpdateCommand> {
     @Override
     protected boolean isForbidden(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
-        return !hasCorrectReturnType(method) || field.equals("_id") || hasComparisonParameter(method);
+        return !hasCorrectReturnType(method) || field.equals("_id") || hasParameterOfType(method, Comparison.class);
     }
 
     private boolean hasCorrectReturnType(Method method) {

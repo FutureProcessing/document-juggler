@@ -2,8 +2,10 @@ package com.futureprocessing.documentjuggler.read;
 
 
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
 import com.futureprocessing.documentjuggler.read.command.ReadCommand;
+import com.futureprocessing.documentjuggler.update.operators.Update;
 
 import java.lang.reflect.Method;
 
@@ -23,7 +25,7 @@ public class ReadMapper extends AbstractMapper<ReadCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return !hasCorrectParameters(method) || hasComparisonParameter(method);
+        return !hasCorrectParameters(method) || hasParameterOfType(method, Comparison.class, Update.class);
     }
 
     private boolean hasCorrectParameters(Method method) {

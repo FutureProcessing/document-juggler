@@ -2,6 +2,15 @@ package com.futureprocessing.documentjuggler.update;
 
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.insert.InsertMapper;
+import com.futureprocessing.documentjuggler.insert.command.ForbiddenInsertCommand;
+import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
+import com.futureprocessing.documentjuggler.query.QueryMapper;
+import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.QueryCommand;
+import com.futureprocessing.documentjuggler.read.ReadMapper;
+import com.futureprocessing.documentjuggler.read.command.ForbiddenReadCommand;
+import com.futureprocessing.documentjuggler.read.command.ReadCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UpdateOperatorsCommand;
 import com.futureprocessing.documentjuggler.update.operators.Update;
@@ -59,6 +68,45 @@ public class UpdateOperatorsTest {
 
         //then
         assertThat(command).isInstanceOf(UpdateOperatorsCommand.class);
+    }
+
+    @Test
+    public void queryMapperMapperShouldReturnForbiddenQueryCommandForUpdateParameter() throws NoSuchMethodException {
+        //given
+        Method method = Model.class.getMethod("withNumber", Update.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
+
+        //when
+        QueryCommand command = mapper.get(method);
+
+        //then
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
+    }
+
+    @Test
+    public void insertMapperMapperShouldReturnForbiddenInsertCommandForUpdateParameter() throws NoSuchMethodException {
+        //given
+        Method method = Model.class.getMethod("withNumber", Update.class);
+        InsertMapper mapper = InsertMapper.map(Model.class);
+
+        //when
+        InsertCommand command = mapper.get(method);
+
+        //then
+        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
+    }
+
+    @Test
+    public void readMapperMapperShouldReturnForbiddenReadCommandForUpdateParameter() throws NoSuchMethodException {
+        //given
+        Method method = Model.class.getMethod("withNumber", Update.class);
+        ReadMapper mapper = ReadMapper.map(Model.class);
+
+        //when
+        ReadCommand command = mapper.get(method);
+
+        //then
+        assertThat(command).isInstanceOf(ForbiddenReadCommand.class);
     }
 
     @Test

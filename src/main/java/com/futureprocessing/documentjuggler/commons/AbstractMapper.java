@@ -141,11 +141,17 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         embeddedFields.remove(embeddedFields.size() - 1);
     }
 
-    protected boolean hasComparisonParameter(Method method) {
-        if (method.getParameterCount() == 0) {
-            return false;
+    protected boolean hasParameterOfType(Method method, Class<?>... checkedClasses) {
+
+        if (method.getParameterCount() == 1) {
+            Class<?> parameterType = method.getParameterTypes()[0];
+
+            for (Class<?> checkedClass : checkedClasses) {
+                if (checkedClass.isAssignableFrom(parameterType)) {
+                    return true;
+                }
+            }
         }
-        Class<?> parameterType = method.getParameterTypes()[0];
-        return Comparison.class.isAssignableFrom(parameterType);
+        return false;
     }
 }

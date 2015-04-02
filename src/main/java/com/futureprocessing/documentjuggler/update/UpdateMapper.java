@@ -26,7 +26,7 @@ public class UpdateMapper extends AbstractMapper<UpdateCommand> {
     @Override
     protected boolean isForbidden(Method method) {
         String field = FieldNameExtractor.getFieldName(method);
-        return !hasCorrectReturnType(method) || field.equals("_id");
+        return !hasCorrectReturnType(method) || field.equals("_id") || hasComparisonParameter(method);
     }
 
     private boolean hasCorrectReturnType(Method method) {

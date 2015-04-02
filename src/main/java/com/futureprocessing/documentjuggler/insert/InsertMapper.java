@@ -4,6 +4,7 @@ package com.futureprocessing.documentjuggler.insert;
 import com.futureprocessing.documentjuggler.commons.AbstractMapper;
 import com.futureprocessing.documentjuggler.insert.command.ForbiddenInsertCommand;
 import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 
 import java.lang.reflect.Method;
 
@@ -24,7 +25,7 @@ public final class InsertMapper extends AbstractMapper<InsertCommand> {
 
     @Override
     protected boolean isForbidden(Method method) {
-        return !hasParameters(method);
+        return !hasParameters(method) || hasComparisonParameter(method);
     }
 
     private boolean hasParameters(Method method) {

@@ -2,8 +2,13 @@ package com.futureprocessing.documentjuggler.read;
 
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.annotation.Forbidden;
+import com.futureprocessing.documentjuggler.annotation.query.Not;
+import com.futureprocessing.documentjuggler.assertions.JugglerAssertions;
+import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.futureprocessing.documentjuggler.query.QueryMapper;
 import com.futureprocessing.documentjuggler.query.command.ComparisonOperatorsCommand;
+import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.mongodb.BasicDBObject;
@@ -39,10 +44,27 @@ public class ComparisonOperatorsTest {
 
         @DbField("number")
         Model withNumber(Comparison<Integer> comparison);
+
+        @Not
+        @DbField("number")
+        Model withNumberNot(Comparison<Integer> comparison);
     }
 
     @Test
     public void queryMapperShouldReturnComparisonOperatorsCommand() throws NoSuchMethodException {
+        //given
+        Method method = Model.class.getMethod("withNumberNot", Comparison.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
+
+        //when
+        QueryCommand command = mapper.get(method);
+
+        //then
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
+    }
+
+    @Test
+    public void queryMapperShouldReturnForbiddenCommandForNegatedComparison() throws NoSuchMethodException {
         //given
         Method method = Model.class.getMethod("withNumber", Comparison.class);
         QueryMapper mapper = QueryMapper.map(Model.class);
@@ -186,6 +208,21 @@ public class ComparisonOperatorsTest {
         verify(collection).findOne(eq(expectedQuery), any());
     }
 
+    @Test
+    public void shouldThrowExceptionForComparisonMethodWihtNotAnnotation() {
+        //given
+        Repository<Model> repository = new Repository<>(collection, Model.class);
+
+        try {
+            //when
+            repository.find(model -> model.withNumberNot(n -> n.greaterThan(20))).first();
+        } catch (Exception e) {
+            //then
+            assertThat(e).isInstanceOf(ForbiddenOperationException.class);
+            return;
+        }
+        JugglerAssertions.failExpectedException();
+    }
 
 
 }

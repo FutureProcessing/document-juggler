@@ -1,4 +1,4 @@
-package com.futureprocessing.documentjuggler.read;
+package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.DbField;
@@ -53,19 +53,6 @@ public class ComparisonOperatorsTest {
     @Test
     public void queryMapperShouldReturnComparisonOperatorsCommand() throws NoSuchMethodException {
         //given
-        Method method = Model.class.getMethod("withNumberNot", Comparison.class);
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        //when
-        QueryCommand command = mapper.get(method);
-
-        //then
-        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
-    }
-
-    @Test
-    public void queryMapperShouldReturnForbiddenCommandForNegatedComparison() throws NoSuchMethodException {
-        //given
         Method method = Model.class.getMethod("withNumber", Comparison.class);
         QueryMapper mapper = QueryMapper.map(Model.class);
 
@@ -74,6 +61,19 @@ public class ComparisonOperatorsTest {
 
         //then
         assertThat(command).isInstanceOf(ComparisonOperatorsCommand.class);
+    }
+
+    @Test
+    public void queryMapperShouldReturnForbiddenCommandForNegatedComparison() throws NoSuchMethodException {
+        //given
+        Method method = Model.class.getMethod("withNumberNot", Comparison.class);
+        QueryMapper mapper = QueryMapper.map(Model.class);
+
+        //when
+        QueryCommand command = mapper.get(method);
+
+        //then
+        assertThat(command).isInstanceOf(ForbiddenQueryCommand.class);
     }
 
     @Test
@@ -87,7 +87,6 @@ public class ComparisonOperatorsTest {
         //then
         DBObject expectedQuery = new BasicDBObject("number", new BasicDBObject("$gt", 20));
         verify(collection).findOne(eq(expectedQuery), any());
-
     }
 
     @Test

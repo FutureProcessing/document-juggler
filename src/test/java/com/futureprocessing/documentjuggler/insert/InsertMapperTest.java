@@ -47,7 +47,7 @@ public class InsertMapperTest {
     }
 
     private interface ModelWithUnknownQuery {
-        String getId();
+        String unknownField();
     }
 
     @Test
@@ -59,7 +59,7 @@ public class InsertMapperTest {
             InsertMapper.map(ModelWithUnknownQuery.class);
         } catch (UnknownFieldException ex) {
             // then
-            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownQuery.class.getMethod("getId"));
+            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownQuery.class.getMethod("unknownField"));
             return;
         }
 

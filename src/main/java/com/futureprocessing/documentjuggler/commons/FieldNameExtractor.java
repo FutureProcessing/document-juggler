@@ -13,7 +13,7 @@ public abstract class FieldNameExtractor {
 
     public static String getFieldName(Method method) {
         DbField field = from(method).read(DbField.class);
-        if (field != null) {
+        if (field != null && !field.value().isEmpty()) {
             return field.value();
         }
 
@@ -23,6 +23,9 @@ public abstract class FieldNameExtractor {
         for (String prefix : toRemove) {
             if (methodName.startsWith(prefix)) {
                 String result = methodName.replaceFirst(prefix, "");
+                if (result.isEmpty()) {
+                    break;
+                }
                 return firstLetterToLowerCase(result);
             }
         }

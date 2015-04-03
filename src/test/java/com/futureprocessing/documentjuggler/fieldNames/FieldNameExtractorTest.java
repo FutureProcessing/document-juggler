@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.fieldNames;
 
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
+import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
 import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 
+import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.failExpectedException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FieldNameExtractorTest {
@@ -23,6 +25,15 @@ public class FieldNameExtractorTest {
         String title();
 
         String getLongNameWithUppercases();
+
+        @DbField("")
+        String emptyField();
+
+        String get();
+
+        String set(String value);
+
+        String with(String value);
     }
 
     @Test
@@ -85,5 +96,73 @@ public class FieldNameExtractorTest {
         }
 
         Assert.fail();
+    }
+
+    @Test
+    public void shouldThrowExceptionForEmptyFieldName() throws NoSuchMethodException {
+        //given
+        Method method = Movie.class.getMethod("emptyField");
+
+        //when
+        try {
+            FieldNameExtractor.getFieldName(method);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(method);
+            return;
+        }
+
+        failExpectedException();
+    }
+
+    @Test
+    public void shouldThrowExceptionForGetOnly() throws NoSuchMethodException {
+        //given
+        Method method = Movie.class.getMethod("get");
+
+        //when
+        try {
+            FieldNameExtractor.getFieldName(method);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(method);
+            return;
+        }
+
+        failExpectedException();
+    }
+
+    @Test
+    public void shouldThrowExceptionForSetOnly() throws NoSuchMethodException {
+        //given
+        Method method = Movie.class.getMethod("set", String.class);
+
+        //when
+        try {
+            FieldNameExtractor.getFieldName(method);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(method);
+            return;
+        }
+
+        failExpectedException();
+    }
+
+    @Test
+    public void shouldThrowExceptionForWithOnly() throws NoSuchMethodException {
+        //given
+        Method method = Movie.class.getMethod("with", String.class);
+
+        //when
+        try {
+            FieldNameExtractor.getFieldName(method);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(method);
+            return;
+        }
+
+        failExpectedException();
     }
 }

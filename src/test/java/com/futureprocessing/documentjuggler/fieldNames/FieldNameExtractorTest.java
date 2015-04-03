@@ -99,7 +99,7 @@ public class FieldNameExtractorTest {
     }
 
     @Test
-    public void shouldThrowExeptionForEmptyFieldName() throws NoSuchMethodException {
+    public void shouldThrowExceptionForEmptyFieldName() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("emptyField");
 
@@ -116,7 +116,7 @@ public class FieldNameExtractorTest {
     }
 
     @Test
-    public void shouldThrowExeptionForGetOnly() throws NoSuchMethodException {
+    public void shouldThrowExceptionForGetOnly() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("get");
 
@@ -133,7 +133,7 @@ public class FieldNameExtractorTest {
     }
 
     @Test
-    public void shouldThrowExeptionForSetOnly() throws NoSuchMethodException {
+    public void shouldThrowExceptionForSetOnly() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("set", String.class);
 
@@ -150,7 +150,7 @@ public class FieldNameExtractorTest {
     }
 
     @Test
-    public void shouldThrowExeptionForWithOnly() throws NoSuchMethodException {
+    public void shouldThrowExceptionForWithOnly() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("with", String.class);
 

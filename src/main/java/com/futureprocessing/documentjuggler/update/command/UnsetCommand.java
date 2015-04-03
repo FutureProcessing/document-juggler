@@ -14,9 +14,13 @@ public class UnsetCommand extends AbstractUpdateCommand {
         super(field);
     }
 
+    public static void update(String field, UpdateBuilder updateBuilder) {
+        updateBuilder.unset(field);
+    }
+
     @Override
     public void update(UpdateBuilder updateBuilder, Object[] args) {
-        updateBuilder.unset(field);
+        update(field, updateBuilder);
     }
 
     public static class Provider implements CommandProvider<UpdateCommand> {

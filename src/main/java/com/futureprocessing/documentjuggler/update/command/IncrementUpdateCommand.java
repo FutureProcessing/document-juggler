@@ -15,9 +15,13 @@ public class IncrementUpdateCommand extends AbstractUpdateCommand {
         super(field);
     }
 
+    public static void update(String field, UpdateBuilder updateBuilder, Object value) {
+        updateBuilder.inc(field, (Integer) value);
+    }
+
     @Override
     public void update(UpdateBuilder updateBuilder, Object[] args) {
-        updateBuilder.inc(field, (Integer) args[0]);
+        update(field, updateBuilder, args[0]);
     }
 
     public static class Provider implements CommandProvider<UpdateCommand> {

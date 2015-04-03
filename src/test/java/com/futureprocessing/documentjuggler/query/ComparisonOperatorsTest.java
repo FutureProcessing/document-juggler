@@ -153,7 +153,7 @@ public class ComparisonOperatorsTest {
     }
 
     @Test
-    public void shouldSearchForNumbersNotList() {
+    public void shouldSearchForNumbersNotInList() {
         //given
         Repository<Model> repository = new Repository<>(collection, Model.class);
         final List<Integer> numbers = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4));

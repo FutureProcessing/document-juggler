@@ -45,7 +45,6 @@ public class UpdateOperatorsTest {
         given(writeResult.getN()).willReturn(1);
     }
 
-
     private interface Model {
         @DbField("number")
         int getNumber();

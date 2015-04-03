@@ -8,7 +8,6 @@ import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
-import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 import com.futureprocessing.documentjuggler.helper.Empty;
 import com.futureprocessing.documentjuggler.insert.command.*;
 import org.junit.Assert;
@@ -40,26 +39,6 @@ public class InsertMapperTest {
         } catch (ModelIsNotInterfaceException ex) {
             //then
             assertThat(ex.getClazz()).isEqualTo(NotInterface.class);
-            return;
-        }
-
-        Assert.fail();
-    }
-
-    private interface ModelWithUnknownQuery {
-        String unknownField();
-    }
-
-    @Test
-    public void shouldThrowUnknownFieldExceptionIfOneOfMethodsIsNotAnnotatedWithDbField() throws Exception {
-        // given
-
-        try {
-            // when
-            InsertMapper.map(ModelWithUnknownQuery.class);
-        } catch (UnknownFieldException ex) {
-            // then
-            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownQuery.class.getMethod("unknownField"));
             return;
         }
 

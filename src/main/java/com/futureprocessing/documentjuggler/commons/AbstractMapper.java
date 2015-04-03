@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.futureprocessing.documentjuggler.annotation.AnnotationReader.from;
-import static com.futureprocessing.documentjuggler.commons.Validator.validateField;
 import static com.futureprocessing.documentjuggler.commons.Validator.validateInterface;
 
 public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYPE> {
@@ -38,7 +37,6 @@ public abstract class AbstractMapper<COMMAND_TYPE> implements Mapper<COMMAND_TYP
         validateInterface(clazz);
 
         for (Method method : clazz.getMethods()) {
-            validateField(method);
 
             COMMAND_TYPE command = getCommand(method);
             command = postProcessCommand(command, method);

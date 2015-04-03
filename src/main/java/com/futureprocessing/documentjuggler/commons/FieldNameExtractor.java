@@ -1,6 +1,7 @@
 package com.futureprocessing.documentjuggler.commons;
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
+import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -19,14 +20,13 @@ public abstract class FieldNameExtractor {
         List<String> toRemove = Arrays.asList("get", "set", "with");
 
         String methodName = method.getName();
-        for (String remove : toRemove) {
-            if (methodName.startsWith(remove)) {
-                String result = methodName.replaceFirst(remove, "");
+        for (String prefix : toRemove) {
+            if (methodName.startsWith(prefix)) {
+                String result = methodName.replaceFirst(prefix, "");
                 return firstLetterToLowerCase(result);
             }
         }
-
-        return null;
+        throw new UnknownFieldException(method);
     }
 
     private static String firstLetterToLowerCase(String result) {

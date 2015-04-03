@@ -2,13 +2,15 @@ package com.futureprocessing.documentjuggler.fieldNames;
 
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.commons.FieldNameExtractor;
+import com.futureprocessing.documentjuggler.exception.validation.UnknownFieldException;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FieldNameTest {
+public class FieldNameExtractorTest {
 
     @CollectionName("movie")
     private interface Movie {
@@ -24,14 +26,15 @@ public class FieldNameTest {
     }
 
     @Test
-    public void shouldCreateDbFieldNameFromGetterName() throws NoSuchMethodException {
+    public void shouldGetDbFieldNameFromGetterName() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("getTitle");
 
         //when
+        String methodName = FieldNameExtractor.getFieldName(method);
 
         //then
-        assertThat(FieldNameExtractor.getFieldName(method)).isEqualTo("title");
+        assertThat(methodName).isEqualTo("title");
     }
 
     @Test
@@ -68,13 +71,19 @@ public class FieldNameTest {
     }
 
     @Test
-    public void shouldntCreateDbFieldNameFromMethodName() throws NoSuchMethodException {
+    public void shouldNotCreateDbFieldNameFromMethodName() throws NoSuchMethodException {
         //given
         Method method = Movie.class.getMethod("title");
 
         //when
+        try {
+            FieldNameExtractor.getFieldName(method);
+        } catch (UnknownFieldException ex) {
+            // then
+            assertThat(ex.getMethod()).isEqualTo(method);
+            return;
+        }
 
-        //then
-        assertThat(FieldNameExtractor.getFieldName(method)).isNull();
+        Assert.fail();
     }
 }

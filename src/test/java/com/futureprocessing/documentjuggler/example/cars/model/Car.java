@@ -10,6 +10,8 @@ import com.futureprocessing.documentjuggler.annotation.update.Inc;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
+import com.futureprocessing.documentjuggler.update.operators.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -132,12 +134,8 @@ public interface Car {
     Car withOwnersExists(boolean i);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @In
-    Car withSideNumberIn(Object i);
-
-    @DbField(CarsDBModel.Car.OWNERS)
-    @In
-    Car withOwnersIn(List i);
+    @NotIn
+    Car whereSideNumber(Comparison<Integer> sideNumber);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @NotIn
@@ -146,6 +144,9 @@ public interface Car {
     @DbField(CarsDBModel.Car.OWNERS)
     @NotIn
     Car withOwnersNotIn(List i);
+
+    @DbField(CarsDBModel.Car.OWNERS)
+    Car withOwners(Comparison<String> owners);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @NotEquals

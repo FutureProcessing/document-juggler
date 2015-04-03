@@ -17,7 +17,7 @@ public class InQueryCommand implements QueryCommand {
     }
 
     public static void query(String field, QueryBuilder builder, Object value) {
-        builder.and(field).in(value);
+
     }
 
     @Override

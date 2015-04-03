@@ -2,18 +2,19 @@ package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.assertions.JugglerAssertions;
 import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
-import com.futureprocessing.documentjuggler.query.QueryMapper;
 import com.futureprocessing.documentjuggler.query.command.ComparisonOperatorsCommand;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
+import com.futureprocessing.documentjuggler.query.operators.ComparisonOperators;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -24,13 +25,25 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComparisonOperatorsTest {
+
+    private static final String FIELD_NAME = "fieldName";
+    private static final String VALUE_1 = "SomeValue";
+    private static final String VALUE_2 = "AnotherValue";
+
+    private QueryBuilder updateBuilder;
+
+    @Before
+    public void before() {
+        updateBuilder = new QueryBuilder();
+    }
+
 
     @Mock
     private DBCollection collection;
@@ -140,16 +153,15 @@ public class ComparisonOperatorsTest {
     @Test
     public void shouldSearchForNumbersInArray() {
         //given
-        Repository<Model> repository = new Repository<>(collection, Model.class);
+        ComparisonOperators<Integer> operators = new ComparisonOperators<>(FIELD_NAME, updateBuilder);
         Integer[] array = {1, 2, 3, 4};
 
         //when
-
-        repository.find(model -> model.withNumber(n -> n.in(array))).first();
+        operators.in(array);
 
         //then
-        DBObject expectedQuery = new BasicDBObject("number", new BasicDBObject("$in", new int[]{1, 2, 3, 4}));
-        verify(collection).findOne(eq(expectedQuery), any());
+        DBObject expectedQuery = new BasicDBObject(FIELD_NAME, new BasicDBObject("$in", new int[]{1, 2, 3, 4}));
+        assertThat(updateBuilder).hasDocumentEqualTo(expectedQuery);
     }
 
     @Test

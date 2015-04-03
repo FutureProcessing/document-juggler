@@ -35,14 +35,13 @@ public class ComparisonOperators<TYPE> {
         return this;
     }
 
-
     public ComparisonOperators<TYPE> in(Collection<TYPE> collection) {
-        InQueryCommand.query(field, builder, collection);
+        builder.and(field).in(collection);
         return this;
     }
 
     public ComparisonOperators<TYPE> in(TYPE... args) {
-        InQueryCommand.query(field, builder, args);
+        builder.and(field).in(args);
         return this;
     }
 

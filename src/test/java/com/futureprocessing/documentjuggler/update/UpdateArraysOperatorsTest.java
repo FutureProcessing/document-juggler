@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.update;
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.helper.Sets;
 import com.futureprocessing.documentjuggler.insert.InsertMapper;
 import com.futureprocessing.documentjuggler.insert.command.ForbiddenInsertCommand;
 import com.futureprocessing.documentjuggler.insert.command.InsertCommand;
@@ -205,4 +204,93 @@ public class UpdateArraysOperatorsTest {
         BasicDBObject expected = new BasicDBObject("$addToSet", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
         assertThat(updateBuilder).hasDocumentEqualTo(expected);
     }
+
+    @Test
+    //FIXME duplicates PushSingleUpdateCommandTest
+    public void shouldPushSingleValue() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+
+        // when
+        operators.push(VALUE_1);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
+    @Test
+    //FIXME duplicates PushManyUpdateCommandTest
+    public void shouldPushVarArg() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+
+        // when
+        operators.push(VALUE_1, VALUE_2);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
+    @Test
+    //FIXME duplicates PushArrayUpdateCommandTest
+    public void shouldPushArray() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+        String[] arrayOfStrings = {VALUE_1, VALUE_2};
+
+        // when
+        operators.push(arrayOfStrings);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
+    @Test
+    //FIXME duplicates PushCollectionUpdateCommandTest
+    public void shouldPushList() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+        List<String> listOfStrings = asList(VALUE_1, VALUE_2);
+
+        // when
+        operators.push(listOfStrings);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
+    @Test
+    //FIXME duplicates PushCollectionUpdateCommandTest
+    public void shouldPushSet() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+        Set<String> setOfStrings = asSet(VALUE_1, VALUE_2);
+
+        // when
+        operators.push(setOfStrings);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
+    @Test
+    //FIXME duplicates PushCollectionUpdateCommandTest
+    public void shouldPushCollection() {
+        // given
+        UpdateArraysOperators<String> operators = new UpdateArraysOperators<>(FIELD_NAME, updateBuilder);
+        Collection<String> collectionOfStrings = asList(VALUE_1, VALUE_2);
+
+        // when
+        operators.push(collectionOfStrings);
+
+        // then
+        BasicDBObject expected = new BasicDBObject("$push", new BasicDBObject(FIELD_NAME, new BasicDBObject("$each", asList(VALUE_1, VALUE_2))));
+        assertThat(updateBuilder).hasDocumentEqualTo(expected);
+    }
+
 }

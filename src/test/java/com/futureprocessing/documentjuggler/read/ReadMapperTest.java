@@ -45,7 +45,7 @@ public class ReadMapperTest {
     }
 
     private interface ModelWithUnknownField {
-        String getId();
+        String unknownField();
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ReadMapperTest {
             ReadMapper.map(ModelWithUnknownField.class);
         } catch (UnknownFieldException ex) {
             // then
-            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownField.class.getMethod("getId"));
+            assertThat(ex.getMethod()).isEqualTo(ModelWithUnknownField.class.getMethod("unknownField"));
             return;
         }
 

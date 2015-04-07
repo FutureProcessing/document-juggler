@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.update.operators;
 
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
-import com.futureprocessing.documentjuggler.update.command.UnsetCommand;
 
 public class UpdateOperators<TYPE> {
 
@@ -19,7 +18,7 @@ public class UpdateOperators<TYPE> {
     }
 
     public UpdateOperators<TYPE> unset() {
-        UnsetCommand.update(field, updateBuilder);
+        updateBuilder.unset(field);
         return this;
     }
 

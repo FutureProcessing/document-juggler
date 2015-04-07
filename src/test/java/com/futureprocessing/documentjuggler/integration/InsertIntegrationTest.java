@@ -61,7 +61,7 @@ public class InsertIntegrationTest extends BaseIntegrationTest {
         //when
         String id = repo.insert(car -> car
                 .withBrand(brand)
-                .withModel(null));
+                .withModel((String)null));
 
         //then
         BasicDBObject document = (BasicDBObject) collection.findOne(new BasicDBObject(ID, new ObjectId(id)));

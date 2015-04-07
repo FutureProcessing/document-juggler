@@ -4,9 +4,11 @@ package com.futureprocessing.documentjuggler.update;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.helper.Empty;
-import com.futureprocessing.documentjuggler.update.command.*;
+import com.futureprocessing.documentjuggler.update.command.BooleanUpdateCommand;
+import com.futureprocessing.documentjuggler.update.command.EmbeddedUpdateCommand;
+import com.futureprocessing.documentjuggler.update.command.ForbiddenUpdateCommand;
+import com.futureprocessing.documentjuggler.update.command.UpdateCommand;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -58,19 +60,6 @@ public class UpdateMapperTest {
 
 
     @Test
-    public void shouldReturnUnsetUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("fieldToUnset");
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(UnsetCommand.class);
-    }
-
-    @Test
     public void shouldReturnForbiddenUpdateCommandForGetter() throws Exception {
         // given
         Method method = Update.class.getMethod("getter");
@@ -118,10 +107,6 @@ public class UpdateMapperTest {
 
         @DbField("primitiveBoolean")
         Update primitiveBoolean(boolean value);
-
-        @DbField("fieldToUnset")
-        @Unset
-        Update fieldToUnset();
 
         @DbField("getter")
         String getter();

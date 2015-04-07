@@ -5,7 +5,6 @@ import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.*;
-import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 import com.futureprocessing.documentjuggler.update.operators.Update;
 import com.futureprocessing.documentjuggler.update.operators.UpdateArrays;
@@ -65,8 +64,7 @@ public interface Car {
     Car withModel(String model);
 
     @DbField(CarsDBModel.Car.MODEL)
-    @Unset
-    Car withoutModel();
+    Car withModel(Update<String> model);
 
     @DbField(CarsDBModel.Car.RELEASE_DATE)
     Car withReleaseDate(Date releaseDate);

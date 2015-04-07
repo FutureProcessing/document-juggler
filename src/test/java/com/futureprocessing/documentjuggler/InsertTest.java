@@ -149,23 +149,6 @@ public class InsertTest {
         assertThat(insertedDocument).isEqualTo(expectedInsert);
     }
 
-    //todo enable when there will be support for mixed reader, inserter, updater interfaces
-    /*@Test
-    public void shouldThrowUnsupportedActionExceptionWhenAddingToListWhileInsert() {
-        //given
-        final String newPassenger = "Adam";
-
-        try {
-            //when
-            carsRepository.insert(car -> car.addPassengerName(newPassenger));
-        } catch (UnsupportedActionException e) {
-            return;
-        }
-
-        //then
-        fail("Should throw exception");
-    }
-*/
     @Test
     public void shouldReturnInsertedDocumentId() {
         // given

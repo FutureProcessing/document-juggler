@@ -50,10 +50,10 @@ public class InAndNotInIntegrationTest extends BaseIntegrationTest {
     @Test
     public void shouldFindInArray() {
         // given
-        int[] sideNumbers = new int[]{2, 3};
+        Integer[] sideNumbers = new Integer[]{2, 3};
 
         // when
-        List<Car> cars = repo.find(car -> car.withSideNumberIn(sideNumbers)).all();
+        List<Car> cars = repo.find(car -> car.whereSideNumber(n -> n.in(sideNumbers))).all();
 
         // then
         assertThat(extractProperty("sideNumber").from(cars)).containsOnly(2, 3);
@@ -64,7 +64,7 @@ public class InAndNotInIntegrationTest extends BaseIntegrationTest {
         // given
 
         // when
-        List<Car> cars = repo.find(car -> car.withOwnersIn(owners)).all();
+        List<Car> cars = repo.find(car -> car.whereOwners(o -> o.in(owners))).all();
 
         // then
         assertThat(extractProperty("owners").from(cars)).contains(ownersCar1, ownersCar3);
@@ -76,7 +76,7 @@ public class InAndNotInIntegrationTest extends BaseIntegrationTest {
         int[] sideNumbers = new int[]{2, 3};
 
         // when
-        List<Car> cars = repo.find(car -> car.withSideNumberNotIn(sideNumbers)).all();
+        List<Car> cars = repo.find(car -> car.whereSideNumber(n -> n.notIn(sideNumbers))).all();
 
         // then
         assertThat(extractProperty("sideNumber").from(cars)).containsOnly(1);
@@ -87,7 +87,7 @@ public class InAndNotInIntegrationTest extends BaseIntegrationTest {
         // given
 
         // when
-        List<Car> cars = repo.find(car -> car.withOwnersNotIn(owners)).all();
+        List<Car> cars = repo.find(car -> car.whereOwners(o -> o.notIn(owners))).all();
 
         // then
         assertThat(extractProperty("owners").from(cars)).doesNotContain(ownersCar1, ownersCar3);

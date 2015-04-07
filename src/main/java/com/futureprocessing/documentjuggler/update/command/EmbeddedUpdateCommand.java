@@ -33,9 +33,9 @@ public class EmbeddedUpdateCommand extends AbstractUpdateCommand {
 
         @Override
         public UpdateCommand getCommand(Method method, Mapper<UpdateCommand> mapper) {
-            Class<?> type = from(method).getGenericType(0); // TODO Move to Embedded Update command
-            mapper.createEmbeddedMapping(getFieldName(method), type);
-            return new EmbeddedUpdateCommand(getFieldName(method), type, mapper);
+            Class<?> argumentType = from(method).getGenericType(0);
+            mapper.createEmbeddedMapping(getFieldName(method), argumentType);
+            return new EmbeddedUpdateCommand(getFieldName(method), argumentType, mapper);
         }
 
     }

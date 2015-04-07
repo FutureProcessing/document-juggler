@@ -2,11 +2,9 @@ package com.futureprocessing.documentjuggler.query;
 
 import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.assertions.JugglerAssertions;
 import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
-import com.futureprocessing.documentjuggler.query.QueryMapper;
 import com.futureprocessing.documentjuggler.query.command.ComparisonOperatorsCommand;
 import com.futureprocessing.documentjuggler.query.command.ForbiddenQueryCommand;
 import com.futureprocessing.documentjuggler.query.command.QueryCommand;
@@ -24,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.futureprocessing.documentjuggler.assertions.JugglerAssertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -144,7 +142,6 @@ public class ComparisonOperatorsTest {
         Integer[] array = {1, 2, 3, 4};
 
         //when
-
         repository.find(model -> model.withNumber(n -> n.in(array))).first();
 
         //then
@@ -208,7 +205,7 @@ public class ComparisonOperatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionForComparisonMethodWihtNotAnnotation() {
+    public void shouldThrowExceptionForComparisonMethodWithNotAnnotation() {
         //given
         Repository<Model> repository = new Repository<>(collection, Model.class);
 

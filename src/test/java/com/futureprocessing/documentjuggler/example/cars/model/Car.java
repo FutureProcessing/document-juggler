@@ -4,8 +4,9 @@ import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.query.*;
+import com.futureprocessing.documentjuggler.annotation.query.Exists;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.futureprocessing.documentjuggler.update.operators.Update;
 import com.futureprocessing.documentjuggler.update.operators.UpdateArrays;
 
@@ -105,47 +106,13 @@ public interface Car {
     @DbEmbeddedDocument()
     Car withRoofLuggage(Consumer<Luggage>... consumers);
 
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @GreaterThan
-    Car withSideNumberGreaterThan(int i);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @GreaterThanEqual
-    Car withSideNumberGreaterThanEqual(int i);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @LessThan
-    Car withSideNumberLessThan(int i);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @LessThanEqual
-    Car withSideNumberLessThanEqual(int i);
-
     @DbField(CarsDBModel.Car.OWNERS)
     @Exists
     Car withOwnersExists(boolean i);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @In
-    Car withSideNumberIn(Object i);
+    Car whereSideNumber(Comparison<Integer> sideNumber);
 
     @DbField(CarsDBModel.Car.OWNERS)
-    @In
-    Car withOwnersIn(List i);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @NotIn
-    Car withSideNumberNotIn(Object i);
-
-    @DbField(CarsDBModel.Car.OWNERS)
-    @NotIn
-    Car withOwnersNotIn(List i);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @NotEquals
-    Car withSideNumberNotEquals(Object i);
-
-    @DbField(CarsDBModel.Car.OWNERS)
-    @NotEquals
-    Car withOwnersNotEquals(List i);
+    Car whereOwners(Comparison<String> owners);
 }

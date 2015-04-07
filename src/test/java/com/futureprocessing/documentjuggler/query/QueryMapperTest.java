@@ -72,10 +72,6 @@ public class QueryMapperTest {
         @DbField("exists")
         @Exists
         Model exists(boolean value);
-
-        @DbField("notEquals")
-        @NotEquals
-        Model notEquals(Object value);
     }
 
     @Test
@@ -167,19 +163,6 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ExistsQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnNotEqualsQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("notEquals", Object.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(NotEqualsQueryCommand.class);
     }
 
     @Test

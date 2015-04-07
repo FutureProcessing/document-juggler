@@ -138,12 +138,4 @@ public interface Car {
 
     @DbField(CarsDBModel.Car.OWNERS)
     Car whereOwners(Comparison<String> owners);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @NotEquals
-    Car withSideNumberNotEquals(Object i);
-
-    @DbField(CarsDBModel.Car.OWNERS)
-    @NotEquals
-    Car withOwnersNotEquals(List i);
 }

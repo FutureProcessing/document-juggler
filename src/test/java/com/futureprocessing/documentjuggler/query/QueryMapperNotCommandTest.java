@@ -52,12 +52,6 @@ public class QueryMapperNotCommandTest {
         ModelWithNot withoutForbidden(String field);
 
         @Not
-        @LessThanEqual
-        @DbField("lessThanEqual")
-        ModelWithNot lessThanEqual(int value);
-
-
-        @Not
         @OtherAnnotationSupportingNot
         @DbField("otherSupportedField")
         ModelWithNot withSomeOtherAnnotation(String otherValue);
@@ -91,21 +85,4 @@ public class QueryMapperNotCommandTest {
         QueryCommand innerCommand = getOperandCommand(command);
         assertThat(innerCommand).isInstanceOf(OtherCommandSupportingNot.class);
     }
-
-    @Test
-    public void shouldReturnNotQueryCommandForLessThanEqualCommand() throws NoSuchMethodException {
-        // given
-        Method method = ModelWithNot.class.getMethod("lessThanEqual", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(ModelWithNot.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(NotQueryCommand.class);
-
-        QueryCommand innerCommand = getOperandCommand(command);
-        assertThat(innerCommand).isInstanceOf(LessThanEqualsQueryCommand.class);
-    }
-
 }

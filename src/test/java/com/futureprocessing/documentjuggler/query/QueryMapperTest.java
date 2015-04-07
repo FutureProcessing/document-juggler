@@ -53,10 +53,6 @@ public class QueryMapperTest {
         @DbField("fieldA")
         String getFieldA();
 
-        @DbField("lessEqual")
-        @LessThanEqual
-        Model lessEqual(int value);
-
         @DbField("exists")
         @Exists
         Model exists(boolean value);
@@ -86,19 +82,6 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnLessThanEqualQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("lessEqual", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(LessThanEqualsQueryCommand.class);
     }
 
     @Test

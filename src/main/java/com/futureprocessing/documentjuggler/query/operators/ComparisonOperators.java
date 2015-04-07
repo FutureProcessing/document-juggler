@@ -1,6 +1,8 @@
 package com.futureprocessing.documentjuggler.query.operators;
 
-import com.futureprocessing.documentjuggler.query.command.*;
+import com.futureprocessing.documentjuggler.query.command.LessThanEqualsQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.LessThanQueryCommand;
+import com.futureprocessing.documentjuggler.query.command.NotEqualsQueryCommand;
 import com.mongodb.QueryBuilder;
 
 import java.util.Collection;
@@ -20,13 +22,13 @@ public class ComparisonOperators<TYPE> {
         return this;
     }
 
-    public ComparisonOperators<TYPE> greaterThan (TYPE value) {
+    public ComparisonOperators<TYPE> greaterThan(TYPE value) {
         builder.and(field).greaterThan(value);
         return this;
     }
 
     public ComparisonOperators<TYPE> greaterThanEquals(TYPE value) {
-        GreaterThanEqualsQueryCommand.query(field, builder, value);
+        builder.and(field).greaterThanEquals(value);
         return this;
     }
 

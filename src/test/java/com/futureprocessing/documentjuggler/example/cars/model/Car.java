@@ -5,7 +5,6 @@ import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.Exists;
-import com.futureprocessing.documentjuggler.annotation.query.GreaterThanEqual;
 import com.futureprocessing.documentjuggler.annotation.query.LessThan;
 import com.futureprocessing.documentjuggler.annotation.query.LessThanEqual;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
@@ -114,10 +113,6 @@ public interface Car {
     @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
     @DbEmbeddedDocument()
     Car withRoofLuggage(Consumer<Luggage>... consumers);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @GreaterThanEqual
-    Car withSideNumberGreaterThanEqual(int i);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @LessThan

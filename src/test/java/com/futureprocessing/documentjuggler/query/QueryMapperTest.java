@@ -57,10 +57,6 @@ public class QueryMapperTest {
         @LessThan
         Model less(int value);
 
-        @DbField("greaterEqual")
-        @GreaterThanEqual
-        Model greaterEqual(int value);
-
         @DbField("lessEqual")
         @LessThanEqual
         Model lessEqual(int value);
@@ -94,19 +90,6 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnGreaterThanEqualQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("greaterEqual", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(GreaterThanEqualsQueryCommand.class);
     }
 
     @Test

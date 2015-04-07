@@ -3,9 +3,9 @@ package com.futureprocessing.documentjuggler.query.command;
 
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.query.GreaterThan;
 import com.futureprocessing.documentjuggler.query.QueryMapper;
 import com.futureprocessing.documentjuggler.query.QueryProcessor;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
 import org.junit.Test;
@@ -42,8 +42,7 @@ public class EmbeddedQueryCommandTest {
         EmbeddedModel withC(Consumer<DoubleEmbeddedModel> consumer);
 
         @DbField(FIELD_D)
-        @GreaterThan
-        EmbeddedModel greaterThan(int value);
+        EmbeddedModel whereFieldD(Comparison<Integer> fieldD);
     }
 
     private interface DoubleEmbeddedModel {
@@ -90,7 +89,7 @@ public class EmbeddedQueryCommandTest {
         int value = 666;
 
         QueryBuilder queryBuilder = new QueryBuilder();
-        Consumer<EmbeddedModel> consumer = embeddedModel -> embeddedModel.greaterThan(value);
+        Consumer<EmbeddedModel> consumer = embeddedModel -> embeddedModel.whereFieldD(f -> f.greaterThan(value));
 
         // when
         command.query(queryBuilder, new Object[]{consumer});

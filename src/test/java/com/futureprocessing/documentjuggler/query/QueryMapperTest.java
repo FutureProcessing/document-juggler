@@ -53,37 +53,9 @@ public class QueryMapperTest {
         @DbField("fieldA")
         String getFieldA();
 
-        @DbField("greater")
-        @GreaterThan
-        Model greater(int value);
-
-        @DbField("less")
-        @LessThan
-        Model less(int value);
-
-        @DbField("greaterEqual")
-        @GreaterThanEqual
-        Model greaterEqual(int value);
-
-        @DbField("lessEqual")
-        @LessThanEqual
-        Model lessEqual(int value);
-
         @DbField("exists")
         @Exists
         Model exists(boolean value);
-
-        @DbField("in")
-        @In
-        Model in(Object value);
-
-        @DbField("notIn")
-        @NotIn
-        Model notIn(Object value);
-
-        @DbField("notEquals")
-        @NotEquals
-        Model notEquals(Object value);
     }
 
     @Test
@@ -113,84 +85,6 @@ public class QueryMapperTest {
     }
 
     @Test
-    public void shouldReturnGreaterThanQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("greater", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(GreaterThanQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnGreaterThanEqualQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("greaterEqual", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(GreaterThanEqualsQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnLessThanQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("less", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(LessThanQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnLessThanEqualQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("lessEqual", int.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(LessThanEqualsQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnInQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("in", Object.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(InQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnNotInQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("notIn", Object.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(NotInQueryCommand.class);
-    }
-
-    @Test
     public void shouldReturnExistsQueryCommand() throws NoSuchMethodException {
         // given
         Method method = Model.class.getMethod("exists", boolean.class);
@@ -201,19 +95,6 @@ public class QueryMapperTest {
         // then
         QueryCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(ExistsQueryCommand.class);
-    }
-
-    @Test
-    public void shouldReturnNotEqualsQueryCommand() throws NoSuchMethodException {
-        // given
-        Method method = Model.class.getMethod("notEquals", Object.class);
-
-        // when
-        QueryMapper mapper = QueryMapper.map(Model.class);
-
-        // then
-        QueryCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(NotEqualsQueryCommand.class);
     }
 
     @Test

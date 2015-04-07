@@ -1,6 +1,6 @@
 package com.futureprocessing.documentjuggler.query.operators;
 
-import com.futureprocessing.documentjuggler.query.command.*;
+import com.futureprocessing.documentjuggler.query.command.NotEqualsQueryCommand;
 import com.mongodb.QueryBuilder;
 
 import java.util.Collection;
@@ -15,44 +15,58 @@ public class ComparisonOperators<TYPE> {
         this.builder = builder;
     }
 
+    public ComparisonOperators<TYPE> not() {
+        builder.not();
+        return this;
+    }
+
     public ComparisonOperators<TYPE> greaterThan(TYPE value) {
-        GreaterThanQueryCommand.query(field, builder, value);
+        builder.and(field).greaterThan(value);
         return this;
     }
 
     public ComparisonOperators<TYPE> greaterThanEquals(TYPE value) {
-        GreaterThanEqualsQueryCommand.query(field, builder, value);
+        builder.and(field).greaterThanEquals(value);
         return this;
     }
 
     public ComparisonOperators<TYPE> lessThan(TYPE value) {
-        LessThanQueryCommand.query(field, builder, value);
+        builder.and(field).lessThan(value);
         return this;
     }
 
     public ComparisonOperators<TYPE> lessThanEquals(TYPE value) {
-        LessThanEqualsQueryCommand.query(field, builder, value);
+        builder.and(field).lessThanEquals(value);
         return this;
     }
 
-
     public ComparisonOperators<TYPE> in(Collection<TYPE> collection) {
-        InQueryCommand.query(field, builder, collection);
+        builder.and(field).in(collection);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> in(int[] args) {
+        builder.and(field).in(args);
         return this;
     }
 
     public ComparisonOperators<TYPE> in(TYPE... args) {
-        InQueryCommand.query(field, builder, args);
+        builder.and(field).in(args);
         return this;
     }
 
     public ComparisonOperators<TYPE> notIn(Collection<TYPE> collection) {
-        NotInQueryCommand.query(field, builder, collection);
+        builder.and(field).notIn(collection);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> notIn(int[] args) {
+        builder.and(field).notIn(args);
         return this;
     }
 
     public ComparisonOperators<TYPE> notIn(TYPE... args) {
-        NotInQueryCommand.query(field, builder, args);
+        builder.and(field).notIn(args);
         return this;
     }
 

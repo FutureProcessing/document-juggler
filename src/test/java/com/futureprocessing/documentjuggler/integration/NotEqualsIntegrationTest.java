@@ -32,7 +32,7 @@ public class NotEqualsIntegrationTest extends BaseIntegrationTest {
         // given
 
         // when
-        List<Car> cars = repo.find(car -> car.withSideNumberNotEquals(2)).all();
+        List<Car> cars = repo.find(car -> car.whereSideNumber(n -> n.notEquals(2))).all();
 
         // then
         assertThat(extractProperty("sideNumber").from(cars)).containsOnly(1, 3);

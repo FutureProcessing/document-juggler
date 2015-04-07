@@ -1,7 +1,6 @@
 package com.futureprocessing.documentjuggler.update.operators;
 
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
-import com.futureprocessing.documentjuggler.update.command.IncrementUpdateCommand;
 import com.futureprocessing.documentjuggler.update.command.UnsetCommand;
 
 public class UpdateOperators<TYPE> {
@@ -15,7 +14,7 @@ public class UpdateOperators<TYPE> {
     }
 
     public UpdateOperators<TYPE> increment(TYPE value) {
-        IncrementUpdateCommand.update(field, updateBuilder, value);
+        updateBuilder.inc(field, value);
         return this;
     }
 

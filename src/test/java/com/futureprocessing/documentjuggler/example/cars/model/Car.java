@@ -6,10 +6,11 @@ import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.*;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
-import com.futureprocessing.documentjuggler.annotation.update.Inc;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
+import com.futureprocessing.documentjuggler.update.operators.Update;
+import com.futureprocessing.documentjuggler.update.operators.UpdateOperators;
 
 import java.util.Date;
 import java.util.List;
@@ -79,8 +80,7 @@ public interface Car {
     Car withSideNumber(int number);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @Inc
-    Car increaseSideNumber(int value);
+    Car withSideNumber(Update<Integer> number);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     Car withPassengerNames(Set<String> passengerNames);

@@ -5,7 +5,6 @@ import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
-import com.futureprocessing.documentjuggler.annotation.update.Inc;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.helper.Empty;
@@ -218,19 +217,6 @@ public class UpdateMapperTest {
     }
 
     @Test
-    public void shouldReturnIncrementUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("increment", int.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(IncrementUpdateCommand.class);
-    }
-
-    @Test
     public void shouldReturnUnsetUpdateCommand() throws Exception {
         // given
         Method method = Update.class.getMethod("fieldToUnset");
@@ -339,10 +325,6 @@ public class UpdateMapperTest {
         @DbField("list")
         @Push
         Update pushVarArg(String... values);
-
-        @DbField("increment")
-        @Inc
-        Update increment(int number);
 
         @DbField("fieldToUnset")
         @Unset

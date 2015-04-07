@@ -49,7 +49,7 @@ public class RootUpdateBuilder implements UpdateBuilder {
     }
 
     @Override
-    public void inc(String field, Integer value) {
+    public void inc(String field, Object value) {
         get("$inc").append(field, value);
     }
 

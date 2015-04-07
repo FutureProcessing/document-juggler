@@ -44,7 +44,7 @@ public class EmbeddedUpdateBuilder implements UpdateBuilder {
     }
 
     @Override
-    public void inc(String field, Integer value) {
+    public void inc(String field, Object value) {
         updateBuilder.inc(fullPath(field), value);
     }
 

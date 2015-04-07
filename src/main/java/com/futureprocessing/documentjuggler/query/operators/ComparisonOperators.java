@@ -15,7 +15,12 @@ public class ComparisonOperators<TYPE> {
         this.builder = builder;
     }
 
-    public ComparisonOperators<TYPE> greaterThan(TYPE value) {
+    public ComparisonOperators<TYPE> not() {
+        builder.not();
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> greaterThan (TYPE value) {
         builder.and(field).greaterThan(value);
         return this;
     }

@@ -4,11 +4,11 @@ import com.futureprocessing.documentjuggler.Repository;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.Exists;
-import com.futureprocessing.documentjuggler.annotation.query.GreaterThan;
 import com.futureprocessing.documentjuggler.annotation.query.Not;
 import com.futureprocessing.documentjuggler.exception.ForbiddenOperationException;
 import com.futureprocessing.documentjuggler.integration.BaseIntegrationTest;
 import com.futureprocessing.documentjuggler.model.DefaultModel;
+import com.futureprocessing.documentjuggler.query.operators.Comparison;
 import org.junit.Test;
 
 import java.util.List;
@@ -28,10 +28,9 @@ public class NotIntegrationTest extends BaseIntegrationTest {
         @DbField("field")
         ModelWithNot withField(int value);
 
-        @Not
+
         @DbField("field")
-        @GreaterThan
-        ModelWithNot withFieldNotGreaterThan(int value);
+        ModelWithNot whereField(Comparison<Integer> field);
 
         @DbField("name")
         ModelWithNot withName(String name);
@@ -55,7 +54,7 @@ public class NotIntegrationTest extends BaseIntegrationTest {
         String objD = repository.insert(o -> o.withName("SomeName"));
 
         //when
-        List<ModelWithNot> found = repository.find(o -> o.withFieldNotGreaterThan(2)).all();
+        List<ModelWithNot> found = repository.find(o -> o.whereField(field -> field.not().greaterThan(2))).all();
 
         //then
         assertThat(found).hasSize(3);

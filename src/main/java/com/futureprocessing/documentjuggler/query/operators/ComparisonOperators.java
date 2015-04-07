@@ -40,18 +40,28 @@ public class ComparisonOperators<TYPE> {
         return this;
     }
 
+    public ComparisonOperators<TYPE> in(int[] args) {
+        builder.and(field).in(args);
+        return this;
+    }
+
     public ComparisonOperators<TYPE> in(TYPE... args) {
         builder.and(field).in(args);
         return this;
     }
 
     public ComparisonOperators<TYPE> notIn(Collection<TYPE> collection) {
-        NotInQueryCommand.query(field, builder, collection);
+        builder.and(field).notIn(collection);
+        return this;
+    }
+
+    public ComparisonOperators<TYPE> notIn(int[] args) {
+        builder.and(field).notIn(args);
         return this;
     }
 
     public ComparisonOperators<TYPE> notIn(TYPE... args) {
-        NotInQueryCommand.query(field, builder, args);
+        builder.and(field).notIn(args);
         return this;
     }
 

@@ -134,19 +134,10 @@ public interface Car {
     Car withOwnersExists(boolean i);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @NotIn
     Car whereSideNumber(Comparison<Integer> sideNumber);
 
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @NotIn
-    Car withSideNumberNotIn(Object i);
-
     @DbField(CarsDBModel.Car.OWNERS)
-    @NotIn
-    Car withOwnersNotIn(List i);
-
-    @DbField(CarsDBModel.Car.OWNERS)
-    Car withOwners(Comparison<String> owners);
+    Car whereOwners(Comparison<String> owners);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @NotEquals

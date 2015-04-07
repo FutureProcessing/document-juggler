@@ -220,7 +220,7 @@ public class ComparisonOperatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionForComparisonMethodWihtNotAnnotation() {
+    public void shouldThrowExceptionForComparisonMethodWithNotAnnotation() {
         //given
         Repository<Model> repository = new Repository<>(collection, Model.class);
 

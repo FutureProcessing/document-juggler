@@ -4,7 +4,6 @@ package com.futureprocessing.documentjuggler.update;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.helper.Empty;
@@ -58,84 +57,6 @@ public class UpdateMapperTest {
         // then
         UpdateCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BooleanUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetSingleUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetSingle", String.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetSingleUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetManyUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetMany", String.class, String.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetManyUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetCollectionUpdateCommandForCollectionParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetCollection", Collection.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetCollectionUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetCollectionUpdateCommandForListParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetList", List.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetCollectionUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetArrayUpdateCommandForArrayParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetArray", String[].class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetArrayUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnAddToSetArrayUpdateCommandForVarArg() throws Exception {
-        // given
-        Method method = Update.class.getMethod("addToSetVarArg", String[].class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(AddToSetArrayUpdateCommand.class);
     }
 
     @Test
@@ -277,30 +198,6 @@ public class UpdateMapperTest {
 
         @DbField("primitiveBoolean")
         Update primitiveBoolean(boolean value);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetSingle(String value);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetMany(String value1, String value2);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetCollection(Collection<String> values);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetList(List<String> values);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetArray(String[] values);
-
-        @DbField("set")
-        @AddToSet
-        Update addToSetVarArg(String... values);
 
         @DbField("list")
         @Push

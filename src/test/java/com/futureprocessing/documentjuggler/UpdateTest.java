@@ -48,7 +48,7 @@ public class UpdateTest {
         //given
 
         //when
-        carsRepository.find(car -> car.withId(ID)).update(car -> car.addPassengerName("Kowalski"));
+        carsRepository.find(car -> car.withId(ID)).update(car -> car.withBrand("Ferrari"));
 
         //then
         verify(db).getCollection(eq(CarsDBModel.Car.COLLECTION));

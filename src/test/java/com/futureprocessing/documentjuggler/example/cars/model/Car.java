@@ -5,12 +5,10 @@ import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.query.Exists;
-import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
-import com.futureprocessing.documentjuggler.annotation.update.Inc;
-import com.futureprocessing.documentjuggler.annotation.update.Push;
-import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
+import com.futureprocessing.documentjuggler.update.operators.Update;
+import com.futureprocessing.documentjuggler.update.operators.UpdateArrays;
 
 import java.util.Date;
 import java.util.List;
@@ -67,8 +65,7 @@ public interface Car {
     Car withModel(String model);
 
     @DbField(CarsDBModel.Car.MODEL)
-    @Unset
-    Car withoutModel();
+    Car withModel(Update<String> model);
 
     @DbField(CarsDBModel.Car.RELEASE_DATE)
     Car withReleaseDate(Date releaseDate);
@@ -80,11 +77,13 @@ public interface Car {
     Car withSideNumber(int number);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @Inc
-    Car increaseSideNumber(int value);
+    Car withSideNumber(Update<Integer> number);
 
     @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
     Car withPassengerNames(Set<String> passengerNames);
+
+    @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
+    Car withPassengerNames(UpdateArrays<String> passengerNames);
 
     @DbField(CarsDBModel.Car.OWNERS)
     Car withOwners(List<String> owners);
@@ -92,13 +91,8 @@ public interface Car {
     @DbField(CarsDBModel.Car.OWNERS)
     Car withOwners(String... owners);
 
-    @DbField(CarsDBModel.Car.PASSENGERS_NAMES)
-    @AddToSet
-    Car addPassengerName(String passengerName);
-
     @DbField(CarsDBModel.Car.OWNERS)
-    @Push
-    Car addOwner(String owner);
+    Car withOwners(UpdateArrays<String> owners);
 
     @DbField(CarsDBModel.Car.ENGINE)
     @DbEmbeddedDocument()

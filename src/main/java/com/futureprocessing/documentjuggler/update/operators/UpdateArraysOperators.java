@@ -1,12 +1,10 @@
 package com.futureprocessing.documentjuggler.update.operators;
 
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
-import com.futureprocessing.documentjuggler.update.command.AddToSetCollectionUpdateCommand;
-import com.futureprocessing.documentjuggler.update.command.AddToSetManyUpdateCommand;
-import com.futureprocessing.documentjuggler.update.command.PushCollectionUpdateCommand;
-import com.futureprocessing.documentjuggler.update.command.PushManyUpdateCommand;
 
 import java.util.Collection;
+
+import static java.util.Arrays.asList;
 
 public class UpdateArraysOperators<TYPE> {
     private final String field;
@@ -18,23 +16,21 @@ public class UpdateArraysOperators<TYPE> {
     }
 
 
-    public UpdateArraysOperators<TYPE> addToSet(TYPE... value) {
-        new AddToSetManyUpdateCommand(field).update(updateBuilder, value);
-        return this;
+    public UpdateArraysOperators<TYPE> addToSet(TYPE... values) {
+        return addToSet(asList(values));
     }
 
     public UpdateArraysOperators<TYPE> addToSet(Collection<TYPE> collection) {
-        new AddToSetCollectionUpdateCommand(field).update(updateBuilder, new Object[]{collection});
+        collection.forEach(v -> updateBuilder.addToSet(field, v));
         return this;
     }
 
     public UpdateArraysOperators<TYPE> push(TYPE... value) {
-        new PushManyUpdateCommand(field).update(updateBuilder, value);
-        return this;
+        return push(asList(value));
     }
 
     public UpdateArraysOperators<TYPE> push(Collection<TYPE> collection) {
-        new PushCollectionUpdateCommand(field).update(updateBuilder, new Object[]{collection});
+        collection.forEach(v -> updateBuilder.push(field, v));
         return this;
     }
 }

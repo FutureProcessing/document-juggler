@@ -34,7 +34,7 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
 
         //when
         repo.find(car -> car.withId(id))
-                .update(car -> car.withModel(null))
+                .update(car -> car.withModel((String) null))
                 .ensureOneUpdated();
 
         //then
@@ -53,7 +53,7 @@ public class UpdateIntegrationTest extends BaseIntegrationTest {
 
         String id = repo.insert(car -> car
                 .withBrand(brand)
-                .withModel(null));
+                .withModel((String) null));
 
         //when
         repo.find(car -> car.withId(id))

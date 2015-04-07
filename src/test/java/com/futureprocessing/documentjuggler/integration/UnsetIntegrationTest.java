@@ -34,7 +34,7 @@ public class UnsetIntegrationTest extends BaseIntegrationTest {
 
         //when
         repo.find(car -> car.withId(id))
-                .update(car -> car.withoutModel())
+                .update(car -> car.withModel(m -> m.unset()))
                 .ensureOneUpdated();
 
         //then
@@ -54,7 +54,7 @@ public class UnsetIntegrationTest extends BaseIntegrationTest {
 
         //when
         repo.find(car -> car.withId(id))
-                .update(car -> car.engine(engine -> engine.withoutCylindersNumber()))
+                .update(car -> car.engine(engine -> engine.withCylindersNumber(n->n.unset())))
                 .ensureOneUpdated();
 
         //then

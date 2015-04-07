@@ -17,5 +17,5 @@ public interface UpdateBuilder {
 
     UpdateBuilder embedded(String field);
 
-    void inc(String field, Integer value);
+    void inc(String field, Object value);
 }

@@ -2,8 +2,8 @@ package com.futureprocessing.documentjuggler.example.cars.model;
 
 
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
+import com.futureprocessing.documentjuggler.update.operators.Update;
 
 public interface Engine {
 
@@ -20,7 +20,6 @@ public interface Engine {
     Engine withCylindersNumber(int cylindersNumber);
 
     @DbField(CarsDBModel.Car.Engine.CYLINDERS_NUMBER)
-    @Unset
-    void withoutCylindersNumber();
+    void withCylindersNumber(Update<Integer> cylindersNumber);
 
 }

@@ -1,10 +1,7 @@
 package com.futureprocessing.documentjuggler.update.operators;
 
 import com.futureprocessing.documentjuggler.update.UpdateBuilder;
-import com.futureprocessing.documentjuggler.update.command.PushCollectionUpdateCommand;
-import com.futureprocessing.documentjuggler.update.command.PushManyUpdateCommand;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
@@ -29,12 +26,11 @@ public class UpdateArraysOperators<TYPE> {
     }
 
     public UpdateArraysOperators<TYPE> push(TYPE... value) {
-        new PushManyUpdateCommand(field).update(updateBuilder, value);
-        return this;
+        return push(asList(value));
     }
 
     public UpdateArraysOperators<TYPE> push(Collection<TYPE> collection) {
-        new PushCollectionUpdateCommand(field).update(updateBuilder, new Object[]{collection});
+        collection.forEach(v -> updateBuilder.push(field, v));
         return this;
     }
 }

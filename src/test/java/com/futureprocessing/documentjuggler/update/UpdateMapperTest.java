@@ -4,15 +4,12 @@ package com.futureprocessing.documentjuggler.update;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.helper.Empty;
 import com.futureprocessing.documentjuggler.update.command.*;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 
 import static com.futureprocessing.documentjuggler.Context.UPDATE;
@@ -59,83 +56,6 @@ public class UpdateMapperTest {
         assertThat(command).isInstanceOf(BooleanUpdateCommand.class);
     }
 
-    @Test
-    public void shouldReturnPushSingleUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushSingle", String.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushSingleUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnPushManyUpdateCommand() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushMany", String.class, String.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushManyUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnPushCollectionUpdateCommandForCollectionParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushCollection", Collection.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnPushCollectionUpdateCommandForListParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushList", List.class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushCollectionUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnPushArrayUpdateCommandForArrayParam() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushArray", String[].class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
-    }
-
-    @Test
-    public void shouldReturnPushArrayUpdateCommandForVarArg() throws Exception {
-        // given
-        Method method = Update.class.getMethod("pushVarArg", String[].class);
-
-        // when
-        UpdateMapper mapper = UpdateMapper.map(Update.class);
-
-        // then
-        UpdateCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(PushArrayUpdateCommand.class);
-    }
 
     @Test
     public void shouldReturnUnsetUpdateCommand() throws Exception {
@@ -198,30 +118,6 @@ public class UpdateMapperTest {
 
         @DbField("primitiveBoolean")
         Update primitiveBoolean(boolean value);
-
-        @DbField("list")
-        @Push
-        Update pushSingle(String value);
-
-        @DbField("list")
-        @Push
-        Update pushMany(String value1, String value2);
-
-        @DbField("list")
-        @Push
-        Update pushCollection(Collection<String> values);
-
-        @DbField("list")
-        @Push
-        Update pushList(List<String> values);
-
-        @DbField("list")
-        @Push
-        Update pushArray(String[] values);
-
-        @DbField("list")
-        @Push
-        Update pushVarArg(String... values);
 
         @DbField("fieldToUnset")
         @Unset

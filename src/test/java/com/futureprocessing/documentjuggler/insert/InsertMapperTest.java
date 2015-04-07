@@ -5,7 +5,6 @@ import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
 import com.futureprocessing.documentjuggler.annotation.Forbidden;
-import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.exception.validation.ModelIsNotInterfaceException;
 import com.futureprocessing.documentjuggler.helper.Empty;
 import com.futureprocessing.documentjuggler.insert.command.*;
@@ -57,10 +56,6 @@ public class InsertMapperTest {
         @DbField("value")
         Model value(String value);
 
-        @DbField("list")
-        @Push
-        Model unsupportedPush(String value1, String value2);
-
         @DbField("wrongGetter")
         String wrongGetter();
 
@@ -106,19 +101,6 @@ public class InsertMapperTest {
         // then
         InsertCommand command = mapper.get(method);
         assertThat(command).isInstanceOf(BasicInsertCommand.class);
-    }
-
-    @Test
-    public void shouldReturnForbiddenInsertCommandForPushAnnotation() throws Exception {
-        // given
-        Method method = Model.class.getMethod("unsupportedPush", String.class, String.class);
-
-        // when
-        InsertMapper mapper = InsertMapper.map(Model.class);
-
-        // then
-        InsertCommand command = mapper.get(method);
-        assertThat(command).isInstanceOf(ForbiddenInsertCommand.class);
     }
 
     @Test

@@ -26,7 +26,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // when
         repo.find(car -> car.withId(id))
-                .update(car -> car.addOwner("Two"));
+                .update(car -> car.withOwners(o -> o.push("Two")));
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
@@ -40,10 +40,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // when
         repo.find(car -> car.withId(id))
-                .update(car -> car
-                                .addOwner("Two")
-                                .addOwner("Three")
-                );
+                .update(car -> car.withOwners(o -> o.push("Two", "Three")));
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();
@@ -57,7 +54,7 @@ public class PushIntegrationTest extends BaseIntegrationTest {
 
         // when
         repo.find(car -> car.withId(id))
-                .update(car -> car.addOwner("One"));
+                .update(car -> car.withOwners(o -> o.push("One")));
 
         // then
         List<String> owners = repo.find(car -> car.withId(id)).first().getOwners();

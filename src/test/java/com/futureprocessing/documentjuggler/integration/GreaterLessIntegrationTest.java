@@ -32,7 +32,7 @@ public class GreaterLessIntegrationTest extends BaseIntegrationTest {
         // given
 
         // when
-        List<Car> cars = repo.find(car -> car.withSideNumberGreaterThan(1)).all();
+        List<Car> cars = repo.find(car -> car.whereSideNumber(n -> n.greaterThan(1))).all();
 
         // then
         assertThat(extractProperty("sideNumber").from(cars)).containsOnly(2, 3);

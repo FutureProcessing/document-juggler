@@ -16,7 +16,7 @@ public class ComparisonOperators<TYPE> {
     }
 
     public ComparisonOperators<TYPE> greaterThan(TYPE value) {
-        GreaterThanQueryCommand.query(field, builder, value);
+        builder.and(field).greaterThan(value);
         return this;
     }
 

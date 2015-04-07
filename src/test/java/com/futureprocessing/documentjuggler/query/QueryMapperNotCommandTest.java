@@ -120,7 +120,6 @@ public class QueryMapperNotCommandTest {
         assertThat(command).isInstanceOf(NotQueryCommand.class);
     }
 
-
     @Test
     public void shouldReturnNotQueryCommandForGreaterThanEqualCommand() throws NoSuchMethodException {
         // given

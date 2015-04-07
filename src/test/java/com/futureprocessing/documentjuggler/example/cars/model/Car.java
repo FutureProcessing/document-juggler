@@ -4,14 +4,16 @@ import com.futureprocessing.documentjuggler.annotation.AsObjectId;
 import com.futureprocessing.documentjuggler.annotation.CollectionName;
 import com.futureprocessing.documentjuggler.annotation.DbEmbeddedDocument;
 import com.futureprocessing.documentjuggler.annotation.DbField;
-import com.futureprocessing.documentjuggler.annotation.query.*;
+import com.futureprocessing.documentjuggler.annotation.query.Exists;
+import com.futureprocessing.documentjuggler.annotation.query.GreaterThanEqual;
+import com.futureprocessing.documentjuggler.annotation.query.LessThan;
+import com.futureprocessing.documentjuggler.annotation.query.LessThanEqual;
 import com.futureprocessing.documentjuggler.annotation.update.AddToSet;
 import com.futureprocessing.documentjuggler.annotation.update.Inc;
 import com.futureprocessing.documentjuggler.annotation.update.Push;
 import com.futureprocessing.documentjuggler.annotation.update.Unset;
 import com.futureprocessing.documentjuggler.example.cars.CarsDBModel;
 import com.futureprocessing.documentjuggler.query.operators.Comparison;
-import com.futureprocessing.documentjuggler.update.operators.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -112,10 +114,6 @@ public interface Car {
     @DbField(CarsDBModel.Car.ROOF_LUGGAGE)
     @DbEmbeddedDocument()
     Car withRoofLuggage(Consumer<Luggage>... consumers);
-
-    @DbField(CarsDBModel.Car.SIDE_NUMBER)
-    @GreaterThan
-    Car withSideNumberGreaterThan(int i);
 
     @DbField(CarsDBModel.Car.SIDE_NUMBER)
     @GreaterThanEqual
